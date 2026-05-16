@@ -15,14 +15,12 @@
     box-shadow var(--t),
     background var(--t);
 }
-
 .navScrolled {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* ── Logo ── */
 .logo {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-playfair), serif;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--forest);
@@ -54,6 +52,14 @@
   color: var(--text-mid);
   position: relative;
   transition: color var(--t);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .link::after {
   content: "";
@@ -80,7 +86,7 @@
 .linkCta {
   background: var(--forest) !important;
   color: #f5f0e8 !important;
-  padding: 8px 20px;
+  padding: 8px 20px !important;
   border-radius: 2px;
 }
 .linkCta::after {
@@ -89,6 +95,143 @@
 .linkCta:hover {
   background: var(--forest-light) !important;
   transform: translateY(-1px);
+}
+
+/* ── Dropdown — pure CSS, no JS ── */
+.dropItem {
+  position: relative;
+}
+
+.dropTrigger {
+  white-space: nowrap;
+}
+
+.chevron {
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* The dropdown panel */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Invisible top padding bridges the gap between trigger and panel.
+     This means moving mouse from trigger into the gap still counts
+     as hovering the .dropItem — dropdown stays open. */
+  padding-top: 9px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+  z-index: 300;
+}
+
+/* Show on hover of the parent li */
+.dropItem:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Rotate chevron on hover */
+.dropItem:hover .chevron {
+  transform: rotate(180deg);
+}
+
+/* The visible card inside the dropdown */
+.dropdown::after {
+  content: none;
+}
+
+.dropArrow {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  transform: translateX(-50%) rotate(45deg);
+  z-index: 5;
+  pointer-events: none;
+  transition: background var(--t);
+}
+
+.dropdown:has(.dropLink:first-of-type:hover) .dropArrow {
+  background: var(--bg-muted);
+}
+
+/* Inner card */
+.dropdown > *:not(.dropArrow) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Wrap the links in a card */
+.dropLink:first-of-type {
+  border-radius: 8px 8px 0 0;
+}
+.dropLink:last-of-type {
+  border-radius: 0 0 8px 8px;
+}
+
+.dropLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 500;
+  min-width: 260px;
+  transition:
+    background var(--t),
+    color var(--t);
+}
+.dropLink:last-of-type {
+  border-bottom: 1px solid var(--border);
+}
+.dropLink:first-of-type {
+  margin-top: 6px;
+}
+
+.dropLink:hover {
+  background: var(--bg-muted);
+  color: var(--forest);
+}
+[data-theme="dark"] .dropLink:hover {
+  color: var(--gold-light);
+}
+
+.dropIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.dropChevron {
+  margin-left: auto;
+  opacity: 0;
+  color: var(--text-low);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  flex-shrink: 0;
+}
+.dropLink:hover .dropChevron {
+  opacity: 1;
+  transform: translateX(3px);
 }
 
 /* ── Theme Pill ── */
@@ -101,7 +244,6 @@
   padding: 3px;
   gap: 2px;
 }
-
 .ttBtn {
   display: flex;
   align-items: center;
@@ -116,8 +258,7 @@
   color: var(--text-low);
   transition:
     background var(--t),
-    color var(--t),
-    box-shadow var(--t);
+    color var(--t);
 }
 .ttBtn:hover {
   color: var(--text);
@@ -149,15 +290,17 @@
   border-radius: 2px;
   transition: 0.3s;
 }
+.hamOpen {
+  opacity: 0.5;
+}
 
-/* ── Mobile right cluster ── */
 .mobileRight {
   display: none;
   align-items: center;
   gap: 10px;
 }
 
-/* ── Mobile menu overlay ── */
+/* ── Mobile menu ── */
 .mobileMenu {
   position: fixed;
   inset: 0;
@@ -165,11 +308,10 @@
   z-index: 300;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 4px;
   padding: 76px 6vw 36px;
-  transition: background var(--t);
+  overflow-y: auto;
 }
-
 .mobileClose {
   position: absolute;
   top: 20px;
@@ -180,18 +322,59 @@
   background: none;
   border: none;
 }
-
 .mobileLink {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-playfair), serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--forest);
   text-decoration: none;
   border-bottom: 1px solid var(--border);
+  border-left: none;
+  border-right: none;
+  border-top: none;
   padding-bottom: 13px;
   transition: color var(--t);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 [data-theme="dark"] .mobileLink {
+  color: var(--gold-light);
+}
+
+.mobileLinkBtn {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.mobileSubLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0 12px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.mobileSubLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 0;
+  transition: color var(--t);
+}
+.mobileSubLink:hover {
+  color: var(--forest);
+}
+[data-theme="dark"] .mobileSubLink:hover {
   color: var(--gold-light);
 }
 
