@@ -184,7 +184,7 @@ body::before {
 /* ══════════════════════════════════════════════
    SCROLL REVEAL
 ══════════════════════════════════════════════ */
-.reveal {
+/* .reveal {
   opacity: 0;
   transform: translateY(26px);
   transition:
@@ -195,7 +195,7 @@ body::before {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
-}
+} */
 
 /* ══════════════════════════════════════════════
    ANIMATIONS
