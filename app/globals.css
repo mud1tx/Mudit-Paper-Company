@@ -1,0 +1,244 @@
+/* ══════════════════════════════════════════════
+   THEME TOKENS
+══════════════════════════════════════════════ */
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e0c070;
+  --gold-dark: #a07830;
+  --kraft: #b8935a;
+  --forest: #1a4a2e;
+  --forest-light: #2a6642;
+  --forest-dark: #0f2d1c;
+  --t: 0.25s ease;
+}
+
+[data-theme="light"] {
+  --bg: #f5f0e8;
+  --bg-alt: #fdfcfa;
+  --bg-muted: #ede5d5;
+  --surface: #fdfcfa;
+  --border: rgba(201, 168, 76, 0.22);
+  --border-hi: rgba(201, 168, 76, 0.5);
+  --text: #1a1a18;
+  --text-mid: #3d3d38;
+  --text-low: #7a7a70;
+  --nav-bg: rgba(245, 240, 232, 0.93);
+  --invert-bg: #0f2d1c;
+  --invert-text: #f5f0e8;
+  --pill-bg: rgba(26, 74, 46, 0.08);
+  --chip-bg: #ede5d5;
+}
+
+[data-theme="dark"] {
+  --bg: #111610;
+  --bg-alt: #171e14;
+  --bg-muted: #1c2419;
+  --surface: #1f2a1b;
+  --border: rgba(201, 168, 76, 0.14);
+  --border-hi: rgba(201, 168, 76, 0.38);
+  --text: #e8e4da;
+  --text-mid: #b0aa9e;
+  --text-low: #716d65;
+  --nav-bg: rgba(17, 22, 16, 0.94);
+  --invert-bg: #0b1209;
+  --invert-text: #e8e4da;
+  --pill-bg: rgba(201, 168, 76, 0.1);
+  --chip-bg: rgba(201, 168, 76, 0.08);
+}
+
+/* ══════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition:
+    background var(--t),
+    color var(--t);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+/* ══════════════════════════════════════════════
+   SHARED UTILITIES
+══════════════════════════════════════════════ */
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 13px;
+}
+
+[data-theme="dark"] .sectionLabel {
+  color: var(--gold-light);
+}
+
+.sectionLabel::before {
+  content: "";
+  width: 26px;
+  height: 1.5px;
+  background: var(--gold);
+}
+
+.sectionTitle {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.85rem, 3vw, 2.7rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--forest);
+  color: #f5f0e8;
+  text-decoration: none;
+  padding: 13px 28px;
+  border-radius: 2px;
+  font-size: 0.87rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition:
+    background var(--t),
+    transform 0.2s,
+    box-shadow var(--t);
+  box-shadow: 0 4px 20px rgba(26, 74, 46, 0.28);
+  cursor: pointer;
+  border: none;
+  font-family: "DM Sans", sans-serif;
+}
+
+.btnPrimary:hover {
+  background: var(--forest-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(26, 74, 46, 0.32);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--forest);
+  color: var(--forest);
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 2px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  transition:
+    background var(--t),
+    color var(--t),
+    border-color var(--t);
+  cursor: pointer;
+  background: transparent;
+  font-family: "DM Sans", sans-serif;
+}
+
+[data-theme="dark"] .btnSecondary {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btnSecondary:hover {
+  background: var(--forest);
+  color: #f5f0e8;
+  border-color: var(--forest);
+}
+
+[data-theme="dark"] .btnSecondary:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #111;
+}
+
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.62s ease,
+    transform 0.62s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* @keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+} */
+
+section {
+  padding: 92px 6vw;
+}

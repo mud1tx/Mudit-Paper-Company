@@ -1,0 +1,209 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 6vw;
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  transition:
+    box-shadow var(--t),
+    background var(--t);
+}
+
+.navScrolled {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Logo ── */
+.logo {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--forest);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: color var(--t);
+}
+[data-theme="dark"] .logo {
+  color: var(--gold-light);
+}
+.logo span {
+  color: var(--gold);
+}
+
+/* ── Desktop links ── */
+.links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 0.83rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  position: relative;
+  transition: color var(--t);
+}
+.link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.link:hover {
+  color: var(--forest);
+}
+[data-theme="dark"] .link:hover {
+  color: var(--gold-light);
+}
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+.linkCta {
+  background: var(--forest) !important;
+  color: #f5f0e8 !important;
+  padding: 8px 20px;
+  border-radius: 2px;
+}
+.linkCta::after {
+  display: none !important;
+}
+.linkCta:hover {
+  background: var(--forest-light) !important;
+  transform: translateY(-1px);
+}
+
+/* ── Theme Pill ── */
+.themePill {
+  display: flex;
+  align-items: center;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.ttBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 100px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text-low);
+  transition:
+    background var(--t),
+    color var(--t),
+    box-shadow var(--t);
+}
+.ttBtn:hover {
+  color: var(--text);
+}
+.ttBtnActive {
+  background: var(--surface);
+  color: var(--forest);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+}
+[data-theme="dark"] .ttBtnActive {
+  color: var(--gold-light);
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* ── Mobile right cluster ── */
+.mobileRight {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Mobile menu overlay ── */
+.mobileMenu {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 76px 6vw 36px;
+  transition: background var(--t);
+}
+
+.mobileClose {
+  position: absolute;
+  top: 20px;
+  right: 6vw;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--text);
+  background: none;
+  border: none;
+}
+
+.mobileLink {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--forest);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 13px;
+  transition: color var(--t);
+}
+[data-theme="dark"] .mobileLink {
+  color: var(--gold-light);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .links {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .mobileRight {
+    display: flex;
+  }
+}
