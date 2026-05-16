@@ -33,16 +33,16 @@ export default function RootLayout({
       data-theme="light"
       suppressHydrationWarning
     >
-      {/* <head>
+      <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var s=localStorage.getItem('mpc-theme')||'light';var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s==='system'?(d?'dark':'light'):s);}catch(e){}})();`,
           }}
         />
-      </head> */}
+      </head>
       <body
         className={`${playfair.variable} ${dmSans.variable}`}
-        // suppressHydrationWarning
+        suppressHydrationWarning
       >
         {children}
       </body>
