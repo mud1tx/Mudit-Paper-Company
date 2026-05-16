@@ -200,7 +200,7 @@ body::before {
 /* ══════════════════════════════════════════════
    ANIMATIONS
 ══════════════════════════════════════════════ */
-@keyframes fadeUp {
+/* @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(22px);
@@ -218,9 +218,9 @@ body::before {
   to {
     opacity: 1;
   }
-}
+} */
 
-@keyframes float {
+/* @keyframes float {
   0%,
   100% {
     transform: translateY(0);
@@ -228,7 +228,7 @@ body::before {
   50% {
     transform: translateY(-8px);
   }
-}
+} */
 
 /* @keyframes marquee {
   from {
