@@ -18,8 +18,8 @@ export default function Home() {
         <Marquee />
         <About />
         <Products />
-        <WhyUs />
         <Industries />
+        <WhyUs />
         <Testimonials />
         <Contact />
       </main>

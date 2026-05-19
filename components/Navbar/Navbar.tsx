@@ -12,10 +12,9 @@ const PRODUCTS = [
     icon: "🧈",
   },
   { href: "/products/glassine-paper", label: "Glassine Paper", icon: "✨" },
-  { href: "/products/coated-paper", label: "Coated Paper", icon: "📄" },
   {
-    href: "/products/printed-greaseproof",
-    label: "Printed Greaseproof",
+    href: "/products/printed-food-paper",
+    label: "Printed Food Paper",
     icon: "🖨️",
   },
   {
