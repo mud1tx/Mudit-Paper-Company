@@ -1,32 +1,49 @@
+// src/types/product.ts
+
 export interface KeyValue {
-  label: string;
-  value: string;
-  icon: string;
+  readonly label: string;
+  readonly value: string;
+  readonly icon: string;
 }
 
 export interface Feature {
-  title: string;
-  desc: string;
-  icon: string;
+  readonly title: string;
+  readonly desc: string;
+  readonly icon: string;
 }
 
 export interface Application {
-  label: string;
-  icon: string;
+  readonly label: string;
+  readonly icon: string;
 }
 
-export interface ProductData {
-  name: string;
-  tagline: string;
-  description: string;
-  image: string;
-  breadcrumb: string;
-  tag?: string;
-  keyValues: KeyValue[];
-  features: Feature[];
-  applications: Application[];
-  gallery?: string[];
-  ctaTitle?: string;
-  phone?: string;
-  email?: string;
+export interface Product {
+  readonly name: string;
+  readonly tagline: string;
+  readonly description: string;
+  readonly image: string;
+  readonly breadcrumb: string;
+  readonly tag: string;
+  readonly keyValues: readonly KeyValue[];
+  readonly features: readonly Feature[];
+  readonly applications: readonly Application[];
+  readonly gallery: readonly string[];
+  readonly instagramTag?: string;
 }
+
+export interface ProductListItem {
+  readonly slug: string;
+  readonly label: string;
+  readonly icon: string;
+}
+
+// ── Utility types ─────────────────────────────────────────────────────────────
+
+// Use when you need just name + image (e.g. home page product cards)
+export type ProductSummary = Pick<
+  Product,
+  "name" | "image" | "tagline" | "tag"
+>;
+
+// Use when you need to look up products by slug
+export type ProductMap = Record<string, Product>;

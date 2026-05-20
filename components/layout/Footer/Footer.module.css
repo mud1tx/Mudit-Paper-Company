@@ -1,0 +1,144 @@
+.footer {
+  background: var(--forest-dark);
+  color: #e8e4da;
+  padding: 62px 6vw 30px;
+}
+[data-theme="dark"] .footer {
+  background: #0a0f08;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+/* ── Brand ── */
+.logo {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #f5f0e8;
+  margin-bottom: 13px;
+  line-height: 1.2;
+  text-decoration: none;
+  display: block;
+}
+.logo span {
+  color: var(--gold);
+}
+
+.desc {
+  font-size: 0.81rem;
+  color: rgba(245, 240, 232, 0.42);
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 265px;
+}
+
+.socials {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.socialBtn {
+  width: 33px;
+  height: 33px;
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: rgba(245, 240, 232, 0.42);
+  text-decoration: none;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+.socialBtn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── Columns ── */
+.colTitle {
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.contactCol {
+  font-style: normal;
+}
+
+.links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.links a {
+  text-decoration: none;
+  font-size: 0.81rem;
+  color: rgba(245, 240, 232, 0.42);
+  transition: color 0.2s;
+  font-weight: 300;
+}
+.links a:hover {
+  color: #f5f0e8;
+}
+.links li {
+  font-size: 0.81rem;
+  color: rgba(245, 240, 232, 0.42);
+  font-weight: 300;
+}
+
+/* ── Bottom ── */
+.bottom {
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.copy {
+  font-size: 0.73rem;
+  color: rgba(245, 240, 232, 0.28);
+}
+
+.legal {
+  display: flex;
+  gap: 20px;
+}
+.legal a {
+  font-size: 0.73rem;
+  color: rgba(245, 240, 232, 0.28);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.legal a:hover {
+  color: rgba(245, 240, 232, 0.62);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}

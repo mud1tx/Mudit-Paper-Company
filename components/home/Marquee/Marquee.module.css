@@ -1,0 +1,55 @@
+.wrapper {
+  background: var(--forest);
+  padding: 15px 0;
+  overflow: hidden;
+}
+[data-theme="dark"] .wrapper {
+  background: #0b1209;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
+.wrapper:hover .track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 34px;
+  color: rgba(245, 240, 232, 0.62);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sep {
+  color: var(--gold);
+}
+
+/* ══════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════ */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

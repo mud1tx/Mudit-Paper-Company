@@ -52,12 +52,16 @@
 }
 
 .breadcrumb {
+  list-style: none;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.78rem;
   color: var(--text-low);
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0 0 20px 0;
 }
 .breadcrumb a {
   color: var(--text-low);
@@ -174,6 +178,8 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 16px;
+  margin: 0;
+  padding: 0;
 }
 .kvCard {
   background: var(--bg);
@@ -461,6 +467,12 @@
 [data-theme="dark"] .btnSecondary:hover {
   background: var(--gold);
   color: #111;
+}
+
+.kvCard,
+.featCard,
+.galleryItem {
+  will-change: transform;
 }
 
 /* ── RESPONSIVE ── */

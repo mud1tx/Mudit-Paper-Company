@@ -1,0 +1,127 @@
+.about {
+  background: var(--bg-alt);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 76px;
+  align-items: center;
+}
+
+/* ── Visual ── */
+.visual {
+  position: relative;
+  padding-bottom: 22px;
+  padding-right: 22px;
+}
+
+.imgContainer {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(145deg, var(--bg-muted), var(--bg));
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pattern {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(201, 168, 76, 0.06) 0,
+    rgba(201, 168, 76, 0.06) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 20px 20px;
+}
+
+.badge {
+  position: absolute;
+  background: var(--forest);
+  color: #f5f0e8;
+  padding: 18px 22px;
+  border-radius: 4px;
+  bottom: -22px;
+  right: -22px;
+  box-shadow: 0 12px 40px rgba(26, 74, 46, 0.28);
+}
+
+.bigNum {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.badge p {
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(245, 240, 232, 0.62);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── Content ── */
+.text {
+  color: var(--text-mid);
+  line-height: 1.78;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin-bottom: 13px;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.pillar {
+  padding: 15px 17px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  transition:
+    border-color var(--t),
+    transform 0.2s;
+  will-change: transform;
+}
+.pillar:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.pillarIcon {
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+}
+.pillarTitle {
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--forest);
+  margin-bottom: 3px;
+}
+[data-theme="dark"] .pillarTitle {
+  color: var(--gold-light);
+}
+.pillarText {
+  font-size: 0.76rem;
+  color: var(--text-low);
+  line-height: 1.5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+  .visual {
+    display: none;
+  }
+}

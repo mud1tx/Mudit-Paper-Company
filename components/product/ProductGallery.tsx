@@ -2,10 +2,10 @@ import Image from "next/image";
 import styles from "./product.module.css";
 
 interface Props {
-  images: string[];
-  productName: string;
-  label?: string;
-  title?: string;
+  readonly images: readonly string[];
+  readonly productName: string;
+  readonly label?: string;
+  readonly title?: string;
 }
 
 export default function ProductGallery({
@@ -17,15 +17,28 @@ export default function ProductGallery({
   if (!images || images.length === 0) return null;
 
   return (
-    <section className={styles.gallery}>
+    <section
+      className={styles.gallery}
+      aria-labelledby="gallery-title"
+    >
       <div className={styles.sectionInner}>
         <div className={styles.sectionLabel}>{label}</div>
-        <h2 className={styles.sectionTitle}>{title}</h2>
-        <div className={styles.galleryGrid}>
+        <h2
+          id="gallery-title"
+          className={styles.sectionTitle}
+        >
+          {title}
+        </h2>
+        <div
+          className={styles.galleryGrid}
+          role="list"
+          aria-label={`${productName} design gallery`}
+        >
           {images.map((src, i) => (
             <div
-              key={i}
+              key={src}
               className={styles.galleryItem}
+              role="listitem"
             >
               <Image
                 src={src}
@@ -33,6 +46,8 @@ export default function ProductGallery({
                 width={400}
                 height={400}
                 className={styles.galleryImg}
+                loading={i === 0 ? "eager" : "lazy"}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
             </div>
           ))}

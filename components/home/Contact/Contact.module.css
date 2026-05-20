@@ -1,0 +1,187 @@
+.section {
+  background: var(--bg-alt);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 68px;
+  align-items: start;
+  padding: 92px 6vw;
+}
+
+/* ── Info ── */
+.infoTitle {
+  margin-bottom: 20px;
+}
+
+.infoText {
+  color: var(--text-mid);
+  line-height: 1.72;
+  font-size: 0.93rem;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-style: normal;
+}
+
+.item {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.itemIcon {
+  width: 40px;
+  height: 40px;
+  background: var(--pill-bg);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.itemLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-low);
+  margin-bottom: 2px;
+}
+
+.itemVal {
+  font-size: 0.86rem;
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--t);
+}
+.itemVal:hover {
+  color: var(--forest);
+}
+[data-theme="dark"] .itemVal:hover {
+  color: var(--gold-light);
+}
+
+/* ── Form ── */
+.formWrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 34px;
+}
+
+.formTitle {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.group {
+  margin-bottom: 15px;
+}
+
+.group label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-mid);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.group input,
+.group select,
+.group textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 12px;
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+  font-size: 0.87rem;
+  color: var(--text);
+  outline: none;
+  transition:
+    border-color var(--t),
+    box-shadow var(--t),
+    background var(--t);
+}
+.group select option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.group input:focus,
+.group select:focus,
+.group textarea:focus {
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(26, 74, 46, 0.1);
+}
+[data-theme="dark"] .group input:focus,
+[data-theme="dark"] .group select:focus,
+[data-theme="dark"] .group textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+}
+
+.group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit {
+  width: 100%;
+  background: var(--forest);
+  color: #f5f0e8;
+  border: none;
+  padding: 13px;
+  border-radius: 2px;
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background var(--t),
+    transform 0.2s;
+  margin-top: 5px;
+}
+.submit:hover {
+  background: var(--forest-light);
+  transform: translateY(-1px);
+}
+
+/* ── disabled submit state ── */
+.submit:disabled {
+  background: var(--forest-light);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.8;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

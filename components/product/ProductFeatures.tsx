@@ -1,10 +1,10 @@
 import styles from "./product.module.css";
-import { Feature } from "../../types/product";
+import { Feature } from "@/types/product";
 
 interface Props {
-  items: Feature[];
-  label?: string;
-  title?: string;
+  readonly items: readonly Feature[];
+  readonly label?: string;
+  readonly title?: string;
 }
 
 export default function ProductFeatures({
@@ -13,19 +13,33 @@ export default function ProductFeatures({
   title = "Features That Set Us Apart",
 }: Props) {
   return (
-    <section className={styles.features}>
+    <section
+      className={styles.features}
+      aria-labelledby="features-title"
+    >
       <div className={styles.sectionInner}>
         <div className={styles.sectionLabel}>{label}</div>
-        <h2 className={styles.sectionTitle}>{title}</h2>
+        <h2
+          id="features-title"
+          className={styles.sectionTitle}
+        >
+          {title}
+        </h2>
         <div className={styles.featGrid}>
           {items.map(({ title, desc, icon }) => (
             <div
               key={title}
               className={styles.featCard}
             >
-              <div className={styles.featIcon}>{icon}</div>
-              <div className={styles.featTitle}>{title}</div>
-              <div className={styles.featDesc}>{desc}</div>
+              <div
+                className={styles.featIcon}
+                role="img"
+                aria-label={title}
+              >
+                {icon}
+              </div>
+              <h3 className={styles.featTitle}>{title}</h3>
+              <p className={styles.featDesc}>{desc}</p>
             </div>
           ))}
         </div>
