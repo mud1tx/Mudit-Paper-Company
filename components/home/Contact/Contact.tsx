@@ -40,24 +40,28 @@ const CONTACT_ITEMS = [
     label: "Address",
     val: COMPANY.address,
     href: "https://maps.google.com/?q=Mudit+Paper+Company+Kanpur+India",
+    ariaLabel: `View ${COMPANY.address} on Google Maps`,
   },
   {
     icon: "📞",
     label: "Phone",
     val: COMPANY.phone,
     href: `tel:${COMPANY.phone}`,
+    ariaLabel: `Call us at ${COMPANY.phone}`,
   },
   {
     icon: "✉️",
     label: "Email",
     val: COMPANY.email,
     href: `mailto:${COMPANY.email}`,
+    ariaLabel: `Email us at ${COMPANY.email}`,
   },
   {
     icon: "🕐",
     label: "Business Hours",
     val: "Mon–Sat, 9:00 AM – 6:00 PM IST",
     href: null,
+    ariaLabel: null,
   },
 ] as const;
 
@@ -155,6 +159,7 @@ export default function Contact() {
                   <a
                     href={href}
                     className={styles.itemVal}
+                    aria-label={ariaLabel ?? undefined}
                     target={href.startsWith("http") ? "_blank" : undefined}
                     rel={
                       href.startsWith("http")
