@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import Contact from "@/components/home/Contact/Contact";
 import { BASE_URL, COMPANY } from "@/lib/config";
 import { PRODUCTS_LIST } from "@/data/product";
+import RevealInit from "@/components/RevealInit";
 
 export const metadata: Metadata = {
   description:
@@ -114,6 +115,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <Navbar />
+      <RevealInit />
       <main id="main-content">
         <Hero />
         <Marquee />

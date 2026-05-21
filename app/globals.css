@@ -180,11 +180,34 @@ body::before {
   border-color: var(--gold);
   color: #111;
 }
+/* ══════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+══════════════════════════════════════════════ */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 100px;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) var(--bg);
+}
 
 /* ══════════════════════════════════════════════
    SCROLL REVEAL
 ══════════════════════════════════════════════ */
-/* .reveal {
+.reveal {
   opacity: 0;
   transform: translateY(26px);
   transition:
@@ -195,7 +218,7 @@ body::before {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
-} */
+}
 
 section {
   padding: 92px 6vw;

@@ -39,7 +39,7 @@ export default function ProductHero({
         </div>
       </div>
 
-      <div className={styles.heroContent}>
+      <div className={`${styles.heroContent} reveal`}>
         <nav aria-label="Breadcrumb">
           <ol className={styles.breadcrumb}>
             <li>

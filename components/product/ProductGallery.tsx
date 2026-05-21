@@ -21,7 +21,7 @@ export default function ProductGallery({
       className={styles.gallery}
       aria-labelledby="gallery-title"
     >
-      <div className={styles.sectionInner}>
+      <div className={`${styles.sectionInner} reveal`}>
         <div className={styles.sectionLabel}>{label}</div>
         <h2
           id="gallery-title"
@@ -37,7 +37,7 @@ export default function ProductGallery({
           {images.map((src, i) => (
             <div
               key={src}
-              className={styles.galleryItem}
+              className={`${styles.galleryItem} reveal`}
               role="listitem"
             >
               <Image

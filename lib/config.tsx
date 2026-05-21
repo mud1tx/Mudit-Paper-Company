@@ -6,7 +6,7 @@ export const BASE_URL =
 export const COMPANY = {
   name: "Mudit Paper Company",
   phone: "+916392935042",
-  email: "info@muditpapercompany.com",
+  email: "muditagarwalna@gmail.com",
   address: "Kanpur, Uttar Pradesh, India",
   postalCode: "208001",
   city: "Kanpur",

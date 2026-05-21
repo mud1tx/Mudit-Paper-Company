@@ -17,7 +17,7 @@ export default function ProductApplications({
       aria-labelledby="applications-title"
       className={styles.applications}
     >
-      <div className={styles.sectionInner}>
+      <div className={`${styles.sectionInner} reveal`}>
         <div className={styles.sectionLabel}>{label}</div>
         <h2
           id="applications-title"
@@ -29,7 +29,7 @@ export default function ProductApplications({
           {items.map(({ label, icon }) => (
             <div
               key={label}
-              className={styles.appCard}
+              className={`${styles.appCard} reveal`}
             >
               <span
                 className={styles.appIcon}

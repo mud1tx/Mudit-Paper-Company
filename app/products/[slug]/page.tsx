@@ -11,6 +11,7 @@ import ProductCTA from "@/components/product/ProductCTA";
 import { PRODUCTS, PRODUCTS_LIST } from "@/data/product";
 import { BASE_URL, COMPANY } from "@/lib/config";
 import styles from "@/components/product/product.module.css";
+import RevealInit from "@/components/RevealInit";
 
 export function generateStaticParams() {
   return PRODUCTS_LIST.map(({ slug }) => ({ slug }));
@@ -222,6 +223,7 @@ export default async function ProductPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <Navbar />
+      <RevealInit />
       <main
         id="main-content"
         className={styles.main}

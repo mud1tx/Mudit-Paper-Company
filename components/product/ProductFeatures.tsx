@@ -17,7 +17,7 @@ export default function ProductFeatures({
       className={styles.features}
       aria-labelledby="features-title"
     >
-      <div className={styles.sectionInner}>
+      <div className={`${styles.sectionInner} reveal`}>
         <div className={styles.sectionLabel}>{label}</div>
         <h2
           id="features-title"
@@ -29,7 +29,7 @@ export default function ProductFeatures({
           {items.map(({ title, desc, icon }) => (
             <div
               key={title}
-              className={styles.featCard}
+              className={`${styles.featCard} reveal`}
             >
               <div
                 className={styles.featIcon}

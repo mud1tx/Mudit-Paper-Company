@@ -17,7 +17,7 @@ export default function ProductKeyValues({
       className={styles.keyValues}
       aria-labelledby="keyvalues-title"
     >
-      <div className={styles.sectionInner}>
+      <div className={`${styles.sectionInner} reveal`}>
         <div className={styles.sectionLabel}>{label}</div>
         <h2
           id="keyvalues-title"
@@ -26,12 +26,11 @@ export default function ProductKeyValues({
           {title}
         </h2>
 
-        {/* dl = definition list — semantically correct for key-value pairs */}
         <dl className={styles.kvGrid}>
           {items.map(({ label, value, icon }) => (
             <div
               key={label}
-              className={styles.kvCard}
+              className={`${styles.kvCard} reveal`}
             >
               <div
                 className={styles.kvIcon}

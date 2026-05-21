@@ -18,7 +18,7 @@ export default function ProductCTA({
       id="contact"
       aria-labelledby="cta-title"
     >
-      <div className={styles.ctaInner}>
+      <div className={`${styles.ctaInner} reveal`}>
         <div className={styles.ctaTag}>Get Started</div>
         <h2
           id="cta-title"
