@@ -141,7 +141,7 @@ export default function Contact() {
         </p>
 
         <address className={`${styles.details} reveal`}>
-          {CONTACT_ITEMS.map(({ icon, label, val, href }) => (
+          {CONTACT_ITEMS.map(({ icon, label, val, href, ariaLabel }) => (
             <div
               key={label}
               className={styles.item}
