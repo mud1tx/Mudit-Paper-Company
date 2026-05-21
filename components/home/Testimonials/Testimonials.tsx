@@ -61,7 +61,7 @@ export default function Testimonials() {
             </span>
 
             {/* Star rating — hidden text for screen readers */}
-            <div
+            {/* <div
               className={styles.stars}
               aria-label="5 out of 5 stars"
               itemProp="reviewRating"
@@ -77,6 +77,27 @@ export default function Testimonials() {
                 content="5"
               />
               <span aria-hidden="true">★★★★★</span>
+            </div> */}
+            <div
+              itemProp="reviewRating"
+              itemScope
+              itemType="https://schema.org/Rating"
+            >
+              <meta
+                itemProp="ratingValue"
+                content="5"
+              />
+              <meta
+                itemProp="bestRating"
+                content="5"
+              />
+            </div>
+            <div
+              className={styles.stars}
+              role="img"
+              aria-label="5 out of 5 stars"
+            >
+              ★★★★★
             </div>
 
             {/* Review text */}
