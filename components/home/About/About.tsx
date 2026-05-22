@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./About.module.css";
 
 const PILLARS = [
@@ -33,82 +34,14 @@ export default function About() {
       {/* Visual */}
       <div className={`${styles.visual} reveal`}>
         <div className={styles.imgContainer}>
-          <div
-            className={styles.pattern}
-            aria-hidden="true"
+          <Image
+            src="/images/about.webp"
+            alt="Mudit Paper Company — Food Grade Paper Products Kanpur"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className={styles.aboutImg}
+            style={{ objectFit: "cover" }}
           />
-          <svg
-            width="160"
-            height="160"
-            viewBox="0 0 200 200"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ position: "relative", zIndex: 2 }}
-            aria-hidden="true"
-          >
-            <rect
-              x="40"
-              y="20"
-              width="120"
-              height="160"
-              rx="6"
-              fill="rgba(201,168,76,0.12)"
-              stroke="rgba(201,168,76,0.35)"
-              strokeWidth="1.5"
-            />
-            <rect
-              x="55"
-              y="38"
-              width="90"
-              height="124"
-              rx="4"
-              fill="rgba(26,74,46,0.07)"
-              stroke="rgba(26,74,46,0.18)"
-              strokeWidth="1"
-            />
-            <line
-              x1="70"
-              y1="58"
-              x2="130"
-              y2="58"
-              stroke="rgba(26,74,46,0.28)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="70"
-              y1="74"
-              x2="130"
-              y2="74"
-              stroke="rgba(26,74,46,0.18)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="70"
-              y1="90"
-              x2="110"
-              y2="90"
-              stroke="rgba(26,74,46,0.18)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle
-              cx="100"
-              cy="130"
-              r="22"
-              fill="rgba(26,74,46,0.1)"
-              stroke="rgba(26,74,46,0.28)"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M90 130 L98 138 L112 122"
-              stroke="#1a4a2e"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
         </div>
         <div
           className={styles.badge}
