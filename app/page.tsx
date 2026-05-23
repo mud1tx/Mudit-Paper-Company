@@ -27,7 +27,7 @@ export const metadata: Metadata = {
       "FSSAI certified food-grade paper products — greaseproof paper, glassine paper, printed paper & ladoo katori liners. Trusted supplier for bakeries, sweet shops & FMCG brands across India.",
     images: [
       {
-        url: `${BASE_URL}/og-image.jpg`,
+        url: `${BASE_URL}/images/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "Mudit Paper Company – Food Grade Paper Trader",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     description:
       "FSSAI certified food-grade paper — greaseproof, glassine, printed paper & ladoo katori liners. Bulk supplier across India.",
-    images: [`${BASE_URL}/og-image.jpg`],
+    images: [`${BASE_URL}/images/og-image.jpg`],
   },
 };
 
@@ -52,7 +52,7 @@ const structuredData = {
       name: COMPANY.name, // ← from config
       url: BASE_URL,
       logo: `${BASE_URL}/logo.png`,
-      image: `${BASE_URL}/og-image.jpg`,
+      image: `${BASE_URL}/images/og-image.jpg`,
       description:
         "Food grade paper trader in Kanpur, India. Supplying FSSAI certified greaseproof paper, glassine paper, printed food paper, and ladoo katori cup liners.",
       address: {
