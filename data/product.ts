@@ -8,7 +8,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Food-Safe. Grease-Resistant. Certified.",
     description:
       "OGR Greaseproof Paper is a premium food-contact paper engineered to provide an exceptional barrier against oils, fats, and moisture. Manufactured under strict food-safety standards, it is the trusted choice of bakeries, confectioneries, restaurants, and food processors across India.",
-    image: "/images/greaseproof-paper.jpeg",
+    image: "/images/greaseproof-paper/hero.jpg",
     breadcrumb: "Greaseproof Paper",
     tag: "Food Grade · FSSAI Certified",
     instagramTag: "#greaseproof",
@@ -62,10 +62,7 @@ export const PRODUCTS: ProductMap = {
       { label: "FMCG Packaging Lines", icon: "🛒" },
       { label: "Catering & Food Service", icon: "🍽️" },
     ],
-    gallery: [
-      "/images/greaseproof/design-1.png",
-      "/images/greaseproof/design-2.png",
-    ],
+    gallery: [],
   },
 
   // ── 2. Glassine Paper ───────────────────────────────────────────────────────
@@ -74,7 +71,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Crystal Clear. Smooth Both Ways. Food Certified.",
     description:
       "Glassine Paper is a smooth, glossy, and translucent paper known for its exceptional resistance to air, grease, and moisture. Available in both One-Sided Smooth (1S) and Two-Sided Smooth (2S) variants, it is the preferred choice for premium food packaging, confectionery wrapping, and pharmaceutical applications. Its naturally dense surface provides a superior barrier without any coating.",
-    image: "/images/glassine-paper.jpeg",
+    image: "/images/glassine-paper/hero.webp",
     breadcrumb: "Glassine Paper",
     tag: "1S & 2S Smooth · Food Grade",
     instagramTag: "#glassine",
@@ -128,7 +125,7 @@ export const PRODUCTS: ProductMap = {
       { label: "Premium Gift Wrapping", icon: "🎁" },
       { label: "FMCG Inner Packaging", icon: "🛒" },
     ],
-    gallery: ["/images/glassine/design-1.png", "/images/glassine/design-2.png"],
+    gallery: [],
   },
 
   // ── 3. Printed Food Grade Paper ─────────────────────────────────────────────
@@ -137,7 +134,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Your Brand. Your Design. Food Safe.",
     description:
       "Transform your food packaging into a powerful branding tool with our custom printed greaseproof and glassine paper. Whether you need a simple single-colour logo or a full multi-colour decorative design, we print on any GSM to match your exact requirement. Perfect for bakeries, sweet shops, restaurants, and FMCG brands that want packaging which looks as good as the food inside.",
-    image: "/images/printed-food-paper.jpeg",
+    image: "/images/printed-food-paper/hero.jpg",
     breadcrumb: "Printed Greaseproof / Glassine",
     tag: "Custom Print · Single & Multi Colour",
     instagramTag: "#printedpaper",
@@ -191,7 +188,7 @@ export const PRODUCTS: ProductMap = {
       { label: "Catering & Tray Lining", icon: "🍽️" },
       { label: "Dry Fruit Gift Packaging", icon: "🥜" },
     ],
-    gallery: ["/images/printed/design-1.png", "/images/printed/design-2.png"],
+    gallery: [],
   },
 
   // ── 4. Ladoo Katori & Muffin Cup Liner ──────────────────────────────────────
@@ -200,7 +197,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Perfect Shape. Food Safe. Plain to Printed.",
     description:
       "Our Ladoo Katori and Muffin Cup Liners are premium food-grade paper cups designed to hold, present, and protect sweets, muffins, cupcakes, and dry fruits beautifully. Available in plain white to full multi-colour custom printed designs, and in any size from 65mm to 100mm diameter. Currently available in circular shape, these liners are the go-to choice for mithai shops, bakeries, caterers, and FMCG sweet brands across India.",
-    image: "/images/ladoo-katori.jpeg",
+    image: "/images/ladoo-katori/hero.jpg",
     breadcrumb: "Ladoo Katori / Muffin Cup Liner",
     tag: "Plain to Multi Colour · 65–100mm",
     instagramTag: "#ladookatori",
@@ -254,10 +251,7 @@ export const PRODUCTS: ProductMap = {
       { label: "Bakery & Patisserie", icon: "🥐" },
       { label: "FMCG Sweet Packaging", icon: "🛒" },
     ],
-    gallery: [
-      "/images/ladoo-katori/design-1.png",
-      "/images/ladoo-katori/design-2.png",
-    ],
+    gallery: [],
   },
 } as const;
 

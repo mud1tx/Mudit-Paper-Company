@@ -2,8 +2,8 @@ import Link from "next/link";
 import styles from "./Footer.module.css";
 import { COMPANY as COMPANY_CONFIG, BASE_URL } from "@/lib/config";
 import { PRODUCTS_LIST } from "@/data/product";
+import Image from "next/image";
 
-// ── Company nav links ─────────────────────────────────────────────────────────
 const COMPANY_LINKS = [
   { href: "/#about", label: "About Us" },
   { href: "/#industries", label: "Industries" },
@@ -18,7 +18,7 @@ const SOCIALS = [
   { href: "#", label: "📱", title: "WhatsApp" },
 ];
 
-const currentYear = new Date().getFullYear(); // ← auto-updates every year
+const currentYear = new Date().getFullYear();
 
 export default function Fat() {
   return (
@@ -27,16 +27,19 @@ export default function Fat() {
       aria-label="Site footer"
     >
       <div className={styles.grid}>
-        {/* Brand */}
         <div>
           <Link
             href="/"
-            className={styles.logo}
+            className={styles.logoLink}
             aria-label="Mudit Paper Company Home"
           >
-            MUDIT
-            <br />
-            <span>PAPER</span> COMPANY
+            <Image
+              src="/images/logoCrop.png"
+              alt="Mudit Paper Company"
+              width={180}
+              height={55}
+              className={styles.logo}
+            />
           </Link>
           <p className={styles.desc}>
             Trusted supplier of certified food-grade paper products. Serving

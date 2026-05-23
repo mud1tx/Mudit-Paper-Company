@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTheme, ThemeMode } from "@/hooks/useTheme";
 import styles from "./Navbar.module.css";
 import { PRODUCTS_LIST } from "@/data/product";
+import Image from "next/image";
 
 const PRODUCTS = PRODUCTS_LIST.map(({ slug, label, icon }) => ({
   href: `/products/${slug}`,
@@ -70,7 +71,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Semantic nav with aria-label — Google understands this is site navigation */}
       <a
         href="#main-content"
         className={styles.skipLink}
@@ -81,15 +81,19 @@ export default function Navbar() {
         className={`${styles.nav} ${scrolled ? styles.navScrolled : ""}`}
         aria-label="Main navigation"
       >
-        {/* Logo links to home — standard SEO practice */}
         <Link
           href="/"
-          className={styles.logo}
+          className={styles.logoLink}
           aria-label="Mudit Paper Company Home"
         >
-          MUDIT
-          <br />
-          <span>PAPER</span> CO.
+          <Image
+            src="/images/logoCrop.png"
+            alt="Mudit Paper Company"
+            width={160}
+            height={50}
+            className={styles.logo}
+            priority
+          />
         </Link>
 
         <ul

@@ -12,6 +12,7 @@ import { PRODUCTS, PRODUCTS_LIST } from "@/data/product";
 import { BASE_URL, COMPANY } from "@/lib/config";
 import styles from "@/components/product/product.module.css";
 import RevealInit from "@/components/RevealInit";
+import BackToTop from "@/components/ui/BackToTop";
 
 export function generateStaticParams() {
   return PRODUCTS_LIST.map(({ slug }) => ({ slug }));
@@ -245,6 +246,7 @@ export default async function ProductPage({
         />
         <ProductCTA productName={product.name} />
       </main>
+      <BackToTop />
       <Footer />
     </>
   );

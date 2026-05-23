@@ -139,6 +139,10 @@ export default function RootLayout({
             __html: JSON.stringify(structuredData),
           }}
         />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="Mudit Paper Company"
+        />
       </head>
       <body
         className={`${playfair.variable} ${dmSans.variable}`}

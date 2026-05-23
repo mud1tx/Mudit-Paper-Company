@@ -12,6 +12,7 @@ import Contact from "@/components/home/Contact/Contact";
 import { BASE_URL, COMPANY } from "@/lib/config";
 import { PRODUCTS_LIST } from "@/data/product";
 import RevealInit from "@/components/RevealInit";
+import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
   description:
@@ -126,6 +127,7 @@ export default function Home() {
         <Testimonials />
         <Contact />
       </main>
+      <BackToTop />
       <Footer />
     </>
   );

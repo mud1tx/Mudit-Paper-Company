@@ -37,14 +37,19 @@
 .illustrationWrap {
   position: relative;
   width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
 }
 .productImg {
   width: 100%;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
   max-height: 500px;
+  transition: transform 0.5s ease;
+}
+.illustrationWrap:hover .productImg {
+  transform: scale(1.04);
 }
 
 .heroContent {

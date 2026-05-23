@@ -1,14 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./Products.module.css";
 
-// ── Real products matching your actual business ───────────────────────────────
 const PRODUCTS = [
   {
     slug: "greaseproof-paper",
     tag: "Bestseller",
     name: "OGR Greaseproof Paper",
-    emoji: "🧈",
-    bg: "pi1",
+    image: "/images/greaseproof-paper/hero.jpg",
+    alt: "OGR Greaseproof Paper — Food Grade Paper by Mudit Paper Company",
     desc: "Premium food-contact paper engineered to resist oils, fats, and moisture. FSSAI certified for direct food contact.",
     specs: ["30–50 GSM", "Roll & Sheet", "Custom Width", "FSSAI Safe"],
   },
@@ -16,8 +16,8 @@ const PRODUCTS = [
     slug: "glassine-paper",
     tag: "Premium",
     name: "Glassine Paper",
-    emoji: "✨",
-    bg: "pi2",
+    image: "/images/glassine-paper/hero.webp",
+    alt: "Glassine Paper 1S and 2S Smooth — Food Grade Paper by Mudit Paper Company",
     desc: "Smooth, glossy, translucent paper. Available in 1S and 2S smooth variants for confectionery and pharma packaging.",
     specs: ["25–60 GSM", "1S & 2S Smooth"],
   },
@@ -25,8 +25,8 @@ const PRODUCTS = [
     slug: "printed-food-paper",
     tag: "Custom",
     name: "Printed Food Grade Paper",
-    emoji: "🖨️",
-    bg: "pi3",
+    image: "/images/printed-food-paper/hero.jpg",
+    alt: "Custom Printed Greaseproof and Glassine Paper — Mudit Paper Company",
     desc: "Custom printed greaseproof and glassine paper. Single to multi-colour designs on any GSM.",
     specs: ["Any GSM", "Multi Colour"],
   },
@@ -34,19 +34,12 @@ const PRODUCTS = [
     slug: "ladoo-katori-muffin-cup-liner",
     tag: "Food Service",
     name: "Ladoo Katori & Cup Liner",
-    emoji: "🧁",
-    bg: "pi4",
+    image: "/images/ladoo-katori/hero.jpg",
+    alt: "Ladoo Katori and Muffin Cup Liner — Food Grade Paper by Mudit Paper Company",
     desc: "Food-grade paper cup liners for ladoos, muffins, and sweets. Available in 65–100mm sizes, plain to printed.",
     specs: ["65–100mm", "Plain to Printed"],
   },
 ] as const;
-
-const BG_MAP: Record<string, string> = {
-  pi1: "linear-gradient(135deg, #f5edd8, #c9a84c)",
-  pi2: "linear-gradient(135deg, #e8f0e8, #7aaa8a)",
-  pi3: "linear-gradient(135deg, #fceee8, #d4845a)",
-  pi4: "linear-gradient(135deg, #ede8f5, #7c6fa0)",
-};
 
 export default function Products() {
   return (
@@ -77,30 +70,38 @@ export default function Products() {
         className={styles.grid}
         role="list"
       >
-        {PRODUCTS.map((p) => (
+        {PRODUCTS.map((p, i) => (
           <li
             key={p.slug}
-            className={`${styles.card}  reveal`}
+            className={`${styles.card} reveal`}
           >
             <Link
               href={`/products/${p.slug}`}
               className={styles.cardLink}
               aria-label={`View ${p.name} details`}
             >
-              <div
-                className={styles.imgWrap}
-                style={{ background: BG_MAP[p.bg] }}
-              >
-                <div
-                  className={styles.emoji}
-                  role="img"
-                  aria-label={p.name}
+              {/* Product image */}
+              <div className={styles.imgWrap}>
+                <Image
+                  src={p.image}
+                  alt={p.alt}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className={styles.img}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  style={{ objectFit: "cover" }}
+                />
+                {/* Tag overlay on image */}
+                <span
+                  className={styles.tag}
+                  aria-label={`Category: ${p.tag}`}
                 >
-                  {p.emoji}
-                </div>
+                  {p.tag}
+                </span>
               </div>
+
+              {/* Card content */}
               <div className={styles.content}>
-                <span className={styles.tag}>{p.tag}</span>
                 <h3 className={styles.name}>{p.name}</h3>
                 <p className={styles.desc}>{p.desc}</p>
                 <div className={styles.specs}>

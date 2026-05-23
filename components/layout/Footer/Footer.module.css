@@ -15,18 +15,18 @@
 }
 
 /* ── Brand ── */
-.logo {
-  font-family: var(--font-playfair), "Playfair Display", serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #f5f0e8;
-  margin-bottom: 13px;
-  line-height: 1.2;
+.logoLink {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  display: block;
+  margin-bottom: 13px;
 }
-.logo span {
-  color: var(--gold);
+.logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
 }
 
 .desc {
