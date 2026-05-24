@@ -16,7 +16,7 @@ import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
   description:
-    "Mudit Paper Company is a trusted food-grade paper trader in Kanpur, India. We supply FSSAI certified greaseproof paper, glassine paper, printed food paper, golden foil laminated paper, and ladoo katori cup liners to bakeries, sweet shops, restaurants, and FMCG brands across India. Bulk orders available.",
+    "Premium food-grade paper trader in Kanpur, India. Supplying greaseproof paper, glassine paper, printed food paper and ladoo katori cup liners to bakeries, sweet shops, restaurants and FMCG brands across India.",
   alternates: {
     canonical: BASE_URL,
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: BASE_URL,
     title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     description:
-      "FSSAI certified food-grade paper products — greaseproof paper, glassine paper, printed paper & ladoo katori liners. Trusted supplier for bakeries, sweet shops & FMCG brands across India.",
+      "Mudit Paper Company is a trusted food-grade paper trader in Kanpur. Greaseproof paper, glassine paper, printed designs and ladoo katori liners. Bulk orders for bakeries, sweet shops and FMCG brands across India.",
     images: [
       {
         url: `${BASE_URL}/og-image.jpg`,
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     description:
-      "FSSAI certified food-grade paper — greaseproof, glassine, printed paper & ladoo katori liners. Bulk supplier across India.",
+      "Food-grade paper trader in Kanpur — greaseproof, glassine, printed paper & ladoo katori liners. Bulk supply across India.",
     images: [`${BASE_URL}/og-image.jpg`],
   },
 };
@@ -52,27 +52,27 @@ const structuredData = {
     {
       "@type": "LocalBusiness",
       "@id": `${BASE_URL}/#business`,
-      name: COMPANY.name, // ← from config
+      name: COMPANY.name,
       url: BASE_URL,
       logo: `${BASE_URL}/logo.png`,
       image: `${BASE_URL}/og-image.jpg`,
       description:
-        "Food grade paper trader in Kanpur, India. Supplying FSSAI certified greaseproof paper, glassine paper, printed food paper, and ladoo katori cup liners.",
+        "Premium food-grade paper trader in Kanpur, India. Supplying greaseproof paper, glassine paper, printed food paper, and ladoo katori cup liners.",
       address: {
         "@type": "PostalAddress",
-        streetAddress: COMPANY.address, // ← from config
-        addressLocality: "Kanpur",
-        addressRegion: "Uttar Pradesh",
-        postalCode: COMPANY.postalCode, // ← from config
-        addressCountry: "IN",
+        streetAddress: COMPANY.address,
+        addressLocality: COMPANY.city,
+        addressRegion: COMPANY.state,
+        postalCode: COMPANY.postalCode,
+        addressCountry: COMPANY.country,
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: "26.4499",
-        longitude: "80.3319",
+        latitude: COMPANY.geo.latitude,
+        longitude: COMPANY.geo.longitude,
       },
-      telephone: COMPANY.phone, // ← from config
-      email: COMPANY.email, // ← from config
+      telephone: COMPANY.phone,
+      email: COMPANY.email,
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: [
@@ -83,7 +83,7 @@ const structuredData = {
           "Friday",
           "Saturday",
         ],
-        opens: "09:00",
+        opens: "10:00",
         closes: "18:00",
       },
       priceRange: "₹₹",
@@ -93,9 +93,8 @@ const structuredData = {
         "@type": "Country",
         name: "India",
       },
-      sameAs: COMPANY.social, // ← from config
+      sameAs: [...COMPANY.social, BASE_URL],
     },
-    // Product list auto-generated from data — no manual maintenance needed
     {
       "@type": "ItemList",
       name: "Food Grade Paper Products",

@@ -13,6 +13,10 @@ export const COMPANY = {
   city: "Kanpur",
   state: "Uttar Pradesh",
   country: "IN",
+  geo: {
+    latitude: "26.4499",
+    longitude: "80.3319",
+  },
   social: [
     "https://www.instagram.com/muditpapercompany",
     "https://www.facebook.com/muditpapercompany",
