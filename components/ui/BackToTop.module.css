@@ -49,6 +49,22 @@
   background: var(--forest-light);
 }
 
+/* ── Instagram ── */
+.insta {
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+  color: #fff;
+}
+.insta:hover {
+  opacity: 0.9;
+}
+
 /* ── Back to top — hidden until scrolled ── */
 .top {
   background: var(--bg-muted);

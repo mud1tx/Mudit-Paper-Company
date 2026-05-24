@@ -16,5 +16,6 @@ export const COMPANY = {
   social: [
     "https://www.instagram.com/muditpapercompany",
     "https://www.facebook.com/muditpapercompany",
+    "https://www.linkedin.com/company/muditpapercompany",
   ],
 } as const;

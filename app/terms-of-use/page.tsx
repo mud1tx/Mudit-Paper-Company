@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar/Navbar";
 import Footer from "@/components/layout/Footer/Footer";
 import { COMPANY, BASE_URL } from "@/lib/config";
 import styles from "../../styles/legal.module.css";
+import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
@@ -251,12 +252,6 @@ export default function TermsOfUse() {
             )}
 
             <div className={styles.backTop}>
-              <a
-                href="#main-content"
-                className={styles.backTopLink}
-              >
-                ↑ Back to top
-              </a>
               <Link
                 href="/"
                 className={styles.backTopLink}
@@ -273,6 +268,7 @@ export default function TermsOfUse() {
           </article>
         </div>
       </main>
+      <BackToTop />
       <Footer />
     </>
   );

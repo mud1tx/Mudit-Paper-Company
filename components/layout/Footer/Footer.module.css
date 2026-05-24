@@ -61,6 +61,42 @@
 .socialBtn:hover {
   border-color: var(--gold);
   color: var(--gold);
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+/* Instagram — always gradient */
+.socialBtn[title="Instagram"] {
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Facebook — always blue */
+.socialBtn[title="Facebook"] {
+  background: #1877f2;
+  border-color: transparent;
+  color: #fff;
+}
+
+/* WhatsApp — always green */
+.socialBtn[title="WhatsApp"] {
+  background: #25d366;
+  border-color: transparent;
+  color: #fff;
+}
+
+/* LinkedIn — always blue */
+.socialBtn[title="LinkedIn"] {
+  background: #0a66c2;
+  border-color: transparent;
+  color: #fff;
 }
 
 /* ── Columns ── */
