@@ -40,11 +40,13 @@ export async function generateMetadata({
       `${product.name} Kanpur`,
       `buy ${product.name}`,
       `${product.name} supplier`,
+      `${product.name} wholesaler`,
+      `bulk ${product.name}`,
       `${product.name} manufacturer`,
       `food grade ${product.name}`,
-      `FSSAI certified ${product.name}`,
-      "food grade paper",
-      "food packaging paper India",
+      `food packaging paper India`,
+      "food grade paper wholesaler",
+      "paper wholesaler Kanpur",
       "Mudit Paper Company",
     ],
     alternates: {
@@ -54,7 +56,7 @@ export async function generateMetadata({
       type: "website",
       locale: "en_IN",
       url: productUrl,
-      siteName: "Mudit Paper Company",
+      siteName: COMPANY.name,
       title: `${product.name} – Food Grade Paper | Mudit Paper Company`,
       description: product.description,
       images: [
@@ -120,11 +122,11 @@ export default async function ProductPage({
           telephone: COMPANY.phone,
           email: COMPANY.email,
           address: {
-            // ← add address
             "@type": "PostalAddress",
-            addressLocality: "Kanpur",
-            addressRegion: "Uttar Pradesh",
-            addressCountry: "IN",
+            addressLocality: COMPANY.city,
+            addressRegion: COMPANY.state,
+            postalCode: COMPANY.postalCode,
+            addressCountry: COMPANY.country,
           },
         },
         countryOfOrigin: "IN",
@@ -165,52 +167,6 @@ export default async function ProductPage({
             position: 3,
             name: product.name,
             item: productUrl,
-          },
-        ],
-      },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: `Is ${product.name} food safe?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `Yes, our ${product.name} is FSSAI certified and food-grade safe for direct food contact.`,
-            },
-          },
-          {
-            "@type": "Question",
-            name: `Where can I buy ${product.name} in India?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `You can buy ${product.name} from Mudit Paper Company, based in Kanpur, India. We supply across India. Contact us at ${BASE_URL} for bulk orders.`,
-            },
-          },
-          {
-            "@type": "Question",
-            name: `What is the minimum order quantity for ${product.name}?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `Minimum order quantity for ${product.name} is as per requirement. Contact Mudit Paper Company for custom orders and bulk pricing.`,
-            },
-          },
-          // ← add two more FAQs for better coverage
-          {
-            "@type": "Question",
-            name: `Does Mudit Paper Company supply ${product.name} in bulk?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `Yes, Mudit Paper Company supplies ${product.name} in bulk quantities across India. We cater to bakeries, sweet shops, restaurants, and FMCG brands. Contact us for bulk pricing.`,
-            },
-          },
-          {
-            "@type": "Question",
-            name: `Is ${product.name} available in custom sizes?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `Yes, ${product.name} is available in custom widths, GSM, and roll sizes as per your requirement. Contact Mudit Paper Company for custom orders.`,
-            },
           },
         ],
       },

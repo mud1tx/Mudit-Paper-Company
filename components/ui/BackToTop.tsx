@@ -5,7 +5,7 @@ import styles from "./BackToTop.module.css";
 import { COMPANY } from "@/lib/config";
 
 export default function BackToTop() {
-  const [topVisible, setTopVisible] = useState(false); // ← only for ↑ button
+  const [topVisible, setTopVisible] = useState(false); 
 
   useEffect(() => {
     const onScroll = () => setTopVisible(window.scrollY > 400);

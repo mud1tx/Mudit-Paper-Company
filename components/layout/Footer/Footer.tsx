@@ -95,7 +95,7 @@ export default function Fat() {
             aria-label="Mudit Paper Company Home"
           >
             <Image
-              src="/images/logoCrop.png"
+              src="/logo.png"
               alt="Mudit Paper Company"
               width={180}
               height={55}
@@ -129,11 +129,7 @@ export default function Fat() {
           <ul className={styles.links}>
             {PRODUCTS_LIST.map(({ slug, label }) => (
               <li key={slug}>
-                <Link href={`/products/${slug}`}>
-                  {" "}
-                  {/* ← real product URLs */}
-                  {label}
-                </Link>
+                <Link href={`/products/${slug}`}> {label}</Link>
               </li>
             ))}
           </ul>

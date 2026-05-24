@@ -1,5 +1,3 @@
-// src/types/product.ts
-
 export interface KeyValue {
   readonly label: string;
   readonly value: string;

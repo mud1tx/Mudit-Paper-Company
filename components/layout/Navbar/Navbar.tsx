@@ -87,7 +87,7 @@ export default function Navbar() {
           aria-label="Mudit Paper Company Home"
         >
           <Image
-            src="/images/logoCrop.png"
+            src="/logo.png"
             alt="Mudit Paper Company"
             width={160}
             height={50}

@@ -1,8 +1,8 @@
 import styles from "./product.module.css";
-import { Application } from "@/types/product"; // ← use @ alias, not relative path
+import { Application } from "@/types/product";
 
 interface Props {
-  readonly items: readonly Application[]; // ← readonly
+  readonly items: readonly Application[];
   readonly label?: string;
   readonly title?: string;
 }

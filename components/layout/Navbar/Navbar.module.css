@@ -52,13 +52,13 @@
   text-decoration: none;
   z-index: 9999;
   transition: top 0.2s;
-  pointer-events: none; /* ← not clickable when hidden */
+  pointer-events: none;
 }
 
 .skipLink:focus {
   top: 0;
-  pointer-events: auto; /* ← clickable only when focused */
-  outline: 2px solid var(--gold); /* ← visible focus indicator */
+  pointer-events: auto; 
+  outline: 2px solid var(--gold); 
   outline-offset: 2px;
 }
 
