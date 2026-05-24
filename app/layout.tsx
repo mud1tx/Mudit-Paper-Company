@@ -24,9 +24,8 @@ export const metadata: Metadata = {
     default: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     template: "%s | Mudit Paper Company",
   },
-
   description:
-    "Premium food-grade paper trader in Kanpur, India. Supplying greaseproof paper, glassine paper, printed food paper and ladoo katori cup liners to bakeries, sweet shops, restaurants and FMCG brands across India.",
+    "Food-grade paper trader in Kanpur, India. Greaseproof paper, glassine paper, printed food paper and ladoo katori cup liners. Bulk supply across India.",
   keywords: [
     // ── Core products ──
     "food grade paper",
@@ -114,7 +113,7 @@ export const metadata: Metadata = {
     siteName: COMPANY.name,
     title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     description:
-      "Mudit Paper Company is a trusted food-grade paper trader in Kanpur. Greaseproof paper, glassine paper, printed designs and ladoo katori liners. Bulk orders for bakeries, sweet shops and FMCG brands across India.",
+      "Mudit Paper Company — food-grade paper trader in Kanpur. Greaseproof, glassine, printed paper and ladoo katori liners. Bulk orders welcome.",
     images: [
       {
         url: `${BASE_URL}/og-image.jpg`,
