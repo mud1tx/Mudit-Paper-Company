@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     canonical: BASE_URL,
   },
   openGraph: {
+    type: "website",
+    locale: "en_IN",
+    siteName: COMPANY.name,
     url: BASE_URL,
     title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
     description:

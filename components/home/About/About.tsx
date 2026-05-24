@@ -58,7 +58,7 @@ export default function About() {
       </div>
 
       {/* Content */}
-      <div className={`${styles.content} reveal`}>
+      <div className="reveal">
         <div className="sectionLabel">Who We Are</div>
         <h2
           id="about-title"

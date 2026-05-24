@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     "bakery paper",
     "sweet shop paper",
   ],
-  authors: [{ name: COMPANY.name, url: BASE_URL }], // ← COMPANY.name
+  authors: [{ name: COMPANY.name, url: BASE_URL }],
   creator: COMPANY.name,
   publisher: COMPANY.name,
   alternates: {
