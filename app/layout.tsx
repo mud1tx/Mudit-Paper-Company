@@ -141,9 +141,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  // verification: {
-  //   google: "your-google-verification-code",  ← uncomment after Search Console setup
-  // },
+  verification: {
+    google: "bP7JVV3tRvG2J-y7jE7slMe6wGLXBMuaL6woU0q_Iuc",
+  },
 };
 
 // ── Structured Data ───────────────────────────────────────────────────────────
