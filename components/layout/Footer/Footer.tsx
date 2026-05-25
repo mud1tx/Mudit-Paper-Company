@@ -84,7 +84,7 @@ const SOCIALS = [
     icon: (
       <Image
         src="/icons/indiamart.svg"
-        alt=""
+        alt="IndiaMart logo"
         width={27}
         height={27}
         aria-hidden="true"
@@ -98,7 +98,7 @@ const SOCIALS = [
     icon: (
       <Image
         src="/icons/justdial.svg"
-        alt=""
+        alt="JustDial logo"
         width={30}
         height={30}
         aria-hidden="true"
@@ -112,7 +112,7 @@ const SOCIALS = [
     icon: (
       <Image
         src="/icons/tradeindia.svg"
-        alt=""
+        alt="TradeIndia logo"
         width={26}
         height={26}
         aria-hidden="true"
