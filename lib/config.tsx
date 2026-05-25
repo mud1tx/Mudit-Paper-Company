@@ -1,5 +1,5 @@
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://mudit-paper-company.vercel.app";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://muditpapercompany.com";
 
 export const COMPANY = {
   name: "Mudit Paper Company",
