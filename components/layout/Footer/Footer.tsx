@@ -77,7 +77,49 @@ const SOCIALS = [
       </svg>
     ),
   },
-] as const;
+  {
+    href: COMPANY_CONFIG.marketplaces[0],
+    title: "IndiaMart",
+    ariaLabel: "Find Mudit Paper Company on IndiaMart",
+    icon: (
+      <Image
+        src="/icons/indiamart.svg"
+        alt=""
+        width={27}
+        height={27}
+        aria-hidden="true"
+      />
+    ),
+  },
+  {
+    href: COMPANY_CONFIG.marketplaces[1],
+    title: "JustDial",
+    ariaLabel: "Find Mudit Paper Company on JustDial",
+    icon: (
+      <Image
+        src="/icons/justdial.svg"
+        alt=""
+        width={30}
+        height={30}
+        aria-hidden="true"
+      />
+    ),
+  },
+  {
+    href: COMPANY_CONFIG.marketplaces[2],
+    title: "TradeIndia",
+    ariaLabel: "Find Mudit Paper Company on TradeIndia",
+    icon: (
+      <Image
+        src="/icons/tradeindia.svg"
+        alt=""
+        width={26}
+        height={26}
+        aria-hidden="true"
+      />
+    ),
+  },
+];
 
 const currentYear = new Date().getFullYear();
 

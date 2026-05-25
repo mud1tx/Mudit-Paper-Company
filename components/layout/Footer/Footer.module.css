@@ -165,6 +165,24 @@
   color: rgba(245, 240, 232, 0.62);
 }
 
+/* IndiaMart */
+.socialBtn[title="IndiaMart"] {
+  background: white;
+  border-color: transparent;
+}
+
+/* JustDial */
+.socialBtn[title="JustDial"] {
+  background: #ffffff;
+  border-color: transparent;
+}
+
+/* TradeIndia */
+.socialBtn[title="TradeIndia"] {
+  background: #0066cc;
+  border-color: transparent;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .grid {
