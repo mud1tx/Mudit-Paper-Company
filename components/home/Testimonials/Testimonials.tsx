@@ -120,10 +120,17 @@ export default function Testimonials() {
             </div>
 
             {/* Hidden microdata for the item being reviewed */}
-            <meta
+            <div
               itemProp="itemReviewed"
-              content="Mudit Paper Company"
-            />
+              itemScope
+              itemType="https://schema.org/LocalBusiness"
+              style={{ display: "none" }}
+            >
+              <meta
+                itemProp="name"
+                content="Mudit Paper Company"
+              />
+            </div>
           </li>
         ))}
       </ul>
