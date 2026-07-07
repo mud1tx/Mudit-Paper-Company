@@ -12,7 +12,8 @@ export interface Feature {
 
 export interface Application {
   readonly label: string;
-  readonly icon: string;
+  readonly image: string;
+  readonly icon?: string;
 }
 
 export interface Product {

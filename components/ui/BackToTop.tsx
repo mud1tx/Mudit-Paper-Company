@@ -5,10 +5,11 @@ import styles from "./BackToTop.module.css";
 import { COMPANY } from "@/lib/config";
 
 export default function BackToTop() {
-  const [topVisible, setTopVisible] = useState(false); 
+  const [topVisible, setTopVisible] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setTopVisible(window.scrollY > 400);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

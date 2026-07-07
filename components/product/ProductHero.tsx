@@ -17,28 +17,13 @@ export default function ProductHero({
   description,
   image,
   breadcrumb,
-  tag = "Food Grade · FSSAI Certified",
+  tag = "Food Grade Paper",
 }: Props) {
   return (
     <section
       className={styles.hero}
       aria-labelledby="product-title"
     >
-      {/* Image — left side */}
-      <div className={styles.heroVisual}>
-        <div className={styles.illustrationWrap}>
-          <Image
-            src={image}
-            alt={`${name} — Food Grade Paper by Mudit Paper Company`}
-            width={600}
-            height={350}
-            className={styles.productImg}
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
-          />
-        </div>
-      </div>
-
       <div className={`${styles.heroContent} reveal`}>
         <nav aria-label="Breadcrumb">
           <ol className={styles.breadcrumb}>
@@ -87,6 +72,19 @@ export default function ProductHero({
           >
             Get a Quote
           </Link>
+        </div>
+      </div>
+      <div className={`${styles.heroVisual} reveal`}>
+        <div className={styles.illustrationWrap}>
+          <Image
+            src={image}
+            alt={`${name} — Food Grade Paper by Mudit Paper Company`}
+            width={600}
+            height={520}
+            className={styles.productImg}
+            priority
+            // sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
+          />
         </div>
       </div>
     </section>

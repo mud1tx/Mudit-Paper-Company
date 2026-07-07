@@ -5,31 +5,26 @@ export const PRODUCTS: ProductMap = {
   // ── 1. Greaseproof Paper ────────────────────────────────────────────────────
   "greaseproof-paper": {
     name: "OGR Greaseproof Paper",
-    tagline: "Food-Safe. Grease-Resistant. Certified.",
+    tagline: "Food-Safe. Grease-Resistant.",
     description:
       "OGR Greaseproof Paper is a premium food-contact paper engineered to provide an exceptional barrier against oils, fats, and moisture. Manufactured under strict food-safety standards, it is the trusted choice of bakeries, confectioneries, restaurants, and food processors across India.",
-    image: "/images/greaseproof-paper/hero.jpg",
+    image: "/images/greaseproof-paper/hero.webp",
     breadcrumb: "Greaseproof Paper",
-    tag: "Food Grade · FSSAI Certified",
+    tag: "Food Grade Paper",
     instagramTag: "#greaseproof",
     keyValues: [
-      { label: "Food Grade", value: "FSSAI Certified", icon: "🇮🇳" },
       { label: "GSM Range", value: "30 – 50 GSM", icon: "⚖️" },
-      { label: "Origin", value: "Made in India", icon: "🏭" },
-      { label: "MOQ", value: "50 Kg / Roll", icon: "📦" },
+      { label: "Kit Value", value: "3 – 7", icon: "🛡️" },
+      { label: "Color", value: "White", icon: "🎨" },
+      { label: "Printability", value: "Flexo / Offset", icon: "🖨️" },
       { label: "Width", value: "Custom Available", icon: "📐" },
-      { label: "Shelf Life", value: "24 Months", icon: "🗓️" },
+      { label: "MOQ", value: "300 Kg / Sheets", icon: "📦" },
     ],
     features: [
       {
         title: "Superior Grease Barrier",
         icon: "🛡️",
         desc: "Engineered to resist penetration from oils, fats, and butter — keeps packaging clean and professional.",
-      },
-      {
-        title: "100% Food Safe",
-        icon: "✅",
-        desc: "FSSAI compliant with zero harmful chemicals. Safe for direct food contact at all temperatures.",
       },
       {
         title: "Consistent GSM",
@@ -53,14 +48,22 @@ export const PRODUCTS: ProductMap = {
       },
     ],
     applications: [
-      { label: "Bakeries & Patisseries", icon: "🥐" },
-      { label: "Burger & Sandwich Wrapping", icon: "🍔" },
-      { label: "Fried Food Packaging", icon: "🍟" },
-      { label: "Confectionery & Mithai", icon: "🍬" },
-      { label: "Deli & Butcher Wrapping", icon: "🥩" },
-      { label: "Food Trays & Liners", icon: "🍱" },
-      { label: "FMCG Packaging Lines", icon: "🛒" },
-      { label: "Catering & Food Service", icon: "🍽️" },
+      {
+        label: "Bakeries & Cakes",
+        image: "/images/greaseproof-paper/bakery.webp",
+      },
+      {
+        label: "Sweet Shops & Mithai",
+        image: "/images/greaseproof-paper/sweets-mithai.webp",
+      },
+      {
+        label: "Burgers & Fast Food",
+        image: "/images/greaseproof-paper/burger-wrapper.webp",
+      },
+      {
+        label: "Frying & Baking",
+        image: "/images/greaseproof-paper/frying-and-baking.webp",
+      },
     ],
     gallery: [],
   },
@@ -116,14 +119,22 @@ export const PRODUCTS: ProductMap = {
       },
     ],
     applications: [
-      { label: "Chocolate & Candy Wrapping", icon: "🍫" },
-      { label: "Mithai & Sweet Packaging", icon: "🍬" },
-      { label: "Bakery & Dry Food Wrapping", icon: "🥐" },
-      { label: "Pharmaceutical Packaging", icon: "💊" },
-      { label: "Interleaving Sheets", icon: "📋" },
-      { label: "Release Liner Applications", icon: "🏷️" },
-      { label: "Premium Gift Wrapping", icon: "🎁" },
-      { label: "FMCG Inner Packaging", icon: "🛒" },
+      {
+        label: "Chocolate & Candy Wrapping",
+        image: "/images/glassine-paper/chocolate-packaging.webp",
+      },
+      {
+        label: "Industrial packaging",
+        image: "/images/glassine-paper/industrial-packaging.webp",
+      },
+      {
+        label: "Premium Gift Wrapping",
+        image: "/images/glassine-paper/premium-gift-wrapping.webp",
+      },
+      {
+        label: "Pharmaceutical packaging",
+        image: "/images/glassine-paper/pharmaceutical-packaging.webp",
+      },
     ],
     gallery: [],
   },
@@ -134,7 +145,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Your Brand. Your Design. Food Safe.",
     description:
       "Transform your food packaging into a powerful branding tool with our custom printed greaseproof and glassine paper. Whether you need a simple single-colour logo or a full multi-colour decorative design, we print on any GSM to match your exact requirement. Perfect for bakeries, sweet shops, restaurants, and FMCG brands that want packaging which looks as good as the food inside.",
-    image: "/images/printed-food-paper/hero.jpg",
+    image: "/images/printed-food-paper/brand-packaging.webp",
     breadcrumb: "Printed Greaseproof / Glassine",
     tag: "Custom Print · Single & Multi Colour",
     instagramTag: "#printedpaper",
@@ -179,14 +190,22 @@ export const PRODUCTS: ProductMap = {
       },
     ],
     applications: [
-      { label: "Branded Bakery Wrapping", icon: "🥐" },
-      { label: "Custom Sweet Box Lining", icon: "🍬" },
-      { label: "Restaurant Burger Wraps", icon: "🍔" },
-      { label: "Festive & Wedding Packaging", icon: "🎁" },
-      { label: "Chocolate & Candy Wrapping", icon: "🍫" },
-      { label: "FMCG Brand Packaging", icon: "🛒" },
-      { label: "Catering & Tray Lining", icon: "🍽️" },
-      { label: "Dry Fruit Gift Packaging", icon: "🥜" },
+      {
+        label: "Branded Bakery Wrapping",
+        image: "/images/printed-food-paper/branded-bakery.webp",
+      },
+      {
+        label: "Custom Sweet Cup Lining",
+        image: "/images/printed-food-paper/sweet-cup.webp",
+      },
+      {
+        label: "Restaurant Burger Wraps",
+        image: "/images/printed-food-paper/burger-wrap.webp",
+      },
+      {
+        label: "FMCG Brand Packaging",
+        image: "/images/printed-food-paper/brand-packaging.webp",
+      },
     ],
     gallery: [],
   },
@@ -197,7 +216,7 @@ export const PRODUCTS: ProductMap = {
     tagline: "Perfect Shape. Food Safe. Plain to Printed.",
     description:
       "Our Ladoo Katori and Muffin Cup Liners are premium food-grade paper cups designed to hold, present, and protect sweets, muffins, cupcakes, and dry fruits beautifully. Available in plain white to full multi-colour custom printed designs, and in any size from 65mm to 100mm diameter. Currently available in circular shape, these liners are the go-to choice for mithai shops, bakeries, caterers, and FMCG sweet brands across India.",
-    image: "/images/ladoo-katori/hero.jpg",
+    image: "/images/ladoo-katori/hero.webp",
     breadcrumb: "Ladoo Katori / Muffin Cup Liner",
     tag: "Plain to Multi Colour · 65–100mm",
     instagramTag: "#ladookatori",
@@ -242,15 +261,24 @@ export const PRODUCTS: ProductMap = {
       },
     ],
     applications: [
-      { label: "Ladoo & Mithai Katori", icon: "🍬" },
-      { label: "Muffin & Cupcake Liner", icon: "🧁" },
-      { label: "Dry Fruit Cup Packaging", icon: "🥜" },
-      { label: "Sweet Shop Display", icon: "🏪" },
-      { label: "Wedding & Event Catering", icon: "🎊" },
-      { label: "Festive Gift Hampers", icon: "🎁" },
-      { label: "Bakery & Patisserie", icon: "🥐" },
-      { label: "FMCG Sweet Packaging", icon: "🛒" },
+      {
+        label: "Muffin & Cupcake Liner",
+        image: "/images/ladoo-katori/muffin-liner.webp",
+      },
+      {
+        label: "Ladoo & Mithai Katori",
+        image: "/images/ladoo-katori/mithai-katori.webp",
+      },
+      {
+        label: "Colored Ladoo & Mithai Katori",
+        image: "/images/ladoo-katori/colored-mithai-katori.webp",
+      },
+      {
+        label: "Festive Gift Hampers",
+        image: "/images/ladoo-katori/gift-hamper.webp",
+      },
     ],
+
     gallery: [],
   },
 } as const;

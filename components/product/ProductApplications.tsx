@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./product.module.css";
 import { Application } from "@/types/product";
 
@@ -25,23 +26,29 @@ export default function ProductApplications({
         >
           {title}
         </h2>
-        <div className={styles.appGrid}>
-          {items.map(({ label, icon }) => (
-            <div
+        <ul
+          className={styles.appGrid}
+          role="list"
+        >
+          {items.map(({ label, image }) => (
+            <li
               key={label}
               className={`${styles.appCard} reveal`}
             >
-              <span
-                className={styles.appIcon}
-                role="img"
-                aria-label={label}
-              >
-                {icon}
-              </span>
-              <span className={styles.appLabel}>{label}</span>
-            </div>
+              <div className={styles.appImgWrap}>
+                <Image
+                  src={image}
+                  alt={`${label} — food grade paper use case by Mudit Paper Company`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                  className={styles.appImg}
+                  loading="lazy"
+                />
+              </div>
+              <h3 className={styles.appLabel}>{label}</h3>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
