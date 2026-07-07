@@ -15,33 +15,27 @@ export default function Hero() {
       aria-labelledby="hero-title"
     >
       <div
-        className={styles.bgCircle}
-        aria-hidden="true"
-      />
-      <div
-        className={styles.bgLines}
+        className={styles.overlay}
         aria-hidden="true"
       />
 
-      {/* Content */}
       <div className={styles.content}>
-        <div className={styles.badge}>Food Grade Certified Paper Trader</div>
+        <p className={styles.badge}>Food-Grade Paper Wholesaler in Kanpur</p>
 
         <h1
           id="hero-title"
           className={styles.h1}
         >
-          Premium Paper,
+          Premium Food-Grade Paper,
           <br />
-          <em className={styles.em}>Pure Quality</em>
-          <br />
-          Guaranteed
+          <em className={styles.em}>Pure Quality</em> Guaranteed
         </h1>
 
         <p className={styles.desc}>
-          Mudit Paper Company supplies certified food-grade paper products to
-          bakeries, restaurants, food processors, and FMCG brands across India.
-          Quality you can trust, delivered with care.
+          Mudit Paper Company supplies greaseproof paper, glassine paper,
+          printed food paper, and ladoo katori cup liners to bakeries, sweet
+          shops, restaurants, and FMCG brands across India — trusted quality,
+          delivered in bulk.
         </p>
 
         <div className={styles.actions}>
@@ -74,7 +68,6 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* Stats — semantic list for accessibility */}
         <ul
           className={styles.stats}
           aria-label="Company statistics"
@@ -95,35 +88,6 @@ export default function Hero() {
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Visual — decorative, hidden from screen readers */}
-      <div
-        className={styles.visual}
-        aria-hidden="true"
-      >
-        <div className={styles.cardStack}>
-          <div className={`${styles.card} ${styles.card1}`} />
-          <div className={`${styles.card} ${styles.card2}`} />
-          <div className={`${styles.card} ${styles.card3}`}>
-            <div className={styles.cardInner}>
-              <p>Food Grade Certified</p>
-              <span className={styles.certBadge}>FSSAI Approved</span>
-            </div>
-          </div>
-          <div className={`${styles.floatTag} ${styles.tag1}`}>
-            <span className={styles.dot} />
-            Kraft Paper
-          </div>
-          <div className={`${styles.floatTag} ${styles.tag2}`}>
-            <span className={styles.dot} />
-            Greaseproof
-          </div>
-          <div className={`${styles.floatTag} ${styles.tag3}`}>
-            <span className={styles.dot} />
-            BPA Free
-          </div>
-        </div>
       </div>
     </section>
   );

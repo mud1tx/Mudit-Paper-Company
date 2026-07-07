@@ -22,7 +22,7 @@ const NAV_LINKS = [
 const THEME_BTNS: { mode: ThemeMode; icon: string; title: string }[] = [
   { mode: "light", icon: "☀️", title: "Light mode" },
   { mode: "dark", icon: "🌙", title: "Dark mode" },
-  { mode: "system", icon: "💻", title: "System pref" },
+  // { mode: "system", icon: "💻", title: "System pref" },
 ];
 
 function ThemePill({

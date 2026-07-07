@@ -188,8 +188,11 @@ export default function RootLayout({
         <Script
           id="theme-init"
           strategy="beforeInteractive"
+          // dangerouslySetInnerHTML={{
+          //   __html: `(function(){try{var s=localStorage.getItem('mpc-theme')||'light';var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s==='system'?(d?'dark':'light'):s);}catch(e){}})();`,
+          // }}
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('mpc-theme')||'light';var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s==='system'?(d?'dark':'light'):s);}catch(e){}})();`,
+            __html: `(function(){var s=localStorage.getItem('mpc-theme');document.documentElement.setAttribute('data-theme',s==='dark'?'dark':'light');})();`,
           }}
         />
         <script

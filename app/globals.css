@@ -204,6 +204,10 @@ body::before {
   scrollbar-color: var(--gold) var(--bg);
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold); /* same color — stops any browser hover shift */
+}
+
 /* ══════════════════════════════════════════════
    SCROLL REVEAL
 ══════════════════════════════════════════════ */
