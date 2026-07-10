@@ -130,17 +130,6 @@ export default async function ProductPage({
           },
         },
         countryOfOrigin: "IN",
-        offers: {
-          "@type": "Offer",
-          url: productUrl,
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          seller: {
-            "@type": "Organization",
-            name: COMPANY.name,
-            url: BASE_URL,
-          },
-        },
         additionalProperty: product.keyValues.map((kv) => ({
           "@type": "PropertyValue",
           name: kv.label,
