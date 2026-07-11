@@ -215,6 +215,10 @@
   margin-top: 0;
 }
 
+.item a.itemVal {
+  display: block;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .section {

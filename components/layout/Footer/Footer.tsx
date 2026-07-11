@@ -123,7 +123,7 @@ const SOCIALS = [
 
 const currentYear = new Date().getFullYear();
 
-export default function Fat() {
+export default function Footer() {
   return (
     <footer
       className={styles.footer}
@@ -145,8 +145,8 @@ export default function Fat() {
             />
           </Link>
           <p className={styles.desc}>
-            Trusted supplier of certified food-grade paper products. Serving
-            India&apos;s food industry with quality &amp; integrity since 2009.
+            Trusted supplier of food-grade paper products. Serving India&apos;s
+            food industry with quality &amp; integrity since 2009.
           </p>
           <div className={styles.socials}>
             {SOCIALS.map(({ href, title, ariaLabel, icon }) => (
@@ -202,9 +202,11 @@ export default function Fat() {
                 {COMPANY_CONFIG.address}
               </a>
             </li>
-            <li>
-              <a href={`tel:${COMPANY_CONFIG.phone}`}>{COMPANY_CONFIG.phone}</a>
-            </li>
+            {COMPANY_CONFIG.phones.map((num) => (
+              <li key={num}>
+                <a href={`tel:${num}`}>{num}</a>
+              </li>
+            ))}
             <li>
               <a href={`mailto:${COMPANY_CONFIG.email}`}>
                 {COMPANY_CONFIG.email}

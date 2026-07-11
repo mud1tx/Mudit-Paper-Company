@@ -41,13 +41,15 @@ const CONTACT_ITEMS = [
     val: COMPANY.address,
     href: "https://maps.google.com/?q=Mudit+Paper+Company+Kanpur+India",
     ariaLabel: `View ${COMPANY.address} on Google Maps`,
+    phones: null,
   },
   {
     icon: "📞",
     label: "Phone",
-    val: COMPANY.phone,
-    href: `tel:${COMPANY.phone}`,
-    ariaLabel: `Call us at ${COMPANY.phone}`,
+    phones: COMPANY.phones,
+    val: null,
+    href: null,
+    ariaLabel: null,
   },
   {
     icon: "✉️",
@@ -55,6 +57,7 @@ const CONTACT_ITEMS = [
     val: COMPANY.email,
     href: `mailto:${COMPANY.email}`,
     ariaLabel: `Email us at ${COMPANY.email}`,
+    phones: null,
   },
   {
     icon: "🕐",
@@ -62,6 +65,7 @@ const CONTACT_ITEMS = [
     val: "Mon–Sat, 9:00 AM – 6:00 PM IST",
     href: null,
     ariaLabel: null,
+    phones: null,
   },
 ] as const;
 
@@ -141,40 +145,54 @@ export default function Contact() {
         </p>
 
         <address className={`${styles.details} reveal`}>
-          {CONTACT_ITEMS.map(({ icon, label, val, href, ariaLabel }) => (
-            <div
-              key={label}
-              className={styles.item}
-            >
+          {CONTACT_ITEMS.map(
+            ({ icon, label, val, href, ariaLabel, phones }) => (
               <div
-                className={styles.itemIcon}
-                role="img"
-                aria-label={label}
+                key={label}
+                className={styles.item}
               >
-                {icon}
+                <div
+                  className={styles.itemIcon}
+                  role="img"
+                  aria-label={label}
+                >
+                  {icon}
+                </div>
+                <div>
+                  <div className={styles.itemLabel}>{label}</div>
+
+                  {phones ? (
+                    phones.map((num) => (
+                      <a
+                        key={num}
+                        href={`tel:${num}`}
+                        className={styles.itemVal}
+                        aria-label={`Call us at ${num}`}
+                      >
+                        {num}
+                      </a>
+                    ))
+                  ) : href ? (
+                    <a
+                      href={href}
+                      className={styles.itemVal}
+                      aria-label={ariaLabel ?? undefined}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                    >
+                      {val}
+                    </a>
+                  ) : (
+                    <div className={styles.itemVal}>{val}</div>
+                  )}
+                </div>
               </div>
-              <div>
-                <div className={styles.itemLabel}>{label}</div>
-                {href ? (
-                  <a
-                    href={href}
-                    className={styles.itemVal}
-                    aria-label={ariaLabel ?? undefined}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                  >
-                    {val}
-                  </a>
-                ) : (
-                  <div className={styles.itemVal}>{val}</div>
-                )}
-              </div>
-            </div>
-          ))}
+            ),
+          )}
         </address>
       </div>
 
