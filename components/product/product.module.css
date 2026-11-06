@@ -95,7 +95,7 @@
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   background: rgba(236, 36, 39, 0.08);
-  color: var(--color-accent);
+  color: var(--color-accent-strong);
   font-size: 0.72rem;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.1em;
@@ -125,7 +125,7 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-accent-strong);
   margin: 0 0 18px;
 }
 
@@ -285,9 +285,9 @@
 }
 
 .btnPrimary {
-  background: var(--color-accent);
+  background: var(--color-accent-strong);
   color: #ffffff;
-  border: 1.5px solid var(--color-accent);
+  border: 1.5px solid var(--color-accent-strong);
   box-shadow: 0 10px 24px rgba(236, 36, 39, 0.25);
 }
 
@@ -545,7 +545,7 @@
   margin-top: 28px;
   padding: 4px 4px 4px 18px;
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: var(--color-accent-strong);
   color: #ffffff;
   font-size: 0.85rem;
   font-weight: var(--font-weight-semibold);

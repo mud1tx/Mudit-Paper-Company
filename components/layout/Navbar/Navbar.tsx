@@ -93,7 +93,6 @@ export default function Navbar() {
             width={157}
             height={75}
             className={styles.logo}
-            priority
           />
         </Link>
 

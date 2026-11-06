@@ -113,7 +113,7 @@
   gap: 10px;
   padding: 14px 30px;
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: var(--color-accent-strong);
   color: #ffffff;
   font-size: 0.9rem;
   font-weight: var(--font-weight-semibold);

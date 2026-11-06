@@ -51,7 +51,8 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* Lighter red: the brand red is too dark to read on navy */
+  color: #ff8f91;
   margin-bottom: 14px;
 }
 
@@ -83,7 +84,7 @@
   align-items: center;
   padding: 14px 28px;
   border-radius: var(--radius-md);
-  background: var(--color-accent);
+  background: var(--color-accent-strong);
   color: #ffffff;
   text-decoration: none;
   font-size: 0.9rem;
@@ -136,7 +137,7 @@
   font-size: 0.85rem;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.65);
   transition: color var(--duration-base) var(--ease-standard);
 }
 

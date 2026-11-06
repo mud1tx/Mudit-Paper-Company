@@ -1,5 +1,5 @@
 import styles from "./Contact.module.css";
-import ContactForm from "./ContactForm";
+import ContactFormLoader from "./ContactFormLoader";
 import { COMPANY } from "@/lib/config";
 import { formatHours, formatPhone, mapsUrl } from "@/lib/format";
 
@@ -83,7 +83,7 @@ function ClockIcon() {
 // ── Component ─────────────────────────────────────────────────────────────────
 // Server component: the address, phone, email and hours are plain HTML and
 // match the business structured data in the root layout. Only the form
-// (ContactForm) runs in the browser.
+// (ContactFormLoader) runs in the browser.
 export default function Contact() {
   return (
     <section
@@ -175,7 +175,7 @@ export default function Contact() {
       </div>
 
       {/* ── Form ── */}
-      <ContactForm />
+      <ContactFormLoader />
     </section>
   );
 }

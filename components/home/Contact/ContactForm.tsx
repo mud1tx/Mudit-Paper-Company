@@ -117,7 +117,7 @@ export default function ContactForm() {
   });
 
   return (
-    <div className={`${styles.formCard} reveal`}>
+    <div className={styles.formCard}>
       <h3 className={styles.formTitle}>Send us a message</h3>
 
       <form

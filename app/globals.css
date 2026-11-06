@@ -10,6 +10,8 @@
 
   --color-accent: #ec2427;
   --color-accent-hover: #c4161d;
+  /* Small red text and red buttons: --color-accent is too light to read */
+  --color-accent-strong: #d4191d;
 
   /* Surfaces */
   --bg: #ffffff;

@@ -123,6 +123,7 @@ export default function HeroCarousel({ slides, children }: Props) {
                 fill
                 sizes="100vw"
                 priority={i === 0}
+                fetchPriority={i === 0 ? "high" : undefined}
                 // The clone is the same file as slide 1, already downloaded.
                 // Lazy here would make Next.js treat the LCP image as lazy.
                 loading={isClone ? "eager" : undefined}
