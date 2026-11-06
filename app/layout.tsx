@@ -20,9 +20,7 @@ const SITE_DESCRIPTION = COMPANY.description;
 // Set only for production builds, so local work is not counted. Vercel preview
 // deployments are skipped too.
 const GA_ID =
-  process.env.VERCEL_ENV === "preview"
-    ? undefined
-    : process.env.NEXT_PUBLIC_GA_ID;
+  process.env.VERCEL_ENV === "preview" ? undefined : process.env.GA_ID;
 
 export const viewport: Viewport = {
   themeColor: THEME_COLOR,
