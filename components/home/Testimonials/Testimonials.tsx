@@ -1,28 +1,31 @@
 import styles from "./Testimonials.module.css";
 
-const REVIEWS = [
+type Testimonial = {
+  readonly quote: string;
+  readonly name: string;
+  readonly role: string;
+};
+
+const TESTIMONIALS: readonly Testimonial[] = [
   {
-    text: "Mudit Paper Company has been our go-to supplier for kraft wrapping paper for over 3 years. Quality never wavers, and delivery is always on time. Highly dependable.",
+    quote:
+      "We source Glassine paper for our business and value the consistency of the material and the clarity in communication. Mudit Paper Company has been professional to work with.",
     name: "Ramesh Agarwal",
-    role: "Owner, Agarwal Bakeries, Lucknow",
-    initial: "R",
-    av: "av1",
+    role: "Owner, Agarwal Paper Trader, Lucknow",
   },
   {
-    text: "As an FMCG company, we can't afford quality lapses. Mudit Paper's FSSAI-certified products meet our compliance needs perfectly. Their team is knowledgeable and responsive.",
-    name: "Priya Sharma",
-    role: "Procurement Head, NatureFresh Foods",
-    initial: "P",
-    av: "av2",
-  },
-  {
-    text: "We switched to Mudit Paper for greaseproof paper needs and the difference was immediate. Our packaging looks premium and our sweets stay fresh longer. Excellent product.",
+    quote:
+      "The team understood our greaseproof paper requirements and helped us identify suitable options for our packaging needs. The overall coordination was smooth and straightforward.",
     name: "Sunil Mittal",
-    role: "Partner, Mittal Sweets, Kanpur",
-    initial: "S",
-    av: "av3",
+    role: "Partner, FMCG Business, Kanpur",
   },
-] as const;
+  {
+    quote:
+      "What we appreciate is the responsive communication and attention to our paper specifications. It makes discussing requirements and coordinating orders much easier.",
+    name: "Priya Sharma",
+    role: "Owner, Food Packaging Business, Agra",
+  },
+];
 
 export default function Testimonials() {
   return (
@@ -31,106 +34,45 @@ export default function Testimonials() {
       id="testimonials"
       aria-labelledby="testimonials-title"
     >
-      <div className={`${styles.header} reveal`}>
-        <div className={styles.label}>Testimonials</div>
+      <header className={`${styles.header} reveal`}>
+        <p className={styles.label}>Client Feedback</p>
         <h2
           id="testimonials-title"
           className={styles.title}
         >
           What Our Clients Say
         </h2>
-      </div>
+      </header>
 
-      {/* Semantic list of reviews */}
-      <ul
-        className={styles.grid}
-        role="list"
-      >
-        {REVIEWS.map(({ text, name, role, initial, av }) => (
+      <ul className={styles.grid}>
+        {TESTIMONIALS.map((t) => (
           <li
-            key={name}
-            className={`${styles.card} reveal`}
-            itemScope
-            itemType="https://schema.org/Review"
+            key={t.name}
+            className={`${styles.item} reveal`}
           >
-            <span
-              className={styles.quote}
-              aria-hidden="true"
-            >
-              &ldquo;
-            </span>
-
-            <div
-              itemProp="reviewRating"
-              itemScope
-              itemType="https://schema.org/Rating"
-            >
-              <meta
-                itemProp="ratingValue"
-                content="5"
-              />
-              <meta
-                itemProp="bestRating"
-                content="5"
-              />
-            </div>
-            <div
-              className={styles.stars}
-              role="img"
-              aria-label="5 out of 5 stars"
-            >
-              ★★★★★
-            </div>
-
-            {/* Review text */}
-            <blockquote
-              className={styles.text}
-              itemProp="reviewBody"
-            >
-              {text}
-            </blockquote>
-
-            {/* Reviewer */}
-            <div
-              className={styles.author}
-              itemProp="author"
-              itemScope
-              itemType="https://schema.org/Person"
-            >
-              <div
-                className={`${styles.avatar} ${styles[av]}`}
+            <figure className={styles.card}>
+              <span
+                className={styles.mark}
                 aria-hidden="true"
               >
-                {initial}
-              </div>
-              <div>
-                <div
-                  className={styles.name}
-                  itemProp="name"
+                &ldquo;
+              </span>
+              <blockquote className={styles.quote}>
+                <p>{t.quote}</p>
+              </blockquote>
+              <figcaption className={styles.author}>
+                <span
+                  className={styles.avatar}
+                  aria-hidden="true"
                 >
-                  {name}
-                </div>
-                <div
-                  className={styles.role}
-                  itemProp="jobTitle"
-                >
-                  {role}
-                </div>
-              </div>
-            </div>
-
-            {/* Hidden microdata for the item being reviewed */}
-            <div
-              itemProp="itemReviewed"
-              itemScope
-              itemType="https://schema.org/LocalBusiness"
-              style={{ display: "none" }}
-            >
-              <meta
-                itemProp="name"
-                content="Mudit Paper Company"
-              />
-            </div>
+                  {t.name.charAt(0).toUpperCase()}
+                </span>
+                <span>
+                  <span className={styles.name}>{t.name}</span>
+                  <span className={styles.role}>{t.role}</span>
+                </span>
+              </figcaption>
+            </figure>
           </li>
         ))}
       </ul>

@@ -1,41 +1,51 @@
 import Link from "next/link";
+import HeroCarousel from "./HeroCarousel";
 import styles from "./Hero.module.css";
+import { COMPANY } from "@/lib/config";
 
-const STATS = [
-  { num: "500", sup: "+", label: "Clients Served" },
-  { num: "15", sup: "+", label: "Years Experience" },
-  { num: "100", sup: "%", label: "Food Grade" },
+// Exported for the image sitemap
+export const HERO_SLIDES = [
+  {
+    src: "/images/hero/slide-1.webp",
+    alt: "Curled sheets of white food grade greaseproof paper",
+  },
+  {
+    src: "/images/hero/slide-2.webp",
+    alt: "Almond muffins baked in white paper cup liners",
+  },
+  {
+    src: "/images/hero/slide-3.webp",
+    alt: "Curved sheets of red coloured paper",
+  },
 ] as const;
 
+const yearsInBusiness = Math.max(
+  0,
+  new Date().getFullYear() - COMPANY.foundedYear,
+);
+
+const STATS = [
+  { num: "500", label: "Clients Served" },
+  { num: String(yearsInBusiness), label: "Years Experience" },
+  { num: "5", label: "Paper Products" },
+] as const;
+
+// Server component: the text, h1 and links are plain HTML with no client
+// JavaScript. Only the slideshow around them (HeroCarousel) runs in the browser.
 export default function Hero() {
   return (
-    <section
-      className={styles.hero}
-      id="home"
-      aria-labelledby="hero-title"
-    >
-      <div
-        className={styles.overlay}
-        aria-hidden="true"
-      />
-
+    <HeroCarousel slides={HERO_SLIDES}>
       <div className={styles.content}>
-        <p className={styles.badge}>Food-Grade Paper Wholesaler in Kanpur</p>
+        <p className={styles.badge}>Paper Wholesaler in India</p>
 
-        <h1
-          id="hero-title"
-          className={styles.h1}
-        >
-          Premium Food-Grade Paper,
+        <h1 className={styles.h1}>
+          Premium Paper,
           <br />
           <em className={styles.em}>Pure Quality</em> Guaranteed
         </h1>
 
         <p className={styles.desc}>
-          Mudit Paper Company supplies greaseproof paper, glassine paper,
-          printed food paper, and ladoo katori cup liners to bakeries, sweet
-          shops, restaurants, and FMCG brands across India — trusted quality,
-          delivered in bulk.
+          Your trusted partner for quality paper solutions across India.
         </p>
 
         <div className={styles.actions}>
@@ -68,27 +78,18 @@ export default function Hero() {
           </Link>
         </div>
 
-        <ul
-          className={styles.stats}
-          aria-label="Company statistics"
-        >
-          {STATS.map(({ num, sup, label }) => (
-            <li
-              key={label}
-              className={styles.statItem}
-            >
-              <div
-                className={styles.statNum}
-                aria-label={`${num}${sup} ${label}`}
-              >
+        <ul className={styles.stats}>
+          {STATS.map(({ num, label }) => (
+            <li key={label}>
+              <strong className={styles.statNum}>
                 {num}
-                <span aria-hidden="true">{sup}</span>
-              </div>
-              <div className={styles.statLabel}>{label}</div>
+                <span>+</span>
+              </strong>
+              <span className={styles.statLabel}>{label}</span>
             </li>
           ))}
         </ul>
       </div>
-    </section>
+    </HeroCarousel>
   );
 }

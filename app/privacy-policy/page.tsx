@@ -1,283 +1,175 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import Navbar from "@/components/layout/Navbar/Navbar";
-import Footer from "@/components/layout/Footer/Footer";
+import LegalPage from "@/components/legal/LegalPage";
 import { COMPANY, BASE_URL } from "@/lib/config";
-import styles from "../../styles/legal.module.css";
-import BackToTop from "@/components/ui/BackToTop";
+import { formatPhone } from "@/lib/format";
+import { PAGE_UPDATED, pageMetadata } from "@/lib/seo";
+import type { ContactDetail, LegalSection } from "@/types/legal";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: `Privacy Policy of ${COMPANY.name}. Learn how we collect, use, and protect your personal data in compliance with India's IT Act 2000 and Digital Personal Data Protection Act 2023.`,
-  alternates: { canonical: `${BASE_URL}/privacy-policy` },
-  robots: { index: true, follow: true },
-};
+// The person who handles privacy questions and grievances
+const GRIEVANCE_OFFICER = "Mudit Agarwal";
 
-const LAST_UPDATED = "January 1, 2026";
+const TITLE = "Privacy Policy";
+const PATH = "/privacy-policy";
+const DESCRIPTION = `How ${COMPANY.name} collects, uses and protects personal information submitted through our website.`;
 
-const SECTIONS = [
+export const metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: PATH,
+});
+
+// Grievance contact details, shown with working links in the last section
+const CONTACT_DETAILS: readonly ContactDetail[] = [
+  { label: "Business", value: COMPANY.name },
+  { label: "Privacy Contact", value: GRIEVANCE_OFFICER },
+  { label: "Email", value: COMPANY.email, href: `mailto:${COMPANY.email}` },
+  {
+    label: "Phone",
+    value: formatPhone(COMPANY.phone),
+    href: `tel:${COMPANY.phone}`,
+  },
+  { label: "Address", value: COMPANY.address },
+];
+
+const SECTIONS: readonly LegalSection[] = [
   {
     id: "introduction",
-    num: "01",
     title: "Introduction",
-    content: `${COMPANY.name} ("we", "us", or "our") is committed to protecting your personal data and privacy. This Privacy Policy explains how we collect, use, store, and protect information when you visit our website at ${BASE_URL} or contact us for business enquiries.`,
-    highlight: `This policy is compliant with India's Information Technology Act, 2000, the IT (Amendment) Act 2008, the IT (Reasonable Security Practices) Rules, 2011, and the Digital Personal Data Protection Act, 2023.`,
+    paragraphs: [
+      `${COMPANY.name} ("we", "us", "our") respects your privacy. This Privacy Policy explains how we collect, use, disclose and protect personal information when you visit ${BASE_URL} or contact us through our website.`,
+      "This policy applies to personal information submitted through our website, including information provided through enquiry forms. We handle personal information in accordance with applicable Indian law.",
+    ],
   },
   {
     id: "information-we-collect",
-    num: "02",
     title: "Information We Collect",
-    content: `We collect the following personal information only when you voluntarily submit it through our contact form:`,
-    list: [
-      "Full name (first and last name)",
-      "Phone number (10-digit Indian mobile number)",
-      "Email address",
-      "Business type and name",
-      "Product of interest",
-      "Message or requirements",
+    paragraphs: [
+      "When you submit an enquiry through our website, we may collect the information you choose to provide, including:",
     ],
-    extra: `We do not collect sensitive personal data such as financial information, passwords, or biometric data. We do not use cookies for tracking or advertising.`,
+    list: [
+      "Name",
+      "Email address",
+      "Mobile number, if provided",
+      "Business or organisation type, if requested on the form",
+      "Paper product or grade of interest",
+      "Product specifications, quantity requirements and other details included in your message",
+    ],
+    closing:
+      "Please provide only information relevant to your enquiry. We do not ask you to submit passwords, payment card details or other sensitive information through our enquiry form.",
+  },
+  {
+    id: "how-we-collect",
+    title: "How We Collect Information",
+    paragraphs: [
+      "We collect information directly from you when you complete an enquiry form, email us, telephone us or otherwise contact our business.",
+      "Our website and hosting infrastructure may also process limited technical information, such as IP address, browser type, device information and server logs, where generated or required for website operation, security and troubleshooting.",
+    ],
   },
   {
     id: "how-we-use",
-    num: "03",
     title: "How We Use Your Information",
-    content: `We use the information you provide solely for the following purposes:`,
-    list: [
-      "To respond to your business enquiry or quote request",
-      "To send product samples or catalogues as requested",
-      "To communicate about your order or supply requirements",
-      "To improve our products and services based on feedback",
+    paragraphs: [
+      "We use the information you provide for legitimate business purposes related to your enquiry, including to:",
     ],
-    extra: `We do not sell, rent, trade, or share your personal information with third parties for commercial purposes.`,
+    list: [
+      "Respond to questions and product enquiries",
+      "Understand your required paper grade, GSM, size, quantity and application",
+      "Prepare quotations and discuss pricing or availability",
+      "Coordinate sample requests, where applicable",
+      "Communicate about orders or business transactions arising from your enquiry",
+      "Maintain business records and comply with applicable legal obligations",
+      "Protect the website and investigate suspected misuse or security issues",
+    ],
+    closing:
+      "We do not sell your personal information. We do not use enquiry details for unrelated marketing unless we have an appropriate lawful basis to do so.",
   },
   {
-    id: "data-storage",
-    num: "04",
+    id: "sharing",
+    title: "Disclosure and Third-Party Services",
+    paragraphs: [
+      "We may share relevant information with service providers who help us operate our website or handle enquiries, such as our website hosting provider, email delivery provider and website analytics provider (Google Analytics).",
+      "These providers may process information on our behalf in connection with their services and under the terms and privacy practices applicable to those services.",
+      "We may also disclose information where reasonably necessary to comply with applicable law, respond to lawful requests, protect our rights or address security concerns.",
+      "We do not sell personal information to third parties.",
+    ],
+  },
+  {
+    id: "storage-security",
     title: "Data Storage and Security",
-    content: `We implement reasonable security practices as required under the IT (Reasonable Security Practices) Rules, 2011:`,
-    list: [
-      "Secure encrypted email transmission via Resend (SOC 2 compliant)",
-      "Access restricted to authorised personnel only",
-      "No storage of personal data in unsecured databases",
-      "Regular review of data handling practices",
-    ],
-    extra: `We retain your enquiry data for a maximum of 2 years, after which it is securely deleted.`,
-  },
-  {
-    id: "third-parties",
-    num: "05",
-    title: "Third-Party Services",
-    content: `We use the following third-party service solely for email delivery:`,
-    list: [
-      "Resend (resend.com) — Email delivery service. Your enquiry data is transmitted through Resend's secure servers only to deliver your message to us.",
-      "Vercel (vercel.com) — Website hosting. May collect basic server logs including IP addresses as part of standard hosting operations.",
+    paragraphs: [
+      "Enquiry information may be stored in our business email account and in systems used to operate our website and deliver messages. Access is intended to be limited to people who need the information for legitimate business purposes.",
+      "We take reasonable measures appropriate to our business and the nature of the information to help protect it against unauthorised access, loss, misuse or disclosure.",
+      "No method of electronic transmission or storage can be guaranteed to be completely secure. We therefore cannot guarantee absolute security.",
     ],
   },
   {
-    id: "your-rights",
-    num: "06",
-    title: "Your Rights",
-    content: `Under India's Digital Personal Data Protection Act, 2023, you have the following rights:`,
-    list: [
-      "Right to access — Request a copy of personal data we hold about you",
-      "Right to correction — Request correction of inaccurate personal data",
-      "Right to erasure — Request deletion of your personal data",
-      "Right to grievance redressal — File a complaint with our Grievance Officer",
-      "Right to withdraw consent — Withdraw consent for data processing at any time",
-    ],
-    extra: `To exercise any of these rights, contact us at ${COMPANY.email}. We will respond within 30 days.`,
-  },
-  {
-    id: "grievance-officer",
-    num: "07",
-    title: "Grievance Officer",
-    content: `As required under the Information Technology Act, 2000, we have designated a Grievance Officer:`,
-    list: [
-      `Name: Owner, ${COMPANY.name}`,
-      `Email: ${COMPANY.email}`,
-      `Phone: ${COMPANY.phone}`,
-      `Address: ${COMPANY.address}`,
-      `Response time: Within 30 days of complaint`,
+    id: "retention",
+    title: "How Long We Retain Information",
+    paragraphs: [
+      "We retain personal information for as long as reasonably necessary to respond to your enquiry, manage any resulting business relationship, maintain relevant business records, resolve disputes and meet applicable legal requirements.",
+      "When information is no longer reasonably required for these purposes, we take appropriate steps to delete it or otherwise dispose of it, subject to applicable legal and record-retention obligations.",
     ],
   },
   {
-    id: "childrens-privacy",
-    num: "08",
+    id: "your-choices",
+    title: "Your Privacy Choices and Requests",
+    paragraphs: [
+      "You may contact us to ask about the personal information you have submitted to us or to request correction or deletion, where applicable law permits.",
+      "You may also ask us to stop sending optional communications that you no longer wish to receive. We may need to retain certain information where required by law or where it is reasonably necessary to maintain business records or resolve disputes.",
+      "We may need to verify your identity and clarify your request before taking action. We will handle requests in accordance with applicable law.",
+    ],
+    closing: `To make a privacy request, contact us at ${COMPANY.email}.`,
+  },
+  {
+    id: "cookies",
+    title: "Cookies and Similar Technologies",
+    paragraphs: [
+      "Our website may use cookies or similar technologies that are necessary for its operation, security and performance. These technologies may store or access limited information on your device.",
+      "We use Google Analytics to understand how visitors use our website, so that we can improve it. It uses cookies to collect information such as the pages you visit, how you reached our website, your approximate location, your device and browser, and whether you clicked our contact links or submitted an enquiry. We do not send your name, email address, phone number or message to Google Analytics.",
+      "You can block or delete cookies in your browser settings, or install Google's Analytics opt-out browser add-on, available at tools.google.com/dlpage/gaoptout.",
+    ],
+  },
+  {
+    id: "external-links",
+    title: "External Websites",
+    paragraphs: [
+      "Our website may contain links to third-party websites or services. We do not control their content, security or privacy practices. If you visit an external website, please review its privacy policy before providing personal information.",
+    ],
+  },
+  {
+    id: "children",
     title: "Children's Privacy",
-    content: `Our website is intended for business use only. We do not knowingly collect personal information from individuals under the age of 18. If you believe we have inadvertently collected data from a minor, please contact us immediately at ${COMPANY.email}.`,
+    paragraphs: [
+      "Our website is intended for business and professional enquiries and is not designed to solicit information from children. If you believe a child has submitted personal information to us, please contact us so that we can review the matter and take appropriate action where necessary.",
+    ],
   },
   {
     id: "changes",
-    num: "09",
     title: "Changes to This Policy",
-    content: `We may update this Privacy Policy from time to time. The updated policy will be posted on this page with a revised "Last Updated" date. Continued use of our website after any changes constitutes acceptance of the updated policy.`,
+    paragraphs: [
+      "We may update this Privacy Policy from time to time to reflect changes in our business, website, service providers or applicable legal requirements. The revised version will be published on this page with an updated date.",
+      "We encourage visitors to review this page periodically to stay informed about our privacy practices.",
+    ],
   },
   {
     id: "contact",
-    num: "10",
-    title: "Contact Us",
-    content: `For any questions or concerns regarding this Privacy Policy:`,
-    list: [
-      `Company: ${COMPANY.name}`,
-      `Email: ${COMPANY.email}`,
-      `Phone: ${COMPANY.phone}`,
-      `Address: ${COMPANY.address}`,
-      `Business Hours: Monday to Saturday, 9:00 AM – 6:00 PM IST`,
+    title: "Contact and Privacy Grievances",
+    paragraphs: [
+      "If you have a question, concern or complaint about this Privacy Policy or the handling of your personal information, please contact:",
     ],
+    details: CONTACT_DETAILS,
+    closing:
+      "Please describe your concern clearly so that we can review it and respond appropriately in accordance with applicable law.",
   },
 ];
 
-export default function PrivacyPolicy() {
+export default function PrivacyPolicyPage() {
   return (
-    <>
-      <Navbar />
-      <main id="main-content">
-        {/* ── HERO ── */}
-        <section className={styles.hero}>
-          <div className={styles.heroInner}>
-            <nav aria-label="Breadcrumb">
-              <ol className={styles.breadcrumb}>
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li aria-hidden="true">
-                  <span>/</span>
-                </li>
-                <li aria-current="page">
-                  <span>Privacy Policy</span>
-                </li>
-              </ol>
-            </nav>
-            <div className={styles.heroBadge}>
-              Legal Document · India IT Act 2000
-            </div>
-            <h1 className={styles.heroTitle}>
-              Privacy <span className={styles.heroTitleAccent}>Policy</span>
-            </h1>
-            <div className={styles.heroMeta}>
-              <span>
-                Last updated: <time dateTime="2025-01-01">{LAST_UPDATED}</time>
-              </span>
-              <span
-                className={styles.heroMetaDot}
-                aria-hidden="true"
-              />
-              <span>{COMPANY.name}</span>
-              <span
-                className={styles.heroMetaDot}
-                aria-hidden="true"
-              />
-              <span>Kanpur, India</span>
-            </div>
-            <p className={styles.heroDesc}>
-              We are committed to protecting your privacy and handling your
-              personal data with full transparency, in compliance with India's
-              IT Act 2000 and Digital Personal Data Protection Act 2023.
-            </p>
-          </div>
-        </section>
-
-        {/* ── BODY ── */}
-        <div className={styles.layout}>
-          {/* Table of Contents */}
-          <aside
-            className={styles.toc}
-            aria-label="Table of contents"
-          >
-            <div className={styles.tocHeader}>
-              <div
-                className={styles.tocLine}
-                aria-hidden="true"
-              />
-              <div className={styles.tocTitle}>Contents</div>
-            </div>
-            <nav>
-              <ol className={styles.tocList}>
-                {SECTIONS.map(({ id, num, title }) => (
-                  <li key={id}>
-                    <a
-                      href={`#${id}`}
-                      className={styles.tocLink}
-                    >
-                      <span
-                        style={{
-                          color: "var(--gold)",
-                          fontSize: "0.65rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        {num}
-                      </span>
-                      {title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-
-          {/* Content */}
-          <article className={styles.content}>
-            {SECTIONS.map(
-              ({ id, num, title, content, list, extra, highlight }) => (
-                <section
-                  key={id}
-                  id={id}
-                  className={styles.section}
-                >
-                  <div
-                    className={styles.sectionNum}
-                    aria-hidden="true"
-                  >
-                    {num}
-                  </div>
-                  <div className={styles.sectionTitleWrap}>
-                    <div
-                      className={styles.sectionTitleDot}
-                      aria-hidden="true"
-                    />
-                    <h2 className={styles.sectionTitle}>
-                      {num}. {title}
-                    </h2>
-                  </div>
-                  <p className={styles.text}>{content}</p>
-                  {list && (
-                    <ul className={styles.list}>
-                      {list.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {highlight && (
-                    <div className={styles.highlight}>
-                      <p>{highlight}</p>
-                    </div>
-                  )}
-                  {extra && <p className={styles.text}>{extra}</p>}
-                </section>
-              ),
-            )}
-
-            <div className={styles.backTop}>
-              <Link
-                href="/"
-                className={styles.backTopLink}
-              >
-                ← Back to Home
-              </Link>
-              <Link
-                href="/terms-of-use"
-                className={styles.backTopLink}
-              >
-                Terms of Use →
-              </Link>
-            </div>
-          </article>
-        </div>
-      </main>
-      <BackToTop />
-      <Footer />
-    </>
+    <LegalPage
+      title={TITLE}
+      description={DESCRIPTION}
+      path={PATH}
+      updated={PAGE_UPDATED.privacy}
+      sections={SECTIONS}
+    />
   );
 }

@@ -1,130 +1,116 @@
+/* ══════════════════════════════════════════════
+   NAVBAR
+   Breakpoint: 1024px (matches DESKTOP_QUERY in Navbar.tsx)
+══════════════════════════════════════════════ */
+
+/* ── Fixed bar, sits below the top bar ── */
 .nav {
   position: fixed;
-  top: 0;
+  top: var(--topbar-h);
   left: 0;
   right: 0;
-  z-index: 200;
+  z-index: var(--z-navbar);
+  height: var(--navbar-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 6vw;
-  background: var(--nav-bg);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-  transition:
-    box-shadow var(--t),
-    background var(--t);
-}
-.navScrolled {
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  padding-inline: max(
+    var(--section-padding-x),
+    calc((100vw - var(--content-max)) / 2)
+  );
+  background: var(--bg);
+  border-bottom: 1px solid rgba(35, 31, 32, 0.08);
+  transition: box-shadow var(--duration-base) var(--ease-standard);
 }
 
+.navScrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Logo ── */
 .logoLink {
   display: flex;
   align-items: center;
-  text-decoration: none;
   flex-shrink: 0;
-  height: 43px;
-  overflow: hidden;
+  text-decoration: none;
 }
 
 .logo {
-  height: 43px;
+  height: 75px;
   width: auto;
   max-width: 180px;
   object-fit: contain;
   object-position: left center;
 }
-[data-theme="dark"] .logo {
-  filter: brightness(0) invert(1);
-}
-
-.skipLink {
-  position: fixed;
-  top: -100px;
-  left: 6vw;
-  background: var(--forest);
-  color: #f5f0e8;
-  padding: 8px 16px;
-  border-radius: 0 0 4px 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  z-index: 9999;
-  transition: top 0.2s;
-  pointer-events: none;
-}
-
-.skipLink:focus {
-  top: 0;
-  pointer-events: auto; 
-  outline: 2px solid var(--gold); 
-  outline-offset: 2px;
-}
 
 /* ── Desktop links ── */
 .links {
   display: flex;
+  align-items: center;
   gap: 28px;
   list-style: none;
-  align-items: center;
 }
 
 .link {
-  text-decoration: none;
-  font-size: 0.83rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-mid);
   position: relative;
-  transition: color var(--t);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  padding: 0;
   display: flex;
   align-items: center;
   gap: 5px;
+  padding: 6px 0;
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.06em;
+  /* text-transform: uppercase; */
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
+
+/* Red underline that grows on hover and keyboard focus */
 .link::after {
   content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 1.5px;
-  background: var(--gold);
+  background: var(--color-accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
 }
-.link:hover {
-  color: var(--forest);
+.link:hover,
+.link:focus-visible,
+.link[aria-current="page"] {
+  color: var(--color-accent);
 }
-[data-theme="dark"] .link:hover {
-  color: var(--gold-light);
-}
-.link:hover::after {
+.link:hover::after,
+.link:focus-visible::after {
   transform: scaleX(1);
 }
 
+/* ── Contact Us: primary pill button ── */
 .linkCta {
-  background: var(--forest) !important;
-  color: #f5f0e8 !important;
-  padding: 8px 20px !important;
-  border-radius: 2px;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #ffffff;
+  letter-spacing: 0.06em;
 }
 .linkCta::after {
-  display: none !important;
+  display: none;
 }
-.linkCta:hover {
-  background: var(--forest-light) !important;
+.linkCta:hover,
+.linkCta:focus-visible {
+  background: var(--color-primary-light);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
-/* ── Dropdown — pure CSS, no JS ── */
+/* ── Products dropdown ── */
 .dropItem {
   position: relative;
 }
@@ -134,284 +120,253 @@
 }
 
 .chevron {
-  transition: transform 0.2s;
   flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-standard);
 }
+.dropItem:hover .chevron,
+.dropItem:focus-within .chevron,
 .chevronOpen {
   transform: rotate(180deg);
 }
 
-/* The dropdown panel */
+/* Panel: hidden until hover or keyboard focus opens it */
 .dropdown {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding-top: 9px;
+  min-width: 260px;
+  padding-top: 30px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0.2s,
-    visibility 0.2s;
-  z-index: 300;
+    opacity var(--duration-fast) var(--ease-standard),
+    visibility var(--duration-fast) var(--ease-standard);
 }
-
-/* Show on hover of the parent li */
-.dropItem:hover .dropdown {
+.dropItem:hover .dropdown,
+.dropItem:focus-within .dropdown {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
-/* Rotate chevron on hover */
-.dropItem:hover .chevron {
-  transform: rotate(180deg);
-}
-
-/* The visible card inside the dropdown */
-.dropdown::after {
-  content: none;
-}
-
-.dropArrow {
-  position: absolute;
-  top: 9px;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  background: var(--surface);
-  border-left: 1px solid var(--border);
-  border-top: 1px solid var(--border);
-  transform: translateX(-50%) rotate(45deg);
-  z-index: 5;
-  pointer-events: none;
-  transition: background var(--t);
-}
-
-.dropdown:has(.dropLink:first-of-type:hover) .dropArrow {
-  background: var(--bg-muted);
-}
-
-/* Inner card */
-.dropdown > *:not(.dropArrow) {
+.dropList {
   position: relative;
-  z-index: 2;
-}
-
-/* Wrap the links in a card */
-.dropLink:first-of-type {
-  border-radius: 8px 8px 0 0;
-}
-.dropLink:last-of-type {
-  border-radius: 0 0 8px 8px;
+  list-style: none;
 }
 
 .dropLink {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-bottom: none;
-  text-decoration: none;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #ffffff;
   color: var(--text);
-  font-size: 0.88rem;
-  font-weight: 500;
-  min-width: 260px;
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  border-left: 1px solid rgba(35, 31, 32, 0.1);
+  border-right: 1px solid rgba(35, 31, 32, 0.1);
+  border-bottom: 1px solid rgba(35, 31, 32, 0.06);
   transition:
-    background var(--t),
-    color var(--t);
-}
-.dropLink:last-of-type {
-  border-bottom: 1px solid var(--border);
-}
-.dropLink:first-of-type {
-  margin-top: 6px;
+    padding-left 0.25s ease,
+    background var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
 }
 
-.dropLink:hover {
-  background: var(--bg-muted);
-  color: var(--forest);
+/* Rounded card corners and outer borders on first and last items only */
+.dropList li:first-child .dropLink {
+  border-top: 1px solid rgba(35, 31, 32, 0.1);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-[data-theme="dark"] .dropLink:hover {
-  color: var(--gold-light);
+.dropList li:last-child .dropLink {
+  border-bottom: 1px solid rgba(35, 31, 32, 0.1);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
-.dropIcon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
+/* Hover: label shifts right, text turns red */
+.dropLink:hover,
+.dropLink:focus-visible {
+  padding-left: 26px;
+  color: var(--color-accent);
+}
+.dropLink[aria-current="page"] {
+  color: var(--color-accent);
 }
 
 .dropChevron {
   margin-left: auto;
-  opacity: 0;
-  color: var(--text-low);
-  transition:
-    opacity 0.2s,
-    transform 0.2s;
   flex-shrink: 0;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
-.dropLink:hover .dropChevron {
+.dropLink:hover .dropChevron,
+.dropLink:focus-visible .dropChevron {
   opacity: 1;
   transform: translateX(3px);
 }
 
-/* ── Theme Pill ── */
-.themePill {
-  display: flex;
-  align-items: center;
-  background: var(--bg-muted);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 3px;
-  gap: 2px;
-}
-.ttBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 100px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.82rem;
-  color: var(--text-low);
-  transition:
-    background var(--t),
-    color var(--t);
-}
-.ttBtn:hover {
-  color: var(--text);
-}
-.ttBtnActive {
-  background: var(--surface);
-  color: var(--forest);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
-}
-[data-theme="dark"] .ttBtnActive {
-  color: var(--gold-light);
-}
-
-/* ── Hamburger ── */
+/* ── Hamburger (mobile) ── */
 .hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
-  cursor: pointer;
-  background: none;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
   border: none;
-  padding: 4px;
+  border-radius: 50%;
+  background: var(--topbar-bg);
+  cursor: pointer;
 }
 .hamburger span {
   display: block;
   width: 22px;
   height: 2px;
+  border-radius: var(--radius-sm);
   background: var(--text);
-  border-radius: 2px;
-  transition: 0.3s;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
-.hamOpen {
-  opacity: 0.5;
+
+/* Morph the three lines into an X when the menu is open */
+.hamburger span.hamOpen:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger span.hamOpen:nth-child(2) {
+  opacity: 0;
+}
+.hamburger span.hamOpen:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .mobileRight {
   display: none;
   align-items: center;
-  gap: 10px;
 }
 
-/* ── Mobile menu ── */
+/* ── Mobile full-screen menu ── */
 .mobileMenu {
   position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 300;
+  top: var(--topbar-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc(var(--z-navbar) + 100);
   display: flex;
+  /* Keep scrolling inside the menu from moving the page behind it */
+  overscroll-behavior: contain;
   flex-direction: column;
   gap: 4px;
-  padding: 76px 6vw 36px;
+  padding: 76px var(--section-padding-x) 36px;
+  background: var(--bg);
   overflow-y: auto;
 }
+
 .mobileClose {
   position: absolute;
   top: 20px;
-  right: 6vw;
-  font-size: 1.6rem;
-  cursor: pointer;
-  color: var(--text);
-  background: none;
+  right: var(--section-padding-x);
+  padding: 0;
   border: none;
-}
-.mobileLink {
-  font-family: var(--font-playfair), serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--forest);
-  text-decoration: none;
-  border-bottom: 1px solid var(--border);
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  padding-bottom: 13px;
-  transition: color var(--t);
   background: none;
+  color: var(--text);
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
   cursor: pointer;
-  text-align: left;
-  width: 100%;
+}
+
+.mobileLink,
+.mobileLinkBtn {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  border-bottom: 1px solid rgba(35, 31, 32, 0.1);
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-base) var(--ease-standard);
 }
-[data-theme="dark"] .mobileLink {
-  color: var(--gold-light);
-}
-
-.mobileLinkBtn {
-  font-family: var(--font-playfair), serif;
-  font-size: 1.8rem;
-  font-weight: 700;
+.mobileLink:hover,
+.mobileLink:focus-visible,
+.mobileLinkBtn:hover,
+.mobileLinkBtn:focus-visible {
+  color: var(--color-primary);
 }
 
 .mobileSubLinks {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  list-style: none;
   padding: 8px 0 12px 16px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
-  background-color: var(--bg);
-}
-.mobileSubLink {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: var(--text-mid);
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 8px 0;
-  transition: color var(--t);
-}
-.mobileSubLink:hover {
-  color: var(--forest);
-}
-[data-theme="dark"] .mobileSubLink:hover {
-  color: var(--gold-light);
+  border-bottom: 1px solid rgba(35, 31, 32, 0.1);
 }
 
-/* ── Responsive ── */
+.mobileSubLink {
+  display: block;
+  padding: 8px 0;
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard);
+}
+.mobileSubLink:hover,
+.mobileSubLink:focus-visible,
+.mobileSubLink[aria-current="page"],
+.mobileLink[aria-current="page"] {
+  color: var(--color-primary);
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE (must match --navbar-breakpoint)
+══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .links {
     display: none;
   }
-  .hamburger {
-    display: flex;
-  }
+  .hamburger,
   .mobileRight {
     display: flex;
+  }
+}
+
+@media (min-width: 1025px) {
+  .mobileMenu {
+    display: none;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .link,
+  .link::after,
+  .linkCta,
+  .dropdown,
+  .dropLink,
+  .dropChevron,
+  .chevron,
+  .hamburger span,
+  .mobileLink,
+  .mobileSubLink {
+    transition: none;
   }
 }

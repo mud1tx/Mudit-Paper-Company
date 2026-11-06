@@ -1,275 +1,210 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import Navbar from "@/components/layout/Navbar/Navbar";
-import Footer from "@/components/layout/Footer/Footer";
+import LegalPage from "@/components/legal/LegalPage";
 import { COMPANY, BASE_URL } from "@/lib/config";
-import styles from "../../styles/legal.module.css";
-import BackToTop from "@/components/ui/BackToTop";
+import { formatPhone } from "@/lib/format";
+import { PAGE_UPDATED, pageMetadata } from "@/lib/seo";
+import type { ContactDetail, LegalSection } from "@/types/legal";
 
-export const metadata: Metadata = {
-  title: "Terms of Use",
-  description: `Terms of Use for ${COMPANY.name}. Read our terms governing the use of our website and services, compliant with Indian law.`,
-  alternates: { canonical: `${BASE_URL}/terms-of-use` },
-  robots: { index: true, follow: true },
-};
+const TITLE = "Terms of Use";
+const PATH = "/terms-of-use";
+const DESCRIPTION = `Terms governing the use of the ${COMPANY.name} website and enquiry services.`;
 
-const LAST_UPDATED = "January 1, 2026";
+export const metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: PATH,
+});
 
-const SECTIONS = [
+// Contact details, shown with working links in the last section
+const CONTACT_DETAILS: readonly ContactDetail[] = [
+  { label: "Business", value: COMPANY.name },
+  { label: "Email", value: COMPANY.email, href: `mailto:${COMPANY.email}` },
+  {
+    label: "Phone",
+    value: formatPhone(COMPANY.phone),
+    href: `tel:${COMPANY.phone}`,
+  },
+  { label: "Address", value: COMPANY.address },
+];
+
+const SECTIONS: readonly LegalSection[] = [
   {
     id: "acceptance",
-    num: "01",
     title: "Acceptance of Terms",
-    content: `By accessing or using the website at ${BASE_URL} ("Website"), you agree to be bound by these Terms of Use ("Terms"). These Terms constitute a legally binding agreement between you and ${COMPANY.name}, a business entity based in ${COMPANY.city}, ${COMPANY.state}, India.`,
-    highlight: `If you do not agree to these Terms, please do not use our Website.`,
+    paragraphs: [
+      `Welcome to ${COMPANY.name}. These Terms of Use ("Terms") govern your access to and use of our website at ${BASE_URL} (the "Website"). By accessing or using the Website, you agree to these Terms.`,
+      `The Website is operated by ${COMPANY.name}, based in ${COMPANY.city}, ${COMPANY.state}, India. If you do not agree with these Terms, please discontinue use of the Website.`,
+      "These Terms govern the use of the Website only. Any separate terms agreed in writing for a quotation, sale or supply of products will govern the relevant business transaction as described below.",
+    ],
   },
   {
     id: "use-of-website",
-    num: "02",
-    title: "Use of Website",
-    content: `You may use this Website for lawful business purposes only. By using this Website, you agree that you will not:`,
+    title: "Permitted Use of the Website",
+    paragraphs: [
+      "You may use the Website for lawful purposes, including learning about our paper products, reviewing general product information and making genuine business enquiries.",
+      "When using the Website, you agree not to:",
+    ],
     list: [
-      "Use the Website in any way that violates applicable Indian or international law",
-      "Transmit any unsolicited or unauthorised advertising or promotional material",
-      "Attempt to gain unauthorised access to any part of the Website",
-      "Use automated tools to scrape, crawl, or extract data from the Website",
-      "Impersonate any person or entity or misrepresent your affiliation",
-      "Transmit any harmful, offensive, or malicious content",
-      "Interfere with or disrupt the integrity or performance of the Website",
+      "Use the Website in violation of applicable law or the rights of others",
+      "Submit false, misleading or fraudulent enquiries",
+      "Attempt to gain unauthorised access to the Website, its systems or related accounts",
+      "Interfere with the Website's security, availability or normal operation",
+      "Upload or transmit malicious code or other harmful material",
+      "Use automated tools to scrape, copy or extract Website content in a manner that is unauthorised or unlawful",
+      "Misrepresent your identity, business or authority to act on behalf of another person or organisation",
+    ],
+    closing:
+      "We may take reasonable steps to protect the Website against misuse, security threats and activities that violate these Terms or applicable law.",
+  },
+  {
+    id: "website-information",
+    title: "Website Information",
+    paragraphs: [
+      "The Website provides general information about our business, paper products and related services. We make reasonable efforts to keep this information accurate and up to date, but information may change and may not always reflect current availability or commercial conditions.",
+      "Website content is provided for general information and should not be treated as a final quotation, technical guarantee, certification, or binding offer to supply products.",
+      "Please contact us to confirm current product specifications, availability, pricing and other requirements before making a purchasing decision.",
+    ],
+  },
+  {
+    id: "product-information",
+    title: "Product Specifications and Suitability",
+    paragraphs: [
+      "Paper specifications may include grade, grammage (GSM), dimensions, colour, finish, treatment, packaging and other characteristics. These details should be confirmed with us for the particular product and order.",
+      "Product availability, specifications and prices may change without notice. Where applicable, the final agreed specifications will be recorded in the relevant written quotation, purchase order or order confirmation.",
+      "Customers are responsible for communicating their intended application and relevant technical requirements before placing an order. Any specific requirements relating to food contact, regulatory compliance, certifications, performance or other specialised properties must be expressly confirmed in writing for the relevant product.",
+      "Images, illustrations and product descriptions on the Website are indicative unless expressly stated otherwise. Actual appearance may vary depending on the product, grade, finish, lighting and display settings.",
+    ],
+  },
+  {
+    id: "enquiries",
+    title: "Enquiries and Quotations",
+    paragraphs: [
+      "You may use our Website or the contact details provided on it to enquire about products, request quotations or discuss your paper requirements.",
+      "Submitting an enquiry does not create a binding order or guarantee that a product is available. Quotations may be subject to a validity period, minimum quantity, stock availability, technical specifications, payment conditions, taxes, freight charges and other stated terms.",
+      "A quotation should be read together with any conditions expressly included in it. Please obtain written confirmation of material commercial and technical requirements before proceeding with an order.",
+    ],
+  },
+  {
+    id: "orders",
+    title: "Orders and Business Transactions",
+    paragraphs: [
+      "Orders are subject to acceptance by the relevant parties and the terms agreed for the transaction. An enquiry, discussion or quotation alone does not necessarily constitute an accepted order.",
+      "The applicable quotation, purchase order, order confirmation, invoice and any separate written agreement may set out the agreed product specifications, quantity, price, taxes, payment terms, delivery arrangements and other conditions.",
+      "Where transaction documents conflict, the parties should resolve the conflict in writing. Specifically agreed transaction terms will take precedence over these general Website Terms to the extent of the conflict, subject to applicable law.",
+      "These Website Terms do not replace any separate written agreement governing the sale or supply of products.",
     ],
   },
   {
     id: "intellectual-property",
-    num: "03",
     title: "Intellectual Property",
-    content: `All content on this Website including text, graphics, logos, images, and product descriptions is the property of ${COMPANY.name} and is protected under the Copyright Act, 1957 and applicable Indian intellectual property laws. You may not:`,
-    list: [
-      "Copy, reproduce, or distribute any Content without prior written permission",
-      "Use our brand name, logo, or trademarks without authorisation",
-      "Create derivative works based on our Content",
-      "Use our Content for commercial purposes without consent",
+    paragraphs: [
+      `Unless otherwise indicated, original text, graphics, branding, logos and other content created for the Website are owned by ${COMPANY.name} or used with permission from the relevant rights holders. Such material may be protected by applicable intellectual property laws, including the Copyright Act, 1957, where applicable.`,
+      "You may view the Website and refer to its content for personal or legitimate business evaluation. You must not reproduce, republish, distribute, modify or commercially exploit protected Website content without the necessary permission, except where permitted by applicable law.",
+      "Third-party names, logos, trademarks and other materials remain the property of their respective owners. Their appearance on the Website does not imply endorsement or ownership by us.",
     ],
-    extra: `You may share links to our Website and reference our products for legitimate business evaluation purposes.`,
+    closing:
+      "To request permission to use our original Website content or branding, contact us using the details provided below.",
   },
   {
-    id: "product-information",
-    num: "04",
-    title: "Product Information",
-    content: `All product information, specifications, GSM ranges, and pricing displayed on this Website are for informational purposes only and are subject to change without notice. ${COMPANY.name} makes reasonable efforts to ensure accuracy but does not guarantee that all product information is complete, accurate, or current.`,
-    highlight: `Final specifications and pricing are confirmed at the time of order placement only.`,
+    id: "third-party-links",
+    title: "Third-Party Websites and Services",
+    paragraphs: [
+      "The Website may contain links to third-party websites, platforms or services for convenience or additional information.",
+      "These third-party services are operated independently and may have their own terms, privacy policies and practices. We do not control their content, availability or policies and are not responsible for them, except to the extent liability cannot be excluded under applicable law.",
+      "Accessing a third-party website is at your discretion. We recommend reviewing its applicable terms and privacy policy before using the service or providing personal information.",
+    ],
   },
   {
-    id: "enquiries-orders",
-    num: "05",
-    title: "Enquiries and Orders",
-    content: `Submitting an enquiry form on this Website does not constitute a binding order or contract. A binding agreement is formed only when:`,
-    list: [
-      "We provide a written quotation or proforma invoice",
-      "You confirm the order in writing (email or signed document)",
-      "Advance payment or agreed credit terms are established",
-      "We issue a written order confirmation",
+    id: "privacy",
+    title: "Privacy",
+    paragraphs: [
+      "If you submit personal information through our Website, we handle it in accordance with our Privacy Policy and applicable law.",
+      "Please avoid including unnecessary personal, confidential or sensitive information in general enquiry forms. Information required for a business enquiry should be limited to what is reasonably relevant to the request.",
+    ],
+    closing: (
+      <>
+        Please read our <Link href="/privacy-policy">Privacy Policy</Link> for
+        further information about our handling of personal information.
+      </>
+    ),
+  },
+  {
+    id: "availability",
+    title: "Website Availability and Security",
+    paragraphs: [
+      "We aim to keep the Website available and functioning properly. However, access may occasionally be interrupted because of maintenance, technical issues, network failures, security measures or circumstances beyond our reasonable control.",
+      "We may modify, suspend or discontinue part or all of the Website where reasonably necessary for maintenance, security, operational or business reasons.",
+      "You are responsible for using appropriate security measures on your own devices and for ensuring that information you submit through the Website is accurate.",
     ],
   },
   {
     id: "disclaimer",
-    num: "06",
-    title: "Disclaimer of Warranties",
-    content: `This Website and its Content are provided on an "as is" basis without any warranties of any kind. To the fullest extent permitted by Indian law, ${COMPANY.name} disclaims all warranties including:`,
-    list: [
-      "Warranties of merchantability or fitness for a particular purpose",
-      "Warranties that the Website will be uninterrupted or error-free",
-      "Warranties regarding the accuracy or completeness of information",
-      "Warranties that the Website is free of viruses or harmful components",
+    title: "Disclaimer",
+    paragraphs: [
+      "The Website and its general content are provided for informational purposes and on an 'as available' basis.",
+      "To the extent permitted by applicable law, we do not guarantee that the Website will be uninterrupted, error-free, completely secure or suitable for every particular purpose.",
+      "Nothing in these Terms excludes any representation, warranty, right or obligation that cannot lawfully be excluded or limited under applicable law.",
     ],
   },
   {
-    id: "limitation-liability",
-    num: "07",
+    id: "limitation-of-liability",
     title: "Limitation of Liability",
-    content: `To the maximum extent permitted by applicable law, ${COMPANY.name} shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of this Website.`,
-    highlight: `Our total liability for any claim arising from use of this Website shall not exceed ₹1,000 or the amount paid to us in the preceding 3 months, whichever is lower.`,
+    paragraphs: [
+      "To the extent permitted by applicable law, we will not be liable for indirect or consequential losses arising solely from the use of, or inability to use, the Website.",
+      "This section does not exclude or limit liability for matters where exclusion or limitation is prohibited by law, nor does it override the rights and obligations expressly agreed for a specific business transaction.",
+      "Any claim arising from the sale or supply of products will be assessed under applicable law and the written terms governing the relevant transaction.",
+    ],
   },
   {
-    id: "third-party-links",
-    num: "08",
-    title: "Third-Party Links",
-    content: `Our Website may contain links to third-party websites such as Google Maps, Instagram, and Facebook. These links are provided for convenience only. ${COMPANY.name} does not endorse or take responsibility for the content or privacy practices of any third-party website. Accessing third-party websites is at your own risk.`,
-  },
-  {
-    id: "governing-law",
-    num: "09",
-    title: "Governing Law and Jurisdiction",
-    content: `These Terms are governed by the laws of India, including the Information Technology Act, 2000. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts in ${COMPANY.city}, ${COMPANY.state}, India.`,
+    id: "indemnity",
+    title: "Misuse of the Website",
+    paragraphs: [
+      "If your unlawful use of the Website or deliberate violation of these Terms causes loss or damage for which you are legally responsible, applicable remedies may be available under the law.",
+      "Nothing in these Terms creates liability where it would not otherwise arise under applicable law or requires you to indemnify us for our own acts or omissions where such a requirement would be unlawful.",
+    ],
   },
   {
     id: "changes",
-    num: "10",
-    title: "Changes to Terms",
-    content: `We reserve the right to modify these Terms at any time. Changes will be posted on this page with a revised "Last Updated" date. Your continued use of the Website after any changes constitutes your acceptance of the revised Terms.`,
+    title: "Changes to These Terms",
+    paragraphs: [
+      "We may revise these Terms to reflect changes to our Website, business operations or applicable law. The revised version will be published on this page with an updated 'Last updated' date.",
+      "Changes will apply from the date indicated in the revised Terms, subject to applicable law. Changes to an existing business order will be governed by the agreement applicable to that transaction unless the parties agree otherwise in writing.",
+      "We encourage you to review this page periodically.",
+    ],
+  },
+  {
+    id: "governing-law",
+    title: "Governing Law and Jurisdiction",
+    paragraphs: [
+      `These Terms are governed by the laws of India. Subject to applicable law, disputes relating to these Website Terms may be brought before the courts having competent jurisdiction in ${COMPANY.city}, ${COMPANY.state}, India.`,
+      "Nothing in this section gives a court jurisdiction that it would not otherwise have under applicable law.",
+    ],
+  },
+  {
+    id: "severability",
+    title: "Severability",
+    paragraphs: [
+      "If any provision of these Terms is found to be invalid or unenforceable under applicable law, that provision will be treated to the extent necessary as severable from the remaining provisions. The remaining provisions will continue to apply to the extent legally permitted.",
+    ],
   },
   {
     id: "contact",
-    num: "11",
-    title: "Contact Us",
-    content: `For any questions regarding these Terms of Use:`,
-    list: [
-      `Company: ${COMPANY.name}`,
-      `Email: ${COMPANY.email}`,
-      `Phone: ${COMPANY.phone}`,
-      `Address: ${COMPANY.address}`,
-      `Business Hours: Monday to Saturday, 9:00 AM – 6:00 PM IST`,
+    title: "Contact",
+    paragraphs: [
+      "If you have questions about these Terms or the use of our Website, you may contact us using the following details:",
     ],
+    details: CONTACT_DETAILS,
   },
 ];
 
-export default function TermsOfUse() {
+export default function TermsOfUsePage() {
   return (
-    <>
-      <Navbar />
-      <main id="main-content">
-        {/* ── HERO ── */}
-        <section className={styles.hero}>
-          <div className={styles.heroInner}>
-            <nav aria-label="Breadcrumb">
-              <ol className={styles.breadcrumb}>
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li aria-hidden="true">
-                  <span>/</span>
-                </li>
-                <li aria-current="page">
-                  <span>Terms of Use</span>
-                </li>
-              </ol>
-            </nav>
-            <div className={styles.heroBadge}>Legal Document · Indian Law</div>
-            <h1 className={styles.heroTitle}>
-              Terms of <span className={styles.heroTitleAccent}>Use</span>
-            </h1>
-            <div className={styles.heroMeta}>
-              <span>
-                Last updated: <time dateTime="2025-01-01">{LAST_UPDATED}</time>
-              </span>
-              <span
-                className={styles.heroMetaDot}
-                aria-hidden="true"
-              />
-              <span>{COMPANY.name}</span>
-              <span
-                className={styles.heroMetaDot}
-                aria-hidden="true"
-              />
-              <span>Kanpur, India</span>
-            </div>
-            <p className={styles.heroDesc}>
-              Please read these terms carefully before using our website. By
-              accessing our website, you agree to be bound by these terms in
-              accordance with Indian law.
-            </p>
-          </div>
-        </section>
-
-        {/* ── BODY ── */}
-        <div className={styles.layout}>
-          {/* Table of Contents */}
-          <aside
-            className={styles.toc}
-            aria-label="Table of contents"
-          >
-            <div className={styles.tocHeader}>
-              <div
-                className={styles.tocLine}
-                aria-hidden="true"
-              />
-              <div className={styles.tocTitle}>Contents</div>
-            </div>
-            <nav>
-              <ol className={styles.tocList}>
-                {SECTIONS.map(({ id, num, title }) => (
-                  <li key={id}>
-                    <a
-                      href={`#${id}`}
-                      className={styles.tocLink}
-                    >
-                      <span
-                        style={{
-                          color: "var(--gold)",
-                          fontSize: "0.65rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        {num}
-                      </span>
-                      {title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-
-          {/* Content */}
-          <article className={styles.content}>
-            {SECTIONS.map(
-              ({ id, num, title, content, list, extra, highlight }) => (
-                <section
-                  key={id}
-                  id={id}
-                  className={styles.section}
-                >
-                  <div
-                    className={styles.sectionNum}
-                    aria-hidden="true"
-                  >
-                    {num}
-                  </div>
-                  <div className={styles.sectionTitleWrap}>
-                    <div
-                      className={styles.sectionTitleDot}
-                      aria-hidden="true"
-                    />
-                    <h2 className={styles.sectionTitle}>
-                      {num}. {title}
-                    </h2>
-                  </div>
-                  <p className={styles.text}>{content}</p>
-                  {list && (
-                    <ul className={styles.list}>
-                      {list.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {highlight && (
-                    <div className={styles.highlight}>
-                      <p>{highlight}</p>
-                    </div>
-                  )}
-                  {extra && <p className={styles.text}>{extra}</p>}
-                </section>
-              ),
-            )}
-
-            <div className={styles.backTop}>
-              <Link
-                href="/"
-                className={styles.backTopLink}
-              >
-                ← Back to Home
-              </Link>
-              <Link
-                href="/privacy-policy"
-                className={styles.backTopLink}
-              >
-                Privacy Policy →
-              </Link>
-            </div>
-          </article>
-        </div>
-      </main>
-      <BackToTop />
-      <Footer />
-    </>
+    <LegalPage
+      title={TITLE}
+      description={DESCRIPTION}
+      path={PATH}
+      updated={PAGE_UPDATED.terms}
+      sections={SECTIONS}
+    />
   );
 }

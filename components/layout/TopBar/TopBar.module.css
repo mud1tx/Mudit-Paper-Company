@@ -1,0 +1,145 @@
+/* ══════════════════════════════════════════════
+   TOP BAR
+   Breakpoints (largest → smallest):
+   - ≤ 900px  → social icons hidden, contacts centred
+   - ≤ 675px  → email hidden, smaller text
+   - ≤ 350px  → second phone number hidden
+══════════════════════════════════════════════ */
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-topbar);
+  height: var(--topbar-h);
+  background: var(--topbar-bg);
+  color: var(--topbar-text);
+  font-size: var(--topbar-font-size);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  padding-inline: max(
+    var(--section-padding-x),
+    calc((100vw - var(--content-max)) / 2)
+  );
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Left: social icons ── */
+.socials {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 24px minimum tap target around the 16px icon */
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  color: var(--topbar-text);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+.socialLink:focus-visible {
+  outline: 2px solid var(--topbar-text);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Right: phones and email ── */
+.contacts {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  gap: 8px;
+  color: var(--topbar-text);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  transition: color var(--duration-base) var(--ease-standard);
+}
+.item:focus-visible {
+  outline: 2px solid var(--topbar-text);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.contactIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* Hover effects only on devices with a real mouse, so taps don't stick */
+@media (hover: hover) {
+  .socialLink:hover {
+    color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+  .item:hover {
+    color: var(--color-accent);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE (largest → smallest)
+══════════════════════════════════════════════ */
+
+/* ≤ 900px: hide social icons, centre contacts */
+@media (max-width: 900px) {
+  .socials {
+    display: none;
+  }
+  .inner {
+    justify-content: center;
+  }
+}
+
+/* ≤ 675px: hide email, smaller text so both numbers fit on one line */
+@media (max-width: 675px) {
+  .bar {
+    font-size: 14px;
+  }
+  .contacts {
+    gap: 16px;
+    justify-content: center;
+  }
+  .emailItem {
+    display: none;
+  }
+}
+
+/* ≤ 350px: hide second phone number */
+@media (max-width: 350px) {
+  .secondPhone {
+    display: none;
+  }
+}

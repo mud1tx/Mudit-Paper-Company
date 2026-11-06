@@ -1,232 +1,312 @@
 .section {
-  background: var(--bg-alt);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--bg);
+  padding-block: 92px;
+  padding-inline: max(6vw, calc((100vw - var(--content-max)) / 2));
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 68px;
+  /* minmax(0, …) lets the columns shrink below their widest content,
+     otherwise a long email address widens the page on small phones */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 72px;
   align-items: start;
-  padding: 92px 6vw;
 }
 
 /* ── Info ── */
-.infoTitle {
-  margin-bottom: 20px;
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 14px;
 }
 
-.infoText {
-  color: var(--text-mid);
-  line-height: 1.72;
-  font-size: 0.93rem;
-  font-weight: 300;
-  margin-bottom: 32px;
+.label::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: var(--color-accent);
 }
 
-.details {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.title {
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--color-primary);
+  margin-bottom: 18px;
+}
+
+.intro {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 40px;
+  max-width: 46ch;
+}
+
+/* <address> is italic by default */
+.address {
   font-style: normal;
 }
 
-.item {
+.details {
+  list-style: none;
   display: flex;
-  gap: 13px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.itemIcon {
-  width: 40px;
-  height: 40px;
-  background: var(--pill-bg);
-  border-radius: 4px;
+.detail {
   display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.detailIcon {
+  flex-shrink: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(31, 35, 112, 0.1);
+  color: var(--color-accent);
 }
 
-.itemLabel {
-  font-size: 0.68rem;
+.detailLabel {
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
   color: var(--text-low);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
-.itemVal {
-  font-size: 0.86rem;
-  color: var(--text);
-  font-weight: 500;
+.detailValue,
+.detailText {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--t);
-}
-.itemVal:hover {
-  color: var(--forest);
-}
-[data-theme="dark"] .itemVal:hover {
-  color: var(--gold-light);
+  width: fit-content;
+  max-width: 100%;
+  /* Long values such as the email address wrap instead of overflowing */
+  overflow-wrap: anywhere;
 }
 
-/* ── Form ── */
-.formWrap {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 34px;
+@media (hover: hover) {
+  .detailValue:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+}
+
+.detailText {
+  color: var(--text);
+}
+
+/* ── Form card ── */
+/* White card floating on the background image */
+.formCard {
+  background: var(--bg-alt);
+  border: 1px solid rgba(31, 35, 112, 0.08);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 24px 60px rgba(31, 35, 112, 0.14);
 }
 
 .formTitle {
-  font-family: var(--font-playfair), "Playfair Display", serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 24px;
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: 26px;
 }
 
-.formRow {
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 13px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
 }
 
-.group {
-  margin-bottom: 15px;
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.group label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-mid);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.group input,
-.group select,
-.group textarea {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 10px 12px;
-  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
-  font-size: 0.87rem;
+.fieldLabel {
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
   color: var(--text);
-  outline: none;
-  transition:
-    border-color var(--t),
-    box-shadow var(--t),
-    background var(--t);
-}
-.group select option {
-  background: var(--surface);
-  color: var(--text);
+  margin-bottom: 7px;
 }
 
-.group input:focus,
-.group select:focus,
-.group textarea:focus {
-  border-color: var(--forest);
-  box-shadow: 0 0 0 3px rgba(26, 74, 46, 0.1);
-}
-[data-theme="dark"] .group input:focus,
-[data-theme="dark"] .group select:focus,
-[data-theme="dark"] .group textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+.req {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-bold);
 }
 
-.group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.submit {
+.control {
   width: 100%;
-  background: var(--forest);
-  color: #f5f0e8;
-  border: none;
-  padding: 13px;
-  border-radius: 2px;
-  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+  /* Slight fill and a firmer border so fields stand out on the white card */
+  background: #fafafd;
+  border: 1px solid rgba(31, 35, 112, 0.18);
+  border-radius: var(--radius-md);
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--text);
   transition:
-    background var(--t),
-    transform 0.2s;
-  margin-top: 5px;
-}
-.submit:hover {
-  background: var(--forest-light);
-  transform: translateY(-1px);
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
 }
 
-/* ── disabled submit state ── */
-.submit:disabled {
-  background: var(--forest-light);
-  cursor: not-allowed;
-  transform: none;
+.control::placeholder {
+  color: var(--text-low);
   opacity: 0.8;
 }
 
-/* ── Required field indicator ── */
-.req {
-  color: #e53935;
-  margin-left: 2px;
+/* One clear navy focus ring. The global red outline is turned off here
+   because red is also the error colour on this form. */
+.control:focus,
+.control:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(31, 35, 112, 0.25);
 }
 
-.reqNote {
-  font-size: 0.72rem;
-  color: var(--text-low);
-  margin-top: 12px;
-  text-align: right;
-  margin-bottom: 0;
+textarea.control {
+  resize: vertical;
+  min-height: 110px;
 }
 
-/* ── Input error state ── */
-.inputError {
-  border-color: #e53935 !important;
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1) !important;
+.invalid,
+.invalid:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
 }
 
-/* ── Error message ── */
 .error {
-  display: block;
-  font-size: 0.72rem;
-  color: #e53935;
-  margin-top: 4px;
-  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--color-accent);
+  margin-top: 6px;
+  font-weight: var(--font-weight-medium);
 }
 
-/* ── Server error banner ── */
+/* Visually hidden but still in the DOM for bots */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ── Submit ── */
+.submit {
+  width: 100%;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 15px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    background var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .submit:hover:not(:disabled) {
+    background: var(--color-accent);
+    transform: translateY(-1px);
+  }
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.success,
 .serverError {
-  background: rgba(229, 57, 53, 0.08);
-  border: 1px solid rgba(229, 57, 53, 0.3);
-  color: #e53935;
-  padding: 10px 14px;
-  border-radius: 2px;
-  font-size: 0.84rem;
-  margin-bottom: 14px;
-  margin-top: 0;
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-medium);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
 }
 
-.item a.itemVal {
-  display: block;
+.success {
+  background: rgba(46, 125, 50, 0.08);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+  color: #2e7d32;
+}
+
+.serverError {
+  background: rgba(198, 40, 40, 0.07);
+  border: 1px solid rgba(198, 40, 40, 0.3);
+  color: var(--color-accent);
+}
+
+.note {
+  font-size: 0.76rem;
+  color: var(--text-low);
+  text-align: right;
 }
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .section {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
   }
 }
+
 @media (max-width: 640px) {
-  .formRow {
-    grid-template-columns: 1fr;
+  .section {
+    padding-block: 64px;
+    padding-inline: 16px;
+  }
+  .formCard {
+    padding: 26px 20px;
+  }
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control,
+  .submit {
+    transition: none;
+  }
+  .submit:hover:not(:disabled) {
+    transform: none;
   }
 }

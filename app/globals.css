@@ -1,49 +1,76 @@
 /* ══════════════════════════════════════════════
-   THEME TOKENS
+   DESIGN TOKENS
+   Single light theme. Change values here only.
 ══════════════════════════════════════════════ */
 :root {
-  --gold: #c9a84c;
-  --gold-light: #e0c070;
-  --gold-dark: #a07830;
-  --kraft: #b8935a;
-  --forest: #1a4a2e;
-  --forest-light: #2a6642;
-  --forest-dark: #0f2d1c;
-  --t: 0.25s ease;
-}
+  /* Brand colors */
+  --color-primary: #1f2370;
+  --color-primary-light: #2e3590;
+  --color-primary-dark: #151a52;
 
-[data-theme="light"] {
-  --bg: #f5f0e8;
-  --bg-alt: #fdfcfa;
-  --bg-muted: #ede5d5;
-  --surface: #fdfcfa;
-  --border: rgba(201, 168, 76, 0.22);
-  --border-hi: rgba(201, 168, 76, 0.5);
-  --text: #1a1a18;
-  --text-mid: #3d3d38;
-  --text-low: #7a7a70;
-  --nav-bg: rgba(245, 240, 232, 0.93);
-  --invert-bg: #0f2d1c;
-  --invert-text: #f5f0e8;
-  --pill-bg: rgba(26, 74, 46, 0.08);
-  --chip-bg: #ede5d5;
-}
+  --color-accent: #ec2427;
+  --color-accent-hover: #c4161d;
 
-[data-theme="dark"] {
-  --bg: #111610;
-  --bg-alt: #171e14;
-  --bg-muted: #1c2419;
-  --surface: #1f2a1b;
-  --border: rgba(201, 168, 76, 0.14);
-  --border-hi: rgba(201, 168, 76, 0.38);
-  --text: #e8e4da;
-  --text-mid: #b0aa9e;
-  --text-low: #716d65;
-  --nav-bg: rgba(17, 22, 16, 0.94);
-  --invert-bg: #0b1209;
-  --invert-text: #e8e4da;
-  --pill-bg: rgba(201, 168, 76, 0.1);
-  --chip-bg: rgba(201, 168, 76, 0.08);
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-alt: #ededed;
+  --surface: #ffffff;
+
+  /* Text */
+  --text: #231f20;
+  --text-mid: #41435a;
+  --text-low: #6e7088;
+
+  /* Borders */
+  --border: rgba(41, 38, 99, 0.12);
+  --border-strong: rgba(41, 38, 99, 0.25);
+
+  /* Top bar */
+  --topbar-bg: #ededed;
+  --topbar-text: #292663;
+  --topbar-font-size: 16px;
+  --topbar-h: 36px;
+
+  /* Navbar */
+  --navbar-h: 81px;
+
+  /* Typography */
+  /* --font-poppins is set by next/font on <html> and includes a size-matched
+     fallback, so text does not jump when the web font finishes loading */
+  --font-sans: var(--font-poppins), sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Layout */
+  --content-max: 1280px;
+  --section-padding-y: 92px;
+  --section-padding-x: 6vw;
+
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 8px;
+  --radius-pill: 100px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 20px rgba(35, 31, 32, 0.1);
+  --shadow-accent: 0 6px 20px rgba(236, 36, 39, 0.3);
+
+  /* Motion */
+  --duration-fast: 0.2s;
+  --duration-base: 0.25s;
+  --duration-slow: 0.62s;
+  --ease-standard: ease;
+
+  /* Z-index */
+  --z-navbar: 200;
+  --z-topbar: 1001;
+  --z-skip-link: 9999;
+
+  /* Only a light theme exists: keep form controls and scrollbars light
+     even when the visitor's device is in dark mode */
+  color-scheme: light;
 }
 
 /* ══════════════════════════════════════════════
@@ -59,171 +86,108 @@
 
 html {
   scroll-behavior: smooth;
+  /* The top bar and navbar are fixed, so links like /#products would
+     otherwise land with the section heading hidden underneath them */
+  scroll-padding-top: calc(var(--topbar-h) + var(--navbar-h));
+  /* Stop iOS from enlarging text when the phone is turned sideways */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-regular);
   background: var(--bg);
   color: var(--text);
+  /* hidden on body is applied to the whole viewport, so nothing wider
+     than the screen can create a sideways scroll or a white strip */
   overflow-x: hidden;
-  transition:
-    background var(--t),
-    color var(--t);
+  /* Break long words, URLs and email addresses only when they would
+     otherwise overflow their box on narrow screens */
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
 }
 
-body::before {
-  content: "";
+/* Keyboard focus ring for anything a module does not style itself */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+section {
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+/* Skip link: the first thing keyboard users reach on every page,
+   hidden above the screen until it receives focus */
+.skipLink {
   position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.32;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  top: -100px;
+  left: var(--section-padding-x);
+  z-index: var(--z-skip-link);
+  padding: 8px 16px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-standard);
+}
+.skipLink:focus {
+  top: 0;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* ══════════════════════════════════════════════
-   SHARED UTILITIES
+   SCROLLBAR
 ══════════════════════════════════════════════ */
-.sectionLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  margin-bottom: 13px;
-}
-
-[data-theme="dark"] .sectionLabel {
-  color: var(--gold-light);
-}
-
-.sectionLabel::before {
-  content: "";
-  width: 26px;
-  height: 1.5px;
-  background: var(--gold);
-}
-
-.sectionTitle {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(1.85rem, 3vw, 2.7rem);
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.btnPrimary {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--forest);
-  color: #f5f0e8;
-  text-decoration: none;
-  padding: 13px 28px;
-  border-radius: 2px;
-  font-size: 0.87rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  transition:
-    background var(--t),
-    transform 0.2s,
-    box-shadow var(--t);
-  box-shadow: 0 4px 20px rgba(26, 74, 46, 0.28);
-  cursor: pointer;
-  border: none;
-  font-family: "DM Sans", sans-serif;
-}
-
-.btnPrimary:hover {
-  background: var(--forest-light);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(26, 74, 46, 0.32);
-}
-
-.btnSecondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1.5px solid var(--forest);
-  color: var(--forest);
-  text-decoration: none;
-  padding: 12px 26px;
-  border-radius: 2px;
-  font-size: 0.87rem;
-  font-weight: 500;
-  transition:
-    background var(--t),
-    color var(--t),
-    border-color var(--t);
-  cursor: pointer;
-  background: transparent;
-  font-family: "DM Sans", sans-serif;
-}
-
-[data-theme="dark"] .btnSecondary {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-.btnSecondary:hover {
-  background: var(--forest);
-  color: #f5f0e8;
-  border-color: var(--forest);
-}
-
-[data-theme="dark"] .btnSecondary:hover {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #111;
-}
-/* ══════════════════════════════════════════════
-   CUSTOM SCROLLBAR
-══════════════════════════════════════════════ */
-
-/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 100px;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--gold) var(--bg);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gold); /* same color — stops any browser hover shift */
+  scrollbar-color: var(--color-primary) var(--bg);
 }
 
 /* ══════════════════════════════════════════════
    SCROLL REVEAL
 ══════════════════════════════════════════════ */
-.reveal {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 0.62s ease,
-    transform 0.62s ease;
+/* Only hide content when JavaScript can reveal it again. Without this,
+   anything marked .reveal stays invisible if scripts fail or are blocked. */
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity var(--duration-slow) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-section {
-  padding: 92px 6vw;
+/* ══════════════════════════════════════════════
+   REDUCED MOTION
+══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

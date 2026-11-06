@@ -1,134 +1,61 @@
-import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
-import Script from "next/script";
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-import { BASE_URL, COMPANY } from "@/lib/config";
+import { BASE_URL, COMPANY, THEME_COLOR } from "@/lib/config";
+import { DEFAULT_OG_IMAGE, SITE_TITLE } from "@/lib/seo";
+import { PRODUCTS_LIST } from "@/data/product";
+import HashScroll from "@/components/layout/HashScroll";
+import Analytics from "@/components/layout/Analytics";
 
-const playfair = Playfair_Display({
+const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "900"],
-  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
+const SITE_DESCRIPTION = COMPANY.description;
 
+// Set only for production builds, so local work is not counted. Vercel preview
+// deployments are skipped too.
+const GA_ID =
+  process.env.VERCEL_ENV === "preview"
+    ? undefined
+    : process.env.NEXT_PUBLIC_GA_ID;
+
+export const viewport: Viewport = {
+  themeColor: THEME_COLOR,
+  colorScheme: "light",
+};
+
+// Icons and the web manifest come from the file conventions in app/
+// (favicon.ico, icon.png, apple-icon.png, manifest.ts), so they are not
+// listed here. No canonical either: each page sets its own, otherwise
+// every page would inherit "/" and point search engines at the homepage.
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
-    template: "%s | Mudit Paper Company",
+    default: SITE_TITLE,
+    template: `%s | ${COMPANY.name}`,
   },
-  description:
-    "Food-grade paper trader in Kanpur, India. Greaseproof paper, glassine paper, printed food paper and ladoo katori cup liners. Bulk supply across India.",
-  keywords: [
-    // ── Core products ──
-    "food grade paper",
-    "greaseproof paper",
-    "glassine paper",
-    "printed greaseproof paper",
-    "printed glassine paper",
-    "ladoo katori",
-    "ladoo katori paper",
-    "ladoo katori cup liner",
-    "muffin cup liner",
-    "muffin liner paper",
-    "food safe packaging paper",
-
-    // ── Printed paper specific ──
-    "single colour printed food paper",
-    "multicolour printed food paper",
-    "custom printed greaseproof paper",
-    "custom printed glassine paper",
-    "printed food grade paper India",
-    "single to multicolour food paper",
-
-    // ── Ladoo katori specific ──
-    "ladoo katori supplier",
-    "ladoo katori manufacturer",
-    "paper katori for sweets",
-    "mithai katori paper",
-    "sweet cup liner India",
-    "plain ladoo katori",
-    "printed ladoo katori",
-
-    // ── OGR / Oil specific ──
-    "OGR paper",
-    "oil greaseproof paper",
-    "oil grease resistant paper",
-    "oil resistant food paper",
-    "OGR greaseproof paper",
-
-    // ── Glassine specific ──
-    "glassine paper",
-    "glassine paper India",
-    "1S glassine paper",
-    "2S glassine paper",
-    "one side smooth glassine paper",
-    "two side smooth glassine paper",
-    "single side smooth paper",
-    "double side smooth paper",
-    "1S smooth paper",
-    "2S smooth paper",
-    "glassine paper supplier India",
-    "glassine paper wholesaler",
-
-    // ── Business type ──
-    "food grade paper trader",
-    "food grade paper wholesaler",
-    "paper trader Kanpur",
-    "paper wholesaler Kanpur",
-    "food paper supplier India",
-    "bulk food grade paper",
-    "wholesale greaseproof paper India",
-
-    // ── Product specific ──
-    "greaseproof paper supplier",
-    "glassine paper India",
-    "bakery paper",
-    "sweet shop paper",
-
-    // ── Location ──
-    "food grade paper Kanpur",
-    "food grade paper Uttar Pradesh",
-    "paper supplier Uttar Pradesh",
-    "food packaging paper UP",
-    "paper trader UP India",
-  ],
+  description: SITE_DESCRIPTION,
+  applicationName: COMPANY.name,
   authors: [{ name: COMPANY.name, url: BASE_URL }],
   creator: COMPANY.name,
   publisher: COMPANY.name,
-  alternates: {
-    canonical: BASE_URL,
-  },
+  category: "business",
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: BASE_URL,
     siteName: COMPANY.name,
-    title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
-    description:
-      "Mudit Paper Company — food-grade paper trader in Kanpur. Greaseproof, glassine, printed paper and ladoo katori liners. Bulk orders welcome.",
-    images: [
-      {
-        url: `${BASE_URL}/og-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Mudit Paper Company – Food Grade Paper Trader",
-      },
-    ],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
+  // X falls back to the Open Graph title, description and image
   twitter: {
     card: "summary_large_image",
-    title: "Mudit Paper Company – Food Grade Paper Trader",
-    description:
-      "Food-grade paper trader in Kanpur — greaseproof, glassine, printed paper & ladoo katori liners. Bulk supply across India.",
-    images: [`${BASE_URL}/og-image.jpg`],
   },
   robots: {
     index: true,
@@ -136,81 +63,120 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
-  verification: {
-    google: "5WMdyzf4EmpjYXxrxzpynMUeQZy-ga_L7VivgA1d24U",
+  // Search Console code from the environment. Not a secret (it is public in
+  // the page HTML), but it must be set wherever the site is built, or the meta
+  // tag disappears and Google can lose verification.
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
+  }),
+  appleWebApp: {
+    title: COMPANY.shortName,
   },
 };
 
-// ── Structured Data ───────────────────────────────────────────────────────────
+// ── Structured data ───────────────────────────────────────────────────────────
+// The single definition of the business entity, rendered on every page.
+// Other pages reference it by @id instead of redefining it.
+const BUSINESS_ID = `${BASE_URL}/#business`;
+const WEBSITE_ID = `${BASE_URL}/#website`;
+
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": ["Organization", "WholesaleStore"],
-  name: COMPANY.name,
-  url: BASE_URL,
-  logo: `${BASE_URL}/logo.png`,
-  description:
-    "Premium food-grade paper trader in Kanpur, India. Supplying greaseproof paper, glassine paper, printed food paper, and ladoo katori cup liners.",
-  address: {
-    addressLocality: COMPANY.city,
-    addressRegion: COMPANY.state,
-    postalCode: COMPANY.postalCode,
-    addressCountry: COMPANY.country,
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: COMPANY.phone,
-    email: COMPANY.email,
-    contactType: "sales",
-    areaServed: "IN",
-    availableLanguage: ["English", "Hindi"],
-  },
-  sameAs: [...COMPANY.social, BASE_URL],
+  "@graph": [
+    {
+      // WholesaleStore is a LocalBusiness and an Organization
+      "@type": "WholesaleStore",
+      "@id": BUSINESS_ID,
+      name: COMPANY.name,
+      alternateName: COMPANY.shortName,
+      url: BASE_URL,
+      logo: `${BASE_URL}/logo.webp`,
+      image: `${BASE_URL}/og-image.jpg`,
+      description: SITE_DESCRIPTION,
+      foundingDate: String(COMPANY.foundedYear),
+      telephone: COMPANY.phone,
+      email: COMPANY.email,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: COMPANY.city,
+        addressRegion: COMPANY.state,
+        postalCode: COMPANY.postalCode,
+        addressCountry: COMPANY.country,
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: COMPANY.geo.latitude,
+        longitude: COMPANY.geo.longitude,
+      },
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [...COMPANY.hours.days],
+        opens: COMPANY.hours.opens,
+        closes: COMPANY.hours.closes,
+      },
+      areaServed: { "@type": "Country", name: "India" },
+      // Helps search engines and AI tools link the business to its products
+      knowsAbout: PRODUCTS_LIST.map(({ label }) => label),
+      currenciesAccepted: "INR",
+      paymentAccepted: "Cash, Bank Transfer, UPI",
+      contactPoint: COMPANY.phones.map((telephone) => ({
+        "@type": "ContactPoint",
+        telephone,
+        email: COMPANY.email,
+        contactType: "sales",
+        areaServed: "IN",
+        availableLanguage: ["English", "Hindi"],
+      })),
+      sameAs: [
+        ...Object.values(COMPANY.social),
+        ...Object.values(COMPANY.marketplaces),
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": WEBSITE_ID,
+      url: BASE_URL,
+      name: COMPANY.name,
+      alternateName: COMPANY.shortName,
+      inLanguage: "en-IN",
+      publisher: { "@id": BUSINESS_ID },
+    },
+  ],
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
-      lang="en"
-      data-theme="light"
+      lang="en-IN"
+      className={poppins.variable}
+      // Keeps the smooth scrolling from globals.css for in-page links, but
+      // new pages open at the top instantly instead of sliding up
       data-scroll-behavior="smooth"
-      suppressHydrationWarning
     >
       <head>
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
-          // dangerouslySetInnerHTML={{
-          //   __html: `(function(){try{var s=localStorage.getItem('mpc-theme')||'light';var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s==='system'?(d?'dark':'light'):s);}catch(e){}})();`,
-          // }}
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var s=localStorage.getItem('mpc-theme');document.documentElement.setAttribute('data-theme',s==='dark'?'dark':'light');})();`,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
+            // Escape "<" so data can never close the script tag early
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
         />
-        <meta
-          name="apple-mobile-web-app-title"
-          content="Mudit Paper Company"
-        />
       </head>
-      <body
-        className={`${playfair.variable} ${dmSans.variable}`}
-        suppressHydrationWarning
-      >
+      <body>
+        <a
+          href="#main-content"
+          className="skipLink"
+        >
+          Skip to main content
+        </a>
         {children}
+        <HashScroll />
+        {GA_ID && <Analytics gaId={GA_ID} />}
       </body>
     </html>
   );

@@ -3,32 +3,47 @@ import styles from "./Marquee.module.css";
 const ITEMS = [
   "Food Grade Paper",
   "Greaseproof Paper",
+  "One Side OGR Paper",
   "Glassine Paper",
-  "Printed Food Paper",
+  "MG Poster Paper",
+  "Bleached Kraft Paper",
   "Ladoo Katori Liner",
-  "FSSAI Certified",
-  "Made in India",
-  "Eco-Friendly",
+  "OGR Paper",
+  "Butter Paper",
 ] as const;
 
 export default function Marquee() {
-  const doubled = [...ITEMS, ...ITEMS];
-
   return (
-    <div
-      className={styles.wrapper}
-      aria-hidden="true"
-      role="presentation"
-    >
+    <div className={styles.marquee}>
       <div className={styles.track}>
-        {doubled.map((item, i) => (
-          <span
-            key={i}
-            className={styles.item}
-          >
-            {item} <span className={styles.sep}>✦</span>
-          </span>
-        ))}
+        <ul
+          className={styles.list}
+          aria-label="Paper we supply"
+        >
+          {ITEMS.map((item) => (
+            <li
+              key={item}
+              className={styles.item}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        {/* Identical copy for a seamless loop, hidden from assistive tech */}
+        <ul
+          className={`${styles.list} ${styles.copy}`}
+          aria-hidden="true"
+        >
+          {ITEMS.map((item) => (
+            <li
+              key={item}
+              className={styles.item}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

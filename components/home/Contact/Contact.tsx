@@ -1,396 +1,181 @@
-"use client";
-
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import styles from "./Contact.module.css";
+import ContactForm from "./ContactForm";
 import { COMPANY } from "@/lib/config";
+import { formatHours, formatPhone, mapsUrl } from "@/lib/format";
 
-// ── Validation schema ─────────────────────────────────────────────────────────
-const contactSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, "First name must be at least 2 characters")
-    .max(50, "First name too long"),
-  lastName: z.string().max(50, "Last name too long").optional(),
-  phone: z
-    .string()
-    .regex(/^[6-9][0-9]{9}$/, "Enter a valid 10-digit mobile number")
-    .optional()
-    .or(z.literal("")),
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Enter a valid email address"),
-  businessType: z.string().min(1, "Please select your business type"),
-  product: z.string().min(1, "Please select a product"),
-  message: z
-    .string()
-    .max(1000, "Message too long — max 1000 characters")
-    .optional(),
-});
+// ── Icons ─────────────────────────────────────────────────────────────────────
+const iconProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.6,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+  focusable: false,
+};
 
-type ContactFormData = z.infer<typeof contactSchema>;
+function PinIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      {...iconProps}
+    >
+      <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+      <circle
+        cx="12"
+        cy="9.5"
+        r="2.5"
+      />
+    </svg>
+  );
+}
 
-// ── Static data ───────────────────────────────────────────────────────────────
-const CONTACT_ITEMS = [
-  {
-    icon: "📍",
-    label: "Address",
-    val: COMPANY.address,
-    href: "https://maps.google.com/?q=Mudit+Paper+Company+Kanpur+India",
-    ariaLabel: `View ${COMPANY.address} on Google Maps`,
-    phones: null,
-  },
-  {
-    icon: "📞",
-    label: "Phone",
-    phones: COMPANY.phones,
-    val: null,
-    href: null,
-    ariaLabel: null,
-  },
-  {
-    icon: "✉️",
-    label: "Email",
-    val: COMPANY.email,
-    href: `mailto:${COMPANY.email}`,
-    ariaLabel: `Email us at ${COMPANY.email}`,
-    phones: null,
-  },
-  {
-    icon: "🕐",
-    label: "Business Hours",
-    val: "Mon–Sat, 9:00 AM – 6:00 PM IST",
-    href: null,
-    ariaLabel: null,
-    phones: null,
-  },
-] as const;
+function PhoneIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      {...iconProps}
+    >
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
+    </svg>
+  );
+}
 
-const BUSINESS_TYPES = [
-  "Bakery / Patisserie",
-  "Restaurant / QSR",
-  "Food Processing Company",
-  "Sweet Shop / Confectionery",
-  "FMCG / Retail Brand",
-  "Other",
-] as const;
+function MailIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      {...iconProps}
+    >
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2"
+      />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
 
-const PRODUCTS = [
-  "Greaseproof Paper",
-  "Glassine Paper",
-  "Printed Greaseproof / Glassine",
-  "Golden Foil Laminated Paper",
-  "Ladoo Katori / Muffin Cup Liner",
-  "Multiple Products",
-] as const;
+function ClockIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      {...iconProps}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+      />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
 
+// ── Component ─────────────────────────────────────────────────────────────────
+// Server component: the address, phone, email and hours are plain HTML and
+// match the business structured data in the root layout. Only the form
+// (ContactForm) runs in the browser.
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-  const [serverError, setServerError] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-  });
-
-  const onSubmit = async (data: ContactFormData) => {
-    setServerError(false);
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (res.ok) {
-        setSubmitted(true);
-        reset();
-        setTimeout(() => setSubmitted(false), 5000);
-      } else {
-        setServerError(true);
-      }
-    } catch {
-      setServerError(true);
-    }
-  };
-
   return (
     <section
       className={styles.section}
       id="contact"
       aria-labelledby="contact-title"
     >
-      {/* Info */}
-      <div className={styles.info}>
-        <div className="sectionLabel reveal">Get In Touch</div>
-        <h2
-          id="contact-title"
-          className={`sectionTitle reveal ${styles.infoTitle}`}
-        >
-          Request a Quote or
-          <br />
-          Sample Today
-        </h2>
-        <p className={`${styles.infoText} reveal`}>
-          Whether you need a small trial order or a large-volume supply
-          agreement, we&apos;re ready to assist. We respond within 24 hours.
-        </p>
+      {/* ── Info ── */}
+      <div>
+        <header className="reveal">
+          <p className={styles.label}>Get in touch</p>
+          <h2
+            id="contact-title"
+            className={styles.title}
+          >
+            Request a Quote or Sample
+          </h2>
+          <p className={styles.intro}>
+            Whether you need a trial order or a regular supply, share your
+            requirements and we will get back to you.
+          </p>
+        </header>
 
-        <address className={`${styles.details} reveal`}>
-          {CONTACT_ITEMS.map(
-            ({ icon, label, val, href, ariaLabel, phones }) => (
-              <div
-                key={label}
-                className={styles.item}
-              >
-                <div
-                  className={styles.itemIcon}
-                  role="img"
-                  aria-label={label}
+        <address className={`${styles.address} reveal`}>
+          <ul className={styles.details}>
+            <li className={styles.detail}>
+              <span className={styles.detailIcon}>
+                <PinIcon />
+              </span>
+              <div>
+                <p className={styles.detailLabel}>Address</p>
+                <a
+                  href={mapsUrl(`${COMPANY.name}, ${COMPANY.city}`)}
+                  className={styles.detailValue}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {icon}
-                </div>
-                <div>
-                  <div className={styles.itemLabel}>{label}</div>
-
-                  {phones ? (
-                    phones.map((num) => (
-                      <a
-                        key={num}
-                        href={`tel:${num}`}
-                        className={styles.itemVal}
-                        aria-label={`Call us at ${num}`}
-                      >
-                        {num}
-                      </a>
-                    ))
-                  ) : href ? (
-                    <a
-                      href={href}
-                      className={styles.itemVal}
-                      aria-label={ariaLabel ?? undefined}
-                      target={href.startsWith("http") ? "_blank" : undefined}
-                      rel={
-                        href.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                    >
-                      {val}
-                    </a>
-                  ) : (
-                    <div className={styles.itemVal}>{val}</div>
-                  )}
-                </div>
+                  {COMPANY.address}
+                </a>
               </div>
-            ),
-          )}
+            </li>
+
+            <li className={styles.detail}>
+              <span className={styles.detailIcon}>
+                <PhoneIcon />
+              </span>
+              <div>
+                <p className={styles.detailLabel}>Phone</p>
+                {COMPANY.phones.map((num) => (
+                  <a
+                    key={num}
+                    href={`tel:${num}`}
+                    className={styles.detailValue}
+                  >
+                    {formatPhone(num)}
+                  </a>
+                ))}
+              </div>
+            </li>
+
+            <li className={styles.detail}>
+              <span className={styles.detailIcon}>
+                <MailIcon />
+              </span>
+              <div>
+                <p className={styles.detailLabel}>Email</p>
+                <a
+                  href={`mailto:${COMPANY.email}`}
+                  className={styles.detailValue}
+                >
+                  {COMPANY.email}
+                </a>
+              </div>
+            </li>
+
+            <li className={styles.detail}>
+              <span className={styles.detailIcon}>
+                <ClockIcon />
+              </span>
+              <div>
+                <p className={styles.detailLabel}>Business hours</p>
+                <p className={styles.detailText}>
+                  {formatHours(COMPANY.hours)}
+                </p>
+              </div>
+            </li>
+          </ul>
         </address>
       </div>
 
-      {/* Form */}
-      <div className={`${styles.formWrap} reveal`}>
-        <div className={styles.formTitle}>Send Us a Message</div>
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          aria-label="Contact form"
-        >
-          <div className={styles.formRow}>
-            <div className={styles.group}>
-              <label htmlFor="firstName">
-                First Name <span className={styles.req}>*</span>
-              </label>
-              <input
-                id="firstName"
-                type="text"
-                placeholder="Ramesh"
-                autoComplete="given-name"
-                className={errors.firstName ? styles.inputError : ""}
-                {...register("firstName")}
-              />
-              {errors.firstName && (
-                <span
-                  className={styles.error}
-                  role="alert"
-                >
-                  {errors.firstName.message}
-                </span>
-              )}
-            </div>
-
-            <div className={styles.group}>
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                id="lastName"
-                type="text"
-                placeholder="Sharma"
-                autoComplete="family-name"
-                {...register("lastName")}
-              />
-            </div>
-          </div>
-
-          <div className={styles.formRow}>
-            <div className={styles.group}>
-              <label htmlFor="phone">Phone</label>
-              <input
-                id="phone"
-                type="tel"
-                placeholder="98XXX XXXXX"
-                autoComplete="tel"
-                className={errors.phone ? styles.inputError : ""}
-                {...register("phone")}
-              />
-              {errors.phone && (
-                <span
-                  className={styles.error}
-                  role="alert"
-                >
-                  {errors.phone.message}
-                </span>
-              )}
-            </div>
-
-            <div className={styles.group}>
-              <label htmlFor="email">
-                Email <span className={styles.req}>*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="you@company.com"
-                autoComplete="email"
-                className={errors.email ? styles.inputError : ""}
-                {...register("email")}
-              />
-              {errors.email && (
-                <span
-                  className={styles.error}
-                  role="alert"
-                >
-                  {errors.email.message}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.group}>
-            <label htmlFor="businessType">
-              Business Type <span className={styles.req}>*</span>
-            </label>
-            <select
-              id="businessType"
-              className={errors.businessType ? styles.inputError : ""}
-              {...register("businessType")}
-              defaultValue=""
-            >
-              <option
-                value=""
-                disabled
-              >
-                Select your business type
-              </option>
-              {BUSINESS_TYPES.map((t) => (
-                <option
-                  key={t}
-                  value={t}
-                >
-                  {t}
-                </option>
-              ))}
-            </select>
-            {errors.businessType && (
-              <span
-                className={styles.error}
-                role="alert"
-              >
-                {errors.businessType.message}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.group}>
-            <label htmlFor="product">
-              Product of Interest <span className={styles.req}>*</span>
-            </label>
-            <select
-              id="product"
-              className={errors.product ? styles.inputError : ""}
-              {...register("product")}
-              defaultValue=""
-            >
-              <option
-                value=""
-                disabled
-              >
-                Select a product
-              </option>
-              {PRODUCTS.map((p) => (
-                <option
-                  key={p}
-                  value={p}
-                >
-                  {p}
-                </option>
-              ))}
-            </select>
-            {errors.product && (
-              <span
-                className={styles.error}
-                role="alert"
-              >
-                {errors.product.message}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.group}>
-            <label htmlFor="message">Message / Requirements</label>
-            <textarea
-              id="message"
-              placeholder="Tell us about your quantity needs, specifications, or any questions..."
-              rows={4}
-              {...register("message")}
-            />
-          </div>
-
-          {/* Server error */}
-          {serverError && (
-            <p
-              className={styles.serverError}
-              role="alert"
-            >
-              Something went wrong. Please try again or call us directly.
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className={styles.submit}
-            disabled={isSubmitting || submitted}
-          >
-            {isSubmitting
-              ? "Sending..."
-              : submitted
-                ? "✓ Enquiry Sent!"
-                : "Send Enquiry →"}
-          </button>
-
-          <p className={styles.reqNote}>
-            <span className={styles.req}>*</span> Required fields
-          </p>
-        </form>
-      </div>
+      {/* ── Form ── */}
+      <ContactForm />
     </section>
   );
 }

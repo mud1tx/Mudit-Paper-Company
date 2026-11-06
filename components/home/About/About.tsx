@@ -1,103 +1,201 @@
 import Image from "next/image";
 import styles from "./About.module.css";
+import { COMPANY } from "@/lib/config";
+
+type IconProps = { className?: string };
+
+const svgProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.6,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+  focusable: false,
+};
+
+function LayersIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      {...svgProps}
+    >
+      <path d="M12 2 2 7l10 5 10-5-10-5z" />
+      <path d="m2 12 10 5 10-5" />
+      <path d="m2 17 10 5 10-5" />
+    </svg>
+  );
+}
+
+function ClipboardCheckIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      {...svgProps}
+    >
+      <rect
+        x="6"
+        y="4"
+        width="12"
+        height="17"
+        rx="2"
+      />
+      <path d="M9 4V3h6v1" />
+      <path d="m9 13 2 2 4-4" />
+    </svg>
+  );
+}
+
+function TruckIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      {...svgProps}
+    >
+      <path d="M2 6h11v10H2z" />
+      <path d="M13 10h4l3 3v3h-7" />
+      <circle
+        cx="6"
+        cy="18"
+        r="2"
+      />
+      <circle
+        cx="17"
+        cy="18"
+        r="2"
+      />
+    </svg>
+  );
+}
+
+function SlidersIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      {...svgProps}
+    >
+      <path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h12M20 18h0" />
+      <circle
+        cx="16"
+        cy="6"
+        r="2"
+      />
+      <circle
+        cx="8"
+        cy="12"
+        r="2"
+      />
+      <circle
+        cx="18"
+        cy="18"
+        r="2"
+      />
+    </svg>
+  );
+}
 
 const PILLARS = [
   {
-    icon: "🌿",
-    title: "Eco-Conscious",
-    text: "Sustainably sourced, recyclable & biodegradable options",
+    key: "specialty",
+    title: "Specialty Paper Range",
+    text: "greaseproof (OGR) paper, One side OGR paper, MG poster paper, bleached kraft and glassine grades for packaging and converting applications.",
+    Icon: LayersIcon,
   },
   {
-    icon: "🔬",
-    title: "Lab Tested",
-    text: "Every batch tested for food-safe compliance",
+    key: "quality",
+    title: "Quality-Focused Sourcing",
+    text: "Paper sourced against specified GSM, grade and customer requirements.",
+    Icon: ClipboardCheckIcon,
   },
   {
-    icon: "🚚",
+    key: "supply",
     title: "Pan-India Supply",
-    text: "Reliable delivery across all major cities",
+    text: "Serving paper converters, packaging manufacturers and industrial buyers across India.",
+    Icon: TruckIcon,
   },
   {
-    icon: "🤝",
-    title: "Custom Orders",
-    text: "Bespoke sizes, weights & branding available",
+    key: "custom",
+    title: "Flexible Specifications",
+    text: "Available in a range of GSMs and sheet sizes to suit your specific requirements.",
+    Icon: SlidersIcon,
   },
 ] as const;
 
 export default function About() {
+  const yearsInBusiness = Math.max(
+    0,
+    new Date().getFullYear() - COMPANY.foundedYear,
+  );
+
   return (
     <section
-      className={styles.about}
       id="about"
+      className={styles.about}
       aria-labelledby="about-title"
     >
-      {/* Visual */}
-      <div className={`${styles.visual} reveal`}>
+      <div className={styles.visual}>
         <div className={styles.imgContainer}>
           <Image
             src="/images/about.webp"
-            alt="Mudit Paper Company — Food Grade Paper Products Kanpur"
+            alt="Printed food grade paper sheets, sweet boxes and ladoos in paper cup liners"
             fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
+            sizes="(max-width: 1280px) 45vw, 600px"
             className={styles.aboutImg}
-            style={{ objectFit: "cover" }}
+          />
+          <div
+            className={styles.pattern}
+            aria-hidden="true"
           />
         </div>
-        <div
-          className={styles.badge}
-          aria-label="15 plus years of excellence"
-        >
-          <div
-            className={styles.bigNum}
-            aria-hidden="true"
-          >
-            15+
-          </div>
-          <p>Years of Excellence</p>
+
+        <div className={styles.badge}>
+          <span className={styles.bigNum}>{yearsInBusiness}+</span>
+          <p>Years of experience</p>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="reveal">
-        <div className="sectionLabel">Who We Are</div>
+      <div>
+        <span className={styles.sectionLabel}>About Us</span>
         <h2
           id="about-title"
-          className="sectionTitle"
-          style={{ marginBottom: "20px" }}
+          className={styles.sectionTitle}
         >
-          Trusted Partner for Food-Safe Paper Solutions
+          Trusted Partner for Paper Solutions
         </h2>
         <p className={styles.text}>
-          Mudit Paper Company has been a cornerstone supplier of food-grade
-          paper products for over a decade. Based in Kanpur, we serve bakeries,
-          QSR chains, food processors, sweet shops, and large FMCG manufacturers
-          across North India and beyond.
+          {COMPANY.name} specializes in sourcing and supplying quality specialty
+          papers to packaging manufacturers, paper converters, and businesses
+          across India.
         </p>
         <p className={styles.text}>
-          Every product we trade meets strict food safety standards — because
-          when paper touches food, there&apos;s no room for compromise. We
-          source only from mills with certified, verified food-contact
-          compliance.
+          Our product range includes greaseproof (OGR) paper, One Side OGR
+          paper, MG poster paper, bleached kraft paper and glassine paper
+          serving diverse industrial and packaging applications. We focus on
+          dependable sourcing, consistent quality, and responsive service to
+          help our customers meet their business requirements.
+        </p>
+        <p className={styles.text}>
+          <strong>
+            Our commitment is simple: quality materials, reliable supply, and
+            lasting business relationships.
+          </strong>
         </p>
 
-        <div className={styles.pillars}>
-          {PILLARS.map(({ icon, title, text }) => (
-            <div
-              key={title}
+        <ul className={styles.pillars}>
+          {PILLARS.map(({ key, title, text, Icon }) => (
+            <li
+              key={key}
               className={styles.pillar}
             >
-              <div
-                className={styles.pillarIcon}
-                role="img"
-                aria-label={title}
-              >
-                {icon}
-              </div>
+              <span className={styles.pillarIcon}>
+                <Icon />
+              </span>
               <h3 className={styles.pillarTitle}>{title}</h3>
               <p className={styles.pillarText}>{text}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

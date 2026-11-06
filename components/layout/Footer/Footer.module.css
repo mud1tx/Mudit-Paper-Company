@@ -1,198 +1,252 @@
 .footer {
-  background: var(--forest-dark);
-  color: #e8e4da;
-  padding: 62px 6vw 30px;
-}
-[data-theme="dark"] .footer {
-  background: #0a0f08;
+  background: var(--color-primary);
+  color: rgba(255, 255, 255, 0.78);
+  padding: 72px max(6vw, calc((100vw - var(--content-max)) / 2)) 28px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  /* minmax(0, …) stops the long email address from widening the page */
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+      0,
+      1.3fr
+    );
   gap: 48px;
-  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* ── Brand ── */
 .logoLink {
   display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  margin-bottom: 13px;
+  margin-bottom: 18px;
 }
+
 .logo {
-  height: 50px;
+  height: 75px;
   width: auto;
   object-fit: contain;
   object-position: left center;
-  filter: brightness(0) invert(1);
+  filter: brightness(1) invert(1);
+  mix-blend-mode: screen;
 }
 
 .desc {
-  font-size: 0.81rem;
-  color: rgba(245, 240, 232, 0.65);
+  font-size: 0.9rem;
   line-height: 1.7;
-  font-weight: 300;
-  max-width: 265px;
+  max-width: 300px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .socials {
+  list-style: none;
   display: flex;
-  gap: 8px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 0;
 }
 
-.socialBtn {
-  width: 33px;
-  height: 33px;
-  border: 1px solid rgba(201, 168, 76, 0.35);
-  border-radius: 50%;
-  display: flex;
+.socialLink {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  color: rgba(245, 240, 232, 0.7);
-  text-decoration: none;
-  transition:
-    border-color 0.2s,
-    color 0.2s;
-}
-.socialBtn:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-/* Instagram — always gradient */
-.socialBtn[title="Instagram"] {
-  background: linear-gradient(
-    45deg,
-    #f09433,
-    #e6683c,
-    #dc2743,
-    #cc2366,
-    #bc1888
-  );
-  border-color: transparent;
-  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #ffffff;
+  transition: background var(--duration-base) var(--ease-standard);
 }
 
-/* Facebook — always blue */
-.socialBtn[title="Facebook"] {
-  background: #1877f2;
-  border-color: transparent;
-  color: #fff;
+/* White focus rings: red on navy is too low-contrast to see */
+.socialLink:focus-visible,
+.marketTile:focus-visible,
+.links a:focus-visible,
+.contact a:focus-visible,
+.legal a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
-/* WhatsApp — always green */
-.socialBtn[title="WhatsApp"] {
-  background: #25d366;
-  border-color: transparent;
-  color: #fff;
+@media (hover: hover) {
+  .socialLink:hover {
+    background: var(--color-accent-hover);
+  }
 }
 
-/* LinkedIn — always blue */
-.socialBtn[title="LinkedIn"] {
-  background: #0a66c2;
-  border-color: transparent;
-  color: #fff;
-}
-
-/* ── Columns ── */
-.colTitle {
-  font-weight: 600;
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
+/* ── Column headings ── */
+.heading {
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 16px;
+  color: #ffffff;
+  margin-bottom: 18px;
 }
 
-.contactCol {
+.links,
+.contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* <address> is italic by default */
+.address {
   font-style: normal;
 }
 
-.links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.links a {
+.links a,
+.contact a {
+  /* inline-block + padding gives each link a 24px+ tap target */
+  display: inline-block;
+  padding-block: 2px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  font-size: 0.81rem;
-  color: rgba(245, 240, 232, 0.65);
-  transition: color 0.2s;
-  font-weight: 300;
-}
-.links a:hover {
-  color: #f5f0e8;
-}
-.links li {
-  font-size: 0.81rem;
-  color: rgba(245, 240, 232, 0.65);
-  font-weight: 300;
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
-/* ── Bottom ── */
+
+@media (hover: hover) {
+  .links a:hover,
+  .contact a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.contact li,
+.muted {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Marketplaces ── */
+.marketplaces {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.marketLabel {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.marketList {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.marketTile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  width: 80px;
+  padding: 0 14px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+/* Same box for every logo; object-fit keeps each one's own proportions */
+.marketImg {
+  width: 52px;
+  height: 28px;
+  object-fit: contain;
+}
+
+@media (hover: hover) {
+  .marketTile:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ── Bottom bar ── */
 .bottom {
-  border-top: 1px solid rgba(201, 168, 76, 0.1);
-  padding-top: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px 24px;
+  padding-top: 24px;
 }
 
 .copy {
-  font-size: 0.73rem;
-  color: rgba(245, 240, 232, 0.5);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .legal {
   display: flex;
-  gap: 20px;
+  gap: 22px;
 }
+
 .legal a {
-  font-size: 0.73rem;
-  color: rgba(245, 240, 232, 0.5);
+  display: inline-block;
+  padding-block: 4px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  transition: color 0.2s;
-}
-.legal a:hover {
-  color: rgba(245, 240, 232, 0.62);
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
-/* IndiaMart */
-.socialBtn[title="IndiaMart"] {
-  background: white;
-  border-color: transparent;
-}
-
-/* JustDial */
-.socialBtn[title="JustDial"] {
-  background: #ffffff;
-  border-color: transparent;
-}
-
-/* TradeIndia */
-.socialBtn[title="TradeIndia"] {
-  background: #0066cc;
-  border-color: transparent;
+@media (hover: hover) {
+  .legal a:hover {
+    color: #ffffff;
+  }
 }
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 36px;
+  }
+  .brand {
+    grid-column: 1 / -1;
   }
 }
+
 @media (max-width: 640px) {
+  .footer {
+    padding: 56px 16px 24px;
+  }
   .grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .socialLink,
+  .marketTile,
+  .links a,
+  .contact a,
+  .legal a {
+    transition: none;
+  }
+  .marketTile:hover {
+    transform: none;
   }
 }

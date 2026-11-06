@@ -1,45 +1,30 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Products.module.css";
+import { PRODUCTS, PRODUCTS_LIST } from "@/data/product";
 
-const PRODUCTS = [
-  {
-    slug: "greaseproof-paper",
-    tag: "Bestseller",
-    name: "OGR Greaseproof Paper",
-    image: "/images/greaseproof-paper/hero.webp",
-    alt: "OGR Greaseproof Paper — Food Grade Paper by Mudit Paper Company",
-    desc: "Premium food-contact paper engineered to resist oils, fats, and moisture. FSSAI certified for direct food contact.",
-    specs: ["30–50 GSM", "Sheet", "Custom Width", "Custom Print"],
-  },
-  {
-    slug: "glassine-paper",
-    tag: "Premium",
-    name: "Glassine Paper",
-    image: "/images/glassine-paper/hero.webp",
-    alt: "Glassine Paper 1S and 2S Smooth — Food Grade Paper by Mudit Paper Company",
-    desc: "Smooth, glossy, translucent paper. Available in 1S and 2S smooth variants for confectionery and pharma packaging.",
-    specs: ["25–60 GSM", "1S & 2S Smooth"],
-  },
-  {
-    slug: "printed-food-paper",
-    tag: "Custom",
-    name: "Printed Food Grade Paper",
-    image: "/images/printed-food-paper/hero.webp",
-    alt: "Custom Printed Greaseproof and Glassine Paper — Mudit Paper Company",
-    desc: "Custom printed greaseproof and glassine paper. Single to multi-colour designs on any GSM.",
-    specs: ["Any GSM", "Multi Colour"],
-  },
-  {
-    slug: "ladoo-katori-muffin-cup-liner",
-    tag: "Food Service",
-    name: "Ladoo Katori & Cup Liner",
-    image: "/images/ladoo-katori/hero.webp",
-    alt: "Ladoo Katori and Muffin Cup Liner — Food Grade Paper by Mudit Paper Company",
-    desc: "Food-grade paper cup liners for ladoos, muffins, and sweets. Available in 65–100mm sizes, plain to printed.",
-    specs: ["65–100mm", "Plain to Printed"],
-  },
-] as const;
+// Same order as the navbar; all content comes from data/product.ts
+const CARDS = PRODUCTS_LIST.map(({ slug }) => ({ slug, ...PRODUCTS[slug] }));
+
+
+function ArrowIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
 
 export default function Products() {
   return (
@@ -50,10 +35,10 @@ export default function Products() {
     >
       <div className={`${styles.header} reveal`}>
         <div>
-          <div className="sectionLabel">Our Range</div>
+          <span className={styles.sectionLabel}>Our Range</span>
           <h2
             id="products-title"
-            className="sectionTitle"
+            className={styles.sectionTitle}
           >
             Food Grade Paper Products
           </h2>
@@ -66,62 +51,61 @@ export default function Products() {
         </Link>
       </div>
 
-      <ul
-        className={styles.grid}
-        role="list"
-      >
-        {PRODUCTS.map((p, i) => (
+      <ul className={styles.grid}>
+        {CARDS.map((p) => (
           <li
             key={p.slug}
             className={`${styles.card} reveal`}
           >
-            <Link
-              href={`/products/${p.slug}`}
-              className={styles.cardLink}
-              aria-label={`View ${p.name} details`}
-            >
-              {/* Product image */}
-              <div className={styles.imgWrap}>
-                <Image
-                  src={p.image}
-                  alt={p.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className={styles.img}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  style={{ objectFit: "cover" }}
-                />
-                {/* Tag overlay on image */}
-                <span
-                  className={styles.tag}
-                  aria-label={`Category: ${p.tag}`}
+            <div className={styles.imgWrap}>
+              <Image
+                src={p.image}
+                alt={p.imageAlt}
+                fill
+                sizes="(max-width: 500px) 100vw, (max-width: 1024px) 50vw, 400px"
+                className={styles.img}
+              />
+              <span className={styles.tag}>{p.card.tag}</span>
+            </div>
+
+            <div className={styles.content}>
+              {/* The link is on the product name, so its anchor text is the
+                  name alone. A pseudo-element stretches it over the card,
+                  so the whole card is still clickable. */}
+              <h3 className={styles.name}>
+                <Link
+                  href={`/products/${p.slug}`}
+                  className={styles.cardLink}
                 >
-                  {p.tag}
+                  {p.name}
+                </Link>
+              </h3>
+              <p className={styles.desc}>{p.card.summary}</p>
+
+              <ul
+                className={styles.specs}
+                aria-label={`${p.name} specifications`}
+              >
+                {p.card.specs.map((s) => (
+                  <li
+                    key={s}
+                    className={styles.spec}
+                  >
+                    {s}
+                  </li>
+                ))}
+              </ul>
+
+              <div
+                className={styles.footer}
+                aria-hidden="true"
+              >
+                <span className={styles.cta}>View details</span>
+                <span className={styles.arrowBtn}>
+                  <ArrowIcon />
                 </span>
               </div>
-
-              {/* Card content */}
-              <div className={styles.content}>
-                <h3 className={styles.name}>{p.name}</h3>
-                <p className={styles.desc}>{p.desc}</p>
-                <div className={styles.specs}>
-                  {p.specs.map((s) => (
-                    <span
-                      key={s}
-                      className={styles.chip}
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <div
-                  className={styles.arrow}
-                  aria-hidden="true"
-                >
-                  View Details →
-                </div>
-              </div>
-            </Link>
+            </div>
           </li>
         ))}
       </ul>

@@ -1,12 +1,44 @@
 .about {
   background: var(--bg-alt);
+  padding-block: 92px;
+  padding-inline: max(6vw, calc((100vw - var(--content-max)) / 2));
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, …) lets columns shrink below their content on narrow screens */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 76px;
   align-items: center;
 }
 
-/* ── Visual ── */
+/* ── Section heading ── */
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 14px;
+}
+
+.sectionLabel::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.sectionTitle {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+/* ── Visual (desktop only) ── */
 .visual {
   position: relative;
   padding-bottom: 22px;
@@ -15,29 +47,33 @@
 
 .imgContainer {
   width: 100%;
+  /* Matches the photo's own 4:5 shape, so nothing is cropped or stretched */
   aspect-ratio: 4 / 5;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
+  background: var(--surface);
 }
 
 .aboutImg {
   object-fit: cover;
-  border-radius: 4px;
-  transition: transform 0.4s ease;
+  transition: transform var(--duration-slow) var(--ease-standard);
 }
 
-.imgContainer:hover .aboutImg {
-  transform: scale(1.03);
+@media (hover: hover) {
+  .imgContainer:hover .aboutImg {
+    transform: scale(1.03);
+  }
 }
 
 .pattern {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background-image: repeating-linear-gradient(
     45deg,
-    rgba(201, 168, 76, 0.06) 0,
-    rgba(201, 168, 76, 0.06) 1px,
+    rgba(31, 35, 112, 0.05) 0,
+    rgba(31, 35, 112, 0.05) 1px,
     transparent 0,
     transparent 50%
   );
@@ -46,20 +82,20 @@
 
 .badge {
   position: absolute;
-  background: var(--forest);
-  color: #f5f0e8;
+  background: var(--color-primary);
+  color: #ffffff;
   padding: 18px 22px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   bottom: -22px;
   right: -22px;
-  box-shadow: 0 12px 40px rgba(26, 74, 46, 0.28);
+  box-shadow: 0 12px 40px rgba(31, 35, 112, 0.28);
 }
 
 .bigNum {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  display: block;
   font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--gold);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
   line-height: 1;
 }
 
@@ -67,67 +103,97 @@
   font-size: 0.73rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(245, 240, 232, 0.62);
-  margin-top: 3px;
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 4px;
+  font-weight: var(--font-weight-medium);
 }
 
 /* ── Content ── */
 .text {
-  color: var(--text-mid);
-  line-height: 1.78;
+  color: var(--text);
+  line-height: 1.75;
   font-size: 0.95rem;
-  font-weight: 300;
   margin-bottom: 13px;
 }
 
 .pillars {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
   margin-top: 28px;
+  list-style: none;
 }
 
 .pillar {
-  padding: 15px 17px;
+  padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   background: var(--bg);
   transition:
-    border-color var(--t),
-    transform 0.2s;
-  will-change: transform;
+    border-color var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
-.pillar:hover {
-  border-color: var(--gold);
-  transform: translateY(-2px);
+
+@media (hover: hover) {
+  .pillar:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
 }
 
 .pillarIcon {
-  font-size: 1.3rem;
+  display: flex;
+  color: var(--color-accent);
   margin-bottom: 6px;
 }
+
+.pillarIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
 .pillarTitle {
-  font-weight: 600;
-  font-size: 0.86rem;
-  color: var(--forest);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.88rem;
+  color: var(--color-primary);
   margin-bottom: 3px;
 }
-[data-theme="dark"] .pillarTitle {
-  color: var(--gold-light);
-}
+
 .pillarText {
-  font-size: 0.76rem;
-  color: var(--text-low);
-  line-height: 1.5;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  line-height: 1.55;
 }
 
 /* ── Responsive ── */
+/* The photo is hidden below 1024px. Its lazy-loaded image is never
+   downloaded while hidden, so phones skip it entirely. */
 @media (max-width: 1024px) {
   .about {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
   }
   .visual {
     display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .about {
+    padding: 64px 16px;
+  }
+  .pillars {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutImg,
+  .pillar {
+    transition: none;
+  }
+  .imgContainer:hover .aboutImg,
+  .pillar:hover {
+    transform: none;
   }
 }

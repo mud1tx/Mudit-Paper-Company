@@ -1,71 +1,177 @@
-.wrapper {
-  min-height: 100vh;
+.main {
+  min-height: 80vh;
+  min-height: 80svh;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Clears the fixed top bar and navbar */
+  padding: calc(var(--topbar-h) + var(--navbar-h) + 48px) max(6vw, 16px) 96px;
   background: var(--bg);
-  padding: 24px;
 }
 
-.card {
-  text-align: center;
-  max-width: 480px;
+.inner {
+  max-width: 560px;
   width: 100%;
+  text-align: center;
 }
 
 .code {
-  font-family: var(--font-playfair), "Playfair Display", serif;
-  font-size: clamp(6rem, 20vw, 10rem);
-  font-weight: 900;
+  font-size: clamp(5rem, 16vw, 8rem);
+  font-weight: var(--font-weight-bold);
   line-height: 1;
-  color: var(--gold);
-  opacity: 0.4;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
+  color: var(--color-primary);
+  opacity: 0.12;
+  margin: 0;
 }
 
-.divider {
-  width: 48px;
-  height: 2px;
-  background: var(--gold);
-  margin: 24px auto;
-  border-radius: 2px;
-}
-
+/* Pulled up so the title overlaps the faded 404 */
 .title {
-  font-family: var(--font-playfair), "Playfair Display", serif;
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 14px;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--color-primary);
+  margin: -24px 0 14px;
 }
 
 .desc {
   font-size: 1rem;
-  color: var(--text-low);
-  line-height: 1.65;
-  font-weight: 300;
-  margin-bottom: 36px;
+  line-height: 1.7;
+  color: var(--text-mid);
+  margin: 0 auto 32px;
+  max-width: 46ch;
 }
 
-.btn {
+/* ── Buttons ── */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.primary,
+.secondary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: var(--forest);
-  color: #f5f0e8;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-semibold);
   text-decoration: none;
-  padding: 13px 28px;
-  border-radius: 2px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
   transition:
-    background 0.25s,
-    transform 0.2s;
+    background var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
 }
 
-.btn:hover {
-  background: var(--forest-light);
-  transform: translateY(-2px);
+.primary {
+  background: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  color: #ffffff;
+}
+
+.secondary {
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    background: var(--color-primary-dark);
+  }
+  .secondary:hover {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ── Product links ── */
+.nav {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+
+.navTitle {
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-low);
+  margin: 0 0 14px;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+}
+
+.link {
+  /* 24px+ tap target */
+  display: inline-block;
+  padding-block: 4px;
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--duration-base) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    text-decoration-color: var(--color-accent);
+  }
+}
+
+/* ── Help line ── */
+.help {
+  margin: 32px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-mid);
+}
+
+.help a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .help a:hover {
+    color: var(--color-accent);
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-inline: 16px;
+    padding-bottom: 72px;
+  }
+  .title {
+    margin-top: -16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary,
+  .secondary,
+  .link {
+    transition: none;
+  }
 }

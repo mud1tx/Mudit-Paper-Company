@@ -1,164 +1,109 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+import TopBar from "@/components/layout/TopBar/TopBar";
 import Navbar from "@/components/layout/Navbar/Navbar";
 import Footer from "@/components/layout/Footer/Footer";
 import ProductHero from "@/components/product/ProductHero";
-import ProductKeyValues from "@/components/product/ProductKeyValues";
-import ProductFeatures from "@/components/product/ProductFeatures";
+import ProductVariants from "@/components/product/ProductVariants";
 import ProductGallery from "@/components/product/ProductGallery";
-import ProductApplications from "@/components/product/ProductApplications";
+import ProductFaq from "@/components/product/ProductFaq";
+import ProductRelated from "@/components/product/ProductRelated";
 import ProductCTA from "@/components/product/ProductCTA";
-import { PRODUCTS, PRODUCTS_LIST } from "@/data/product";
-import { BASE_URL, COMPANY } from "@/lib/config";
-import styles from "@/components/product/product.module.css";
 import RevealInit from "@/components/RevealInit";
 import BackToTop from "@/components/ui/BackToTop";
+import { PRODUCTS, PRODUCTS_LIST } from "@/data/product";
+import { BASE_URL } from "@/lib/config";
+import {
+  PAGE_UPDATED,
+  faqJsonLd,
+  pageMetadata,
+  subPageJsonLd,
+} from "@/lib/seo";
+import type { Product } from "@/types/product";
+import styles from "@/components/product/product.module.css";
+
+type Params = { params: Promise<{ readonly slug: string }> };
+
+// Only the slugs in PRODUCTS_LIST exist; any other URL is a real 404
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return PRODUCTS_LIST.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+// "Greaseproof (OGR) Paper Wholesaler in India": the site sells nationwide, so
+// titles target India. Kanpur stays in the address and business data.
+const seoTitle = (product: Product) => `${product.name} Wholesaler in India`;
+
+// Short enough for Google to show in full (about 155 characters). The long
+// product.description stays on the page itself.
+const seoDescription = (product: Product) =>
+  `${product.card.summary} Bulk supply to businesses across India.`;
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const product = PRODUCTS[slug];
   if (!product) return {};
 
-  const productUrl = `${BASE_URL}/products/${slug}`;
-  const productImage = `${BASE_URL}${product.image}`;
-
-  return {
-    title: product.name,
-    description: product.description,
-    keywords: [
-      product.name,
-      product.name.toLowerCase(),
-      `${product.name} India`,
-      `${product.name} Kanpur`,
-      `buy ${product.name}`,
-      `${product.name} supplier`,
-      `${product.name} wholesaler`,
-      `bulk ${product.name}`,
-      `${product.name} manufacturer`,
-      `food grade ${product.name}`,
-      `food packaging paper India`,
-      "food grade paper wholesaler",
-      "paper wholesaler Kanpur",
-      "Mudit Paper Company",
-    ],
-    alternates: {
-      canonical: productUrl,
-    },
-    openGraph: {
-      type: "website",
-      locale: "en_IN",
-      url: productUrl,
-      siteName: COMPANY.name,
-      title: `${product.name} – Food Grade Paper | Mudit Paper Company`,
-      description: product.description,
-      images: [
-        {
-          url: productImage,
-          width: 1200,
-          height: 630,
-          alt: `${product.name} – Mudit Paper Company`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${product.name} – Food Grade Paper | Mudit Paper Company`,
-      description: product.description,
-      images: [productImage],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-  };
+  return pageMetadata({
+    title: seoTitle(product),
+    description: seoDescription(product),
+    path: `/products/${slug}`,
+    image: { url: product.image, alt: product.imageAlt },
+  });
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProductPage({ params }: Params) {
   const { slug } = await params;
   const product = PRODUCTS[slug];
-
   if (!product) notFound();
 
-  const productUrl = `${BASE_URL}/products/${slug}`;
-  const productImage = `${BASE_URL}${product.image}`;
+  const path = `/products/${slug}`;
+  const productUrl = `${BASE_URL}${path}`;
+  const page = subPageJsonLd({
+    name: seoTitle(product),
+    description: seoDescription(product),
+    path,
+    dateModified: product.updated ?? PAGE_UPDATED.products,
+    crumbs: [
+      { name: "Home", path: "/" },
+      { name: product.name, path },
+    ],
+  });
+
+  // No offers, so this does not claim a price rich result. It tells Google
+  // (and AI search) what the product is, its specs and who sells it.
+  const productData = {
+    "@type": "Product",
+    "@id": `${productUrl}#product`,
+    name: product.name,
+    ...(product.alternateNames && { alternateName: product.alternateNames }),
+    description: product.description,
+    url: productUrl,
+    image: [product.image, ...product.gallery.map((g) => g.src)].map(
+      (src) => `${BASE_URL}${src}`,
+    ),
+    category: product.tag,
+    countryOfOrigin: "IN",
+    // The business entity from the root layout
+    brand: { "@id": `${BASE_URL}/#business` },
+    isRelatedTo: PRODUCTS_LIST.filter((p) => p.slug !== slug).map((p) => ({
+      "@id": `${BASE_URL}/products/${p.slug}#product`,
+    })),
+    additionalProperty: (product.variants[0]?.specs ?? []).map((kv) => ({
+      "@type": "PropertyValue",
+      name: kv.label,
+      value: kv.value,
+    })),
+  };
 
   const structuredData = {
-    "@context": "https://schema.org",
+    ...page,
     "@graph": [
-      {
-        "@type": "Product",
-        "@id": `${productUrl}/#product`,
-        name: product.name,
-        description: product.description,
-        image: productImage,
-        url: productUrl,
-        brand: {
-          "@type": "Brand",
-          name: COMPANY.name,
-        },
-        manufacturer: {
-          "@type": "Organization",
-          name: COMPANY.name,
-          url: BASE_URL,
-          telephone: COMPANY.phone,
-          email: COMPANY.email,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: COMPANY.city,
-            addressRegion: COMPANY.state,
-            postalCode: COMPANY.postalCode,
-            addressCountry: COMPANY.country,
-          },
-        },
-        countryOfOrigin: "IN",
-        additionalProperty: product.keyValues.map((kv) => ({
-          "@type": "PropertyValue",
-          name: kv.label,
-          value: kv.value,
-        })),
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: BASE_URL,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Products",
-            item: `${BASE_URL}/#products`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: product.name,
-            item: productUrl,
-          },
-        ],
-      },
+      { ...page["@graph"][0], mainEntity: { "@id": `${productUrl}#product` } },
+      ...page["@graph"].slice(1),
+      productData,
+      faqJsonLd(product.faqs, path),
     ],
   };
 
@@ -166,8 +111,12 @@ export default async function ProductPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          // Escape "<" so data can never close the script tag early
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
+      <TopBar />
       <Navbar />
       <RevealInit />
       <main
@@ -179,16 +128,19 @@ export default async function ProductPage({
           tagline={product.tagline}
           description={product.description}
           image={product.image}
+          imageAlt={product.imageAlt}
           breadcrumb={product.breadcrumb}
           tag={product.tag}
+          specs={product.card.specs}
+          highlights={product.variants[0]?.specs ?? []}
         />
-        <ProductKeyValues items={product.keyValues} />
-        <ProductFeatures items={product.features} />
-        <ProductApplications items={product.applications} />
-        <ProductGallery
-          images={product.gallery}
-          productName={product.name}
+        <ProductVariants
+          variants={product.variants}
+          background={product.specBackground}
         />
+        <ProductGallery images={product.gallery} />
+        <ProductFaq items={product.faqs} />
+        <ProductRelated currentSlug={slug} />
         <ProductCTA productName={product.name} />
       </main>
       <BackToTop />

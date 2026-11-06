@@ -1,55 +1,80 @@
-.wrapper {
-  background: var(--forest);
-  padding: 15px 0;
+/* ══════════════════════════════════════════════
+   MARQUEE: continuous, seamless loop
+══════════════════════════════════════════════ */
+
+.marquee {
   overflow: hidden;
-}
-[data-theme="dark"] .wrapper {
-  background: #0b1209;
+  background: var(--color-primary);
+  padding: 15px 0;
 }
 
+/* The track holds both copies side by side and is the only thing animated.
+   transform runs on the GPU, so the loop does not trigger layout or paint. */
 .track {
   display: flex;
   width: max-content;
   animation: marquee 22s linear infinite;
+  will-change: transform;
 }
 
-.wrapper:hover .track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .track {
-    animation: none;
-    flex-wrap: wrap;
-    justify-content: center;
+@media (hover: hover) {
+  .marquee:hover .track {
+    animation-play-state: paused;
   }
+}
+
+.list {
+  display: flex;
+  flex-shrink: 0;
+  list-style: none;
 }
 
 .item {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  white-space: nowrap;
   padding: 0 34px;
-  color: rgba(245, 240, 232, 0.62);
+  color: #ffffff;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.sep {
-  color: var(--gold);
+/* Decorative separator. The text after "/" is what screen readers announce,
+   so an empty string keeps them from reading "four-pointed star" each time.
+   The first line is the fallback for browsers without that syntax. */
+.item::after {
+  content: "✦";
+  content: "✦" / "";
+  margin-left: 34px;
+  color: var(--color-accent);
 }
 
-/* ══════════════════════════════════════════════
-   ANIMATIONS
-══════════════════════════════════════════════ */
 @keyframes marquee {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* Reduced motion: no animation, one copy, and the items wrap onto extra
+   lines so none are cut off at the screen edge */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    width: auto;
+    animation: none;
+    will-change: auto;
+  }
+  .list {
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+  }
+  .copy {
+    display: none;
   }
 }

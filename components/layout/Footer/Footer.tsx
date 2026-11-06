@@ -1,231 +1,261 @@
 import Link from "next/link";
-import styles from "./Footer.module.css";
-import { COMPANY as COMPANY_CONFIG, BASE_URL } from "@/lib/config";
-import { PRODUCTS_LIST } from "@/data/product";
 import Image from "next/image";
+import styles from "./Footer.module.css";
+import { COMPANY } from "@/lib/config";
+import { PRODUCTS_LIST } from "@/data/product";
+import { formatHours, formatPhone, mapsUrl, whatsappUrl } from "@/lib/format";
 
 const COMPANY_LINKS = [
-  { href: "/#about", label: "About Us" },
+  { href: "/#about", label: "About us" },
   { href: "/#industries", label: "Industries" },
-  { href: "/#testimonials", label: "Testimonials" },
   { href: "/#contact", label: "Contact" },
-];
+  { href: "/#faq", label: "FAQs" },
+  { href: "/butter-paper", label: "Butter paper guide" },
+  { href: "/blogs", label: "Blogs" },
+] as const;
+
+const iconProps = {
+  width: 18,
+  height: 18,
+  viewBox: "0 0 24 24",
+  fill: "currentColor",
+  "aria-hidden": true,
+  focusable: false,
+};
+
+function InstagramIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z" />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z" />
+    </svg>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12 0C5.37 0 0 5.37 0 12c0 2.13.56 4.13 1.53 5.86L.05 23.25a.75.75 0 00.92.92l5.49-1.49A11.95 11.95 0 0012 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 22a9.96 9.96 0 01-5.07-1.39l-.36-.21-3.76 1.02 1-3.65-.24-.37A9.96 9.96 0 012 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z" />
+    </svg>
+  );
+}
 
 const SOCIALS = [
   {
-    href: COMPANY_CONFIG.social[0],
-    title: "Instagram",
-    ariaLabel: "Follow Mudit Paper Company on Instagram",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-      </svg>
-    ),
+    label: "Instagram",
+    href: COMPANY.social.instagram,
+    Icon: InstagramIcon,
   },
   {
-    href: COMPANY_CONFIG.social[1],
-    title: "Facebook",
-    ariaLabel: "Follow Mudit Paper Company on Facebook",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-      </svg>
-    ),
+    label: "Facebook",
+    href: COMPANY.social.facebook,
+    Icon: FacebookIcon,
   },
   {
-    href: `https://wa.me/${COMPANY_CONFIG.whatsapp}`,
-    title: "WhatsApp",
-    ariaLabel: "Chat with Mudit Paper Company on WhatsApp",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L.054 23.25a.75.75 0 00.916.919l5.487-1.494A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.956 9.956 0 01-5.073-1.389l-.361-.214-3.757 1.023 1.001-3.649-.236-.374A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-      </svg>
-    ),
+    label: "LinkedIn",
+    href: COMPANY.social.linkedin,
+    Icon: LinkedInIcon,
   },
   {
-    href: COMPANY_CONFIG.social[2],
-    title: "LinkedIn",
-    ariaLabel: "Follow Mudit Paper Company on LinkedIn",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-      </svg>
-    ),
+    label: "WhatsApp",
+    href: whatsappUrl(COMPANY.whatsapp),
+    Icon: WhatsAppIcon,
   },
-  {
-    href: COMPANY_CONFIG.marketplaces[0],
-    title: "IndiaMart",
-    ariaLabel: "Find Mudit Paper Company on IndiaMart",
-    icon: (
-      <Image
-        src="/icons/indiamart.svg"
-        alt="IndiaMart logo"
-        width={27}
-        height={27}
-        aria-hidden="true"
-      />
-    ),
-  },
-  {
-    href: COMPANY_CONFIG.marketplaces[1],
-    title: "JustDial",
-    ariaLabel: "Find Mudit Paper Company on JustDial",
-    icon: (
-      <Image
-        src="/icons/justdial.svg"
-        alt="JustDial logo"
-        width={30}
-        height={30}
-        aria-hidden="true"
-      />
-    ),
-  },
-  {
-    href: COMPANY_CONFIG.marketplaces[2],
-    title: "TradeIndia",
-    ariaLabel: "Find Mudit Paper Company on TradeIndia",
-    icon: (
-      <Image
-        src="/icons/tradeindia.svg"
-        alt="TradeIndia logo"
-        width={26}
-        height={26}
-        aria-hidden="true"
-      />
-    ),
-  },
-];
+] as const;
 
-const currentYear = new Date().getFullYear();
+const MARKETPLACES = [
+  {
+    label: "IndiaMART",
+    href: COMPANY.marketplaces.indiamart,
+    // WebP: the original SVG was 387 KB of traced paths
+    src: "/icons/indiamart.webp",
+  },
+  {
+    label: "JustDial",
+    href: COMPANY.marketplaces.justdial,
+    src: "/icons/justdial.svg",
+  },
+  {
+    label: "TradeIndia",
+    href: COMPANY.marketplaces.tradeindia,
+    src: "/icons/tradeindia.svg",
+  },
+] as const;
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer
-      className={styles.footer}
-      aria-label="Site footer"
-    >
+    <footer className={styles.footer}>
       <div className={styles.grid}>
-        <div>
+        {/* Brand */}
+        <div className={styles.brand}>
           <Link
             href="/"
             className={styles.logoLink}
-            aria-label="Mudit Paper Company Home"
           >
             <Image
-              src="/logo.png"
-              alt="Mudit Paper Company"
-              width={180}
-              height={55}
+              src="/logo.webp"
+              alt={`${COMPANY.name} home`}
+              width={157}
+              height={75}
               className={styles.logo}
             />
           </Link>
           <p className={styles.desc}>
-            Trusted supplier of food-grade paper products. Serving India&apos;s
-            food industry with quality &amp; integrity since 2009.
+            Specialty paper solutions for businesses across India, with a focus
+            on greaseproof (OGR), one side OGR, glassine, MG poster paper and
+            bleached kraft.
           </p>
-          <div className={styles.socials}>
-            {SOCIALS.map(({ href, title, ariaLabel, icon }) => (
-              <a
-                key={title}
-                href={href}
-                className={styles.socialBtn}
-                title={title}
-                aria-label={ariaLabel}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {icon}
-              </a>
+
+          <ul
+            className={styles.socials}
+            aria-label="Social media"
+          >
+            {SOCIALS.map(({ label, href, Icon }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  className={styles.socialLink}
+                  aria-label={`${COMPANY.name} on ${label}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon />
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
-        {/* Products — auto-generated from data */}
-        <nav aria-label="Products">
-          <div className={styles.colTitle}>Products</div>
+        {/* Products */}
+        <nav aria-labelledby="footer-products">
+          <h2
+            id="footer-products"
+            className={styles.heading}
+          >
+            Products
+          </h2>
           <ul className={styles.links}>
             {PRODUCTS_LIST.map(({ slug, label }) => (
               <li key={slug}>
-                <Link href={`/products/${slug}`}> {label}</Link>
+                <Link href={`/products/${slug}`}>{label}</Link>
               </li>
             ))}
           </ul>
         </nav>
 
         {/* Company */}
-        <nav aria-label="Company">
-          <div className={styles.colTitle}>Company</div>
+        <nav aria-labelledby="footer-company">
+          <h2
+            id="footer-company"
+            className={styles.heading}
+          >
+            Company
+          </h2>
           <ul className={styles.links}>
             {COMPANY_LINKS.map(({ href, label }) => (
-              <li key={label}>
+              <li key={href}>
                 <Link href={href}>{label}</Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Contact */}
-        <address className={styles.contactCol}>
-          <div className={styles.colTitle}>Contact</div>
-          <ul className={styles.links}>
-            <li>
-              <a
-                href={`https://maps.google.com/?q=Kanpur,Uttar+Pradesh,India`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {COMPANY_CONFIG.address}
-              </a>
-            </li>
-            {COMPANY_CONFIG.phones.map((num) => (
-              <li key={num}>
-                <a href={`tel:${num}`}>{num}</a>
+        {/* Contact: same details and hours as the structured data.
+            A div, not <section>: globals.css pads every <section>. */}
+        <div>
+          <h2
+            id="footer-contact"
+            className={styles.heading}
+          >
+            Contact
+          </h2>
+          <address className={styles.address}>
+            <ul className={styles.contact}>
+              <li>
+                <a
+                  href={mapsUrl(`${COMPANY.name}, ${COMPANY.city}`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {COMPANY.address}
+                </a>
               </li>
-            ))}
-            <li>
-              <a href={`mailto:${COMPANY_CONFIG.email}`}>
-                {COMPANY_CONFIG.email}
-              </a>
-            </li>
-            <li>Mon–Sat, 9AM–6PM</li>
-          </ul>
-        </address>
+              {COMPANY.phones.map((num) => (
+                <li key={num}>
+                  <a href={`tel:${num}`}>{formatPhone(num)}</a>
+                </li>
+              ))}
+              <li>
+                <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+              </li>
+              <li className={styles.muted}>{formatHours(COMPANY.hours)}</li>
+            </ul>
+          </address>
+        </div>
       </div>
 
+      {/* Marketplaces */}
+      <div className={styles.marketplaces}>
+        <p
+          id="footer-marketplaces"
+          className={styles.marketLabel}
+        >
+          Also find us on
+        </p>
+        <ul
+          className={styles.marketList}
+          aria-labelledby="footer-marketplaces"
+        >
+          {MARKETPLACES.map(({ label, href, src }) => (
+            <li key={label}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.marketTile}
+              >
+                <Image
+                  src={src}
+                  alt={`${COMPANY.name} on ${label}`}
+                  width={52}
+                  height={28}
+                  className={styles.marketImg}
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Bottom bar */}
       <div className={styles.bottom}>
-        <div className={styles.copy}>
-          © {currentYear} Mudit Paper Company. All rights reserved.{" "}
-          {/* ← auto year */}
-        </div>
-        <div className={styles.legal}>
+        <p className={styles.copy}>
+          © {year} {COMPANY.name}. All rights reserved.
+        </p>
+        <nav
+          className={styles.legal}
+          aria-label="Legal"
+        >
           <Link href="/privacy-policy">Privacy Policy</Link>
           <Link href="/terms-of-use">Terms of Use</Link>
-        </div>
+        </nav>
       </div>
     </footer>
   );

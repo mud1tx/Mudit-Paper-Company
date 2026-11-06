@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import TopBar from "@/components/layout/TopBar/TopBar";
 import Navbar from "@/components/layout/Navbar/Navbar";
 import Hero from "@/components/home/Hero/Hero";
 import Marquee from "@/components/home/Marquee/Marquee";
@@ -8,105 +9,38 @@ import WhyUs from "@/components/home/WhyUs/WhyUs";
 import Industries from "@/components/home/Industries/Industries";
 import Testimonials from "@/components/home/Testimonials/Testimonials";
 import Footer from "@/components/layout/Footer/Footer";
+import Faq from "@/components/home/Faq/Faq";
 import Contact from "@/components/home/Contact/Contact";
-import { BASE_URL, COMPANY } from "@/lib/config";
+import { BASE_URL } from "@/lib/config";
+import { faqJsonLd, pageMetadata } from "@/lib/seo";
+import { HOME_FAQS } from "@/data/home-faq";
 import { PRODUCTS_LIST } from "@/data/product";
 import RevealInit from "@/components/RevealInit";
 import BackToTop from "@/components/ui/BackToTop";
 
-export const metadata: Metadata = {
-  description:
-    "Food-grade paper trader in Kanpur, India. Greaseproof paper, glassine paper, printed food paper and ladoo katori cup liners. Bulk supply across India.",
-  alternates: {
-    canonical: BASE_URL,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    siteName: COMPANY.name,
-    url: BASE_URL,
-    title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
-    description:
-      "Mudit Paper Company — food-grade paper trader in Kanpur. Greaseproof, glassine, printed paper and ladoo katori liners. Bulk orders welcome.",
-    images: [
-      {
-        url: `${BASE_URL}/og-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Mudit Paper Company – Food Grade Paper Trader",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Mudit Paper Company – Food Grade Paper Trader | Kanpur, India",
-    description:
-      "Food-grade paper trader in Kanpur — greaseproof, glassine, printed paper & ladoo katori liners. Bulk supply across India.",
-    images: [`${BASE_URL}/og-image.jpg`],
-  },
-};
+// No title: the home page uses the layout's default SITE_TITLE
+export const metadata: Metadata = pageMetadata({ path: "/" });
 
+// The business itself is defined once in the root layout (@id /#business).
+// This page only adds the product list and FAQs, linked to that business.
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "LocalBusiness",
-      "@id": `${BASE_URL}/#business`,
-      name: COMPANY.name,
-      url: BASE_URL,
-      logo: `${BASE_URL}/logo.png`,
-      image: `${BASE_URL}/og-image.jpg`,
-      description:
-        "Premium food-grade paper trader in Kanpur, India. Supplying greaseproof paper, glassine paper, printed food paper, and ladoo katori cup liners.",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY.address,
-        addressLocality: COMPANY.city,
-        addressRegion: COMPANY.state,
-        postalCode: COMPANY.postalCode,
-        addressCountry: COMPANY.country,
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: COMPANY.geo.latitude,
-        longitude: COMPANY.geo.longitude,
-      },
-      telephone: COMPANY.phone,
-      email: COMPANY.email,
-      openingHoursSpecification: {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "10:00",
-        closes: "18:00",
-      },
-      priceRange: "₹₹",
-      currenciesAccepted: "INR",
-      paymentAccepted: "Cash, Bank Transfer, UPI",
-      areaServed: {
-        "@type": "Country",
-        name: "India",
-      },
-      sameAs: [...COMPANY.social, BASE_URL],
-    },
-    {
       "@type": "ItemList",
-      name: "Food Grade Paper Products",
+      "@id": `${BASE_URL}/#products`,
+      name: "Specialty Paper Products",
       url: `${BASE_URL}/#products`,
+      numberOfItems: PRODUCTS_LIST.length,
       itemListElement: PRODUCTS_LIST.map((p, i) => ({
-        // ← auto from data
         "@type": "ListItem",
         position: i + 1,
         name: p.label,
         url: `${BASE_URL}/products/${p.slug}`,
       })),
+      isPartOf: { "@id": `${BASE_URL}/#website` },
     },
+    faqJsonLd(HOME_FAQS, "/"),
   ],
 };
 
@@ -115,8 +49,12 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          // Escape "<" so data can never close the script tag early
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
+      <TopBar />
       <Navbar />
       <RevealInit />
       <main id="main-content">
@@ -127,6 +65,7 @@ export default function Home() {
         <Industries />
         <WhyUs />
         <Testimonials />
+        <Faq />
         <Contact />
       </main>
       <BackToTop />

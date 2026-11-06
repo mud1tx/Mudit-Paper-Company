@@ -1,191 +1,170 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { COMPANY, BASE_URL } from "@/lib/config";
+import { contactSchema, type ContactData } from "@/lib/contact";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const runtime = "nodejs";
 
-export async function POST(req: Request) {
+// A real enquiry is a few KB at most; anything bigger is rejected unread
+const MAX_BODY_BYTES = 16 * 1024;
+
+// Best-effort spam limit: 5 enquiries per IP per 10 minutes. It is kept in
+// memory, so each server instance counts separately, but it stops one script
+// from flooding the inbox and using up the Resend quota.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+
+  // Drop stale entries now and then so the map cannot grow forever
+  if (hits.size > 1000) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(key);
+    }
+  }
+  return recent.length > RATE_LIMIT;
+}
+
+function clientIp(req: Request): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+// Browsers send Origin on every POST. Reject requests from other websites;
+// allow a missing header so unusual browsers are not locked out.
+function isSameOrigin(req: Request): boolean {
+  const origin = req.headers.get("origin");
+  if (!origin) return true;
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
   try {
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      businessType,
-      product,
-      message,
-    } = await req.json();
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
 
-    await resend.emails.send({
-      from: `${COMPANY.name} <onboarding@resend.dev>`,
-      to: COMPANY.email,
-      replyTo: email,
-      subject: `🧾 New Enquiry — ${product} from ${firstName} ${lastName || ""}`,
-      html: `
-<!DOCTYPE html>
+let resend: Resend | null = null;
+
+// Escape user input before it goes into HTML
+const ESCAPE_MAP: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+function esc(value: unknown): string {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ESCAPE_MAP[c]);
+}
+
+function buildSubject(data: ContactData): string {
+  const name = [data.firstName, data.lastName].filter(Boolean).join(" ");
+  // Strip line breaks so input can't inject extra email headers
+  return `New enquiry: ${data.product} from ${name}`.replace(/[\r\n]+/g, " ");
+}
+
+function buildText(data: ContactData): string {
+  return [
+    `New website enquiry`,
+    ``,
+    `Name: ${data.firstName} ${data.lastName ?? ""}`.trim(),
+    `Email: ${data.email}`,
+    `Phone: ${data.phone ? `+91 ${data.phone}` : "Not provided"}`,
+    `Business type: ${data.businessType}`,
+    `Product: ${data.product}`,
+    ``,
+    `Requirements:`,
+    data.message || "Not provided",
+    ``,
+    `Sent from ${BASE_URL}`,
+  ].join("\n");
+}
+
+function buildHtml(data: ContactData): string {
+  const row = (label: string, value: string, shaded: boolean) => `
+    <tr style="background:${shaded ? "#f4f4f0" : "#ffffff"};">
+      <td style="padding:12px 16px; width:36%; font-size:12px; font-weight:600; color:#6e7088; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #e6e6ea;">${label}</td>
+      <td style="padding:12px 16px; font-size:14px; color:#231f20; border-bottom:1px solid #e6e6ea;">${value}</td>
+    </tr>`;
+
+  const name = esc([data.firstName, data.lastName].filter(Boolean).join(" "));
+  const phoneCell = data.phone
+    ? `<a href="tel:+91${esc(data.phone)}" style="color:#1f2370; font-weight:600; text-decoration:none;">+91 ${esc(data.phone)}</a>`
+    : `<span style="color:#6e7088;">Not provided</span>`;
+  const emailCell = `<a href="mailto:${esc(data.email)}" style="color:#1f2370; font-weight:600; text-decoration:none;">${esc(data.email)}</a>`;
+
+  const messageBlock = data.message
+    ? `
+    <p style="margin:28px 0 8px; font-size:12px; font-weight:600; color:#6e7088; text-transform:uppercase; letter-spacing:0.08em;">Requirements</p>
+    <div style="background:#f4f4f0; border-left:3px solid #ec2427; border-radius:0 6px 6px 0; padding:16px 20px; font-size:14px; line-height:1.7; color:#231f20;">
+      ${esc(data.message).replace(/\n/g, "<br/>")}
+    </div>`
+    : "";
+
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>New Enquiry — ${COMPANY.name}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New enquiry: ${esc(data.product)}</title>
 </head>
-<body style="margin:0; padding:0; background:#f5f0e8; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e8; padding: 40px 0;">
+<body style="margin:0; padding:0; background:#f4f4f0; font-family:Arial, Helvetica, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="padding:32px 0;">
     <tr>
       <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
+        <table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px; width:100%; background:#ffffff; border-radius:8px; overflow:hidden;">
 
-          <!-- ── HEADER ── -->
           <tr>
-            <td style="background:#0f2d1c; padding: 32px 40px; border-radius: 8px 8px 0 0;">
-              <table width="100%" cellpadding="0" cellspacing="0">
+            <td style="background:#1f2370; padding:26px 32px;">
+              <p style="margin:0; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#ffffff;">${esc(COMPANY.name)}</p>
+              <p style="margin:6px 0 0; font-size:12px; color:rgba(255,255,255,0.7);">New website enquiry</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px;">
+              <h1 style="margin:0 0 6px; font-size:22px; line-height:1.3; color:#1f2370;">${esc(data.product)}</h1>
+              <p style="margin:0 0 24px; font-size:14px; color:#41435a;">Enquiry from ${name}</p>
+
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #e6e6ea; border-radius:6px; border-collapse:separate; overflow:hidden;">
+                ${row("Name", name, false)}
+                ${row("Email", emailCell, true)}
+                ${row("Phone", phoneCell, false)}
+                ${row("Business type", esc(data.businessType), true)}
+                ${row("Product", esc(data.product), false)}
+              </table>
+
+              ${messageBlock}
+
+              <table cellpadding="0" cellspacing="0" role="presentation" style="margin-top:28px;">
                 <tr>
-                  <td>
-                    <div style="font-family:Georgia,serif; font-size:22px; font-weight:700; color:#f5f0e8; line-height:1.2;">
-                      MUDIT<br/>
-                      <span style="color:#c9a84c;">PAPER</span> COMPANY
-                    </div>
+                  <td style="padding-right:12px;">
+                    <a href="mailto:${esc(data.email)}" style="display:inline-block; background:#1f2370; color:#ffffff; text-decoration:none; padding:12px 22px; border-radius:6px; font-size:14px; font-weight:600;">Reply to ${esc(data.firstName)}</a>
                   </td>
-                  <td align="right">
-                    <div style="background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3); border-radius:100px; padding:6px 14px; display:inline-block;">
-                      <span style="color:#c9a84c; font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">New Enquiry</span>
-                    </div>
-                  </td>
+                  ${
+                    data.phone
+                      ? `<td>
+                    <a href="tel:+91${esc(data.phone)}" style="display:inline-block; border:1.5px solid #1f2370; color:#1f2370; text-decoration:none; padding:10px 22px; border-radius:6px; font-size:14px; font-weight:600;">Call ${esc(data.firstName)}</a>
+                  </td>`
+                      : ""
+                  }
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- ── GOLD DIVIDER ── -->
           <tr>
-            <td style="background: linear-gradient(90deg, #c9a84c, #e0c070, #c9a84c); height:3px;"></td>
-          </tr>
-
-          <!-- ── BODY ── -->
-          <tr>
-            <td style="background:#ffffff; padding: 40px 40px 32px;">
-
-              <!-- Greeting -->
-              <p style="margin:0 0 8px; font-size:13px; color:#7a7a70; text-transform:uppercase; letter-spacing:0.08em; font-weight:600;">You have a new enquiry</p>
-              <h1 style="margin:0 0 32px; font-family:Georgia,serif; font-size:26px; color:#1a1a18; font-weight:700; line-height:1.2;">
-                ${firstName} ${lastName || ""} is interested in<br/>
-                <span style="color:#1a4a2e;">${product}</span>
-              </h1>
-
-              <!-- ── CONTACT DETAILS ── -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
-                <tr>
-                  <td style="padding-bottom:6px;">
-                    <p style="margin:0; font-size:11px; color:#7a7a70; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">Contact Details</p>
-                  </td>
-                </tr>
-              </table>
-
-              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e8e4da; border-radius:6px; overflow:hidden; margin-bottom:28px;">
-                <tr style="background:#f9f7f3;">
-                  <td style="padding:12px 16px; width:35%; font-size:12px; font-weight:600; color:#7a7a70; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #e8e4da;">Name</td>
-                  <td style="padding:12px 16px; font-size:14px; color:#1a1a18; font-weight:500; border-bottom:1px solid #e8e4da;">${firstName} ${lastName || "—"}</td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 16px; font-size:12px; font-weight:600; color:#7a7a70; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #e8e4da;">Phone</td>
-                  <td style="padding:12px 16px; font-size:14px; color:#1a1a18; font-weight:500; border-bottom:1px solid #e8e4da;">
-                    ${
-                      phone
-                        ? `<a href="tel:+91${phone}" style="color:#1a4a2e; text-decoration:none; font-weight:600;">+91 ${phone}</a>`
-                        : `<span style="color:#7a7a70;">Not provided</span>`
-                    }
-                  </td>
-                </tr>
-                <tr style="background:#f9f7f3;">
-                  <td style="padding:12px 16px; font-size:12px; font-weight:600; color:#7a7a70; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #e8e4da;">Email</td>
-                  <td style="padding:12px 16px; font-size:14px; border-bottom:1px solid #e8e4da;">
-                    <a href="mailto:${email}" style="color:#1a4a2e; text-decoration:none; font-weight:600;">${email}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 16px; font-size:12px; font-weight:600; color:#7a7a70; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #e8e4da;">Business Type</td>
-                  <td style="padding:12px 16px; font-size:14px; color:#1a1a18; font-weight:500; border-bottom:1px solid #e8e4da;">${businessType || "—"}</td>
-                </tr>
-                <tr style="background:#f9f7f3;">
-                  <td style="padding:12px 16px; font-size:12px; font-weight:600; color:#7a7a70; text-transform:uppercase; letter-spacing:0.06em;">Product</td>
-                  <td style="padding:12px 16px; border-radius:0 0 6px 0;">
-                    <span style="background:#1a4a2e; color:#f5f0e8; font-size:12px; font-weight:600; padding:4px 12px; border-radius:100px;">${product}</span>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- ── MESSAGE ── -->
-              ${
-                message
-                  ? `
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
-                <tr>
-                  <td style="padding-bottom:8px;">
-                    <p style="margin:0; font-size:11px; color:#7a7a70; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">Message / Requirements</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="background:#f9f7f3; border:1px solid #e8e4da; border-left:3px solid #c9a84c; border-radius:0 6px 6px 0; padding:16px 20px;">
-                    <p style="margin:0; font-size:14px; color:#3d3d38; line-height:1.7; font-style:italic;">"${message}"</p>
-                  </td>
-                </tr>
-              </table>
-              `
-                  : ""
-              }
-
-              <!-- ── CTA BUTTONS ── -->
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td align="center" style="padding-top:8px;">
-                    <table cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="padding-right:12px;">
-                          <a href="mailto:${email}"
-                            style="display:inline-block; background:#1a4a2e; color:#f5f0e8; text-decoration:none; padding:12px 24px; border-radius:2px; font-size:13px; font-weight:600; letter-spacing:0.04em;">
-                            ✉️ Reply to ${firstName}
-                          </a>
-                        </td>
-                        <td>
-                          <a href="tel:+91${phone || ""}"
-                            style="display:inline-block; border:1.5px solid #1a4a2e; color:#1a4a2e; text-decoration:none; padding:11px 24px; border-radius:2px; font-size:13px; font-weight:600; letter-spacing:0.04em;">
-                            📞 Call ${firstName}
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-            </td>
-          </tr>
-
-          <!-- ── GOLD DIVIDER ── -->
-          <tr>
-            <td style="background: linear-gradient(90deg, #c9a84c, #e0c070, #c9a84c); height:2px;"></td>
-          </tr>
-
-          <!-- ── FOOTER ── -->
-          <tr>
-            <td style="background:#0f2d1c; padding:24px 40px; border-radius:0 0 8px 8px;">
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td>
-                    <p style="margin:0; font-size:12px; color:rgba(245,240,232,0.5);">
-                      Sent from
-                      <a href="${BASE_URL}" style="color:#c9a84c; text-decoration:none;">${BASE_URL}</a>
-                      contact form
-                    </p>
-                  </td>
-                  <td align="right">
-                    <p style="margin:0; font-size:12px; color:rgba(245,240,232,0.5);">
-                      ${COMPANY.name} · ${COMPANY.city}, India
-                    </p>
-                  </td>
-                </tr>
-              </table>
+            <td style="background:#f4f4f0; padding:18px 32px; font-size:12px; color:#6e7088;">
+              Submitted through the contact form at <a href="${esc(BASE_URL)}" style="color:#1f2370;">${esc(BASE_URL)}</a>
             </td>
           </tr>
 
@@ -193,18 +172,80 @@ export async function POST(req: Request) {
       </td>
     </tr>
   </table>
-
 </body>
-</html>
-      `,
+</html>`;
+}
+
+export async function POST(req: Request) {
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request too large" }, { status: 413 });
+  }
+
+  if (isRateLimited(clientIp(req))) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(RATE_WINDOW_MS / 1000) },
+      },
+    );
+  }
+
+  let body: unknown;
+  try {
+    const raw = await req.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "Request too large" }, { status: 413 });
+    }
+    body = JSON.parse(raw);
+  } catch {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+
+  const parsed = contactSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+  }
+
+  const data = parsed.data;
+
+  // Honeypot filled in: pretend success so bots don't learn they were caught
+  if (data.website) {
+    return NextResponse.json({ success: true });
+  }
+
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY is not set");
+    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+  }
+
+  // Created once and reused across requests
+  resend ??= new Resend(process.env.RESEND_API_KEY);
+
+  try {
+    const { error } = await resend.emails.send({
+      from:
+        process.env.CONTACT_FROM_EMAIL ||
+        `${COMPANY.name} <onboarding@resend.dev>`,
+      to: COMPANY.email,
+      replyTo: data.email,
+      subject: buildSubject(data),
+      html: buildHtml(data),
+      text: buildText(data),
     });
 
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Email send error:", error);
-    return NextResponse.json(
-      { error: "Failed to send email" },
-      { status: 500 },
-    );
+  } catch (err) {
+    console.error("Email send error:", err);
+    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
   }
 }
