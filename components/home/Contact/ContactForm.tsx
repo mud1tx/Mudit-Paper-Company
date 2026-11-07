@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import styles from "./Contact.module.css";
@@ -9,6 +9,7 @@ import {
   BUSINESS_TYPES,
   PRODUCT_OPTIONS,
   contactSchema,
+  productFromSlug,
   type ContactData,
   type ContactInput,
 } from "@/lib/contact";
@@ -67,6 +68,7 @@ export default function ContactForm() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput, unknown, ContactData>({
     resolver: zodResolver(contactSchema),
@@ -81,6 +83,14 @@ export default function ContactForm() {
       website: "",
     },
   });
+
+  // "Get a quote" on a product page links here with ?product=<slug>
+  useEffect(() => {
+    const product = productFromSlug(
+      new URLSearchParams(window.location.search).get("product"),
+    );
+    if (product) setValue("product", product);
+  }, [setValue]);
 
   const onSubmit = async (data: ContactData) => {
     setStatus("idle");

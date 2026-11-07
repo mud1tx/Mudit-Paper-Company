@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { quoteHref } from "@/lib/contact";
 import type { ReactNode } from "react";
 import styles from "./product.module.css";
 import type { ProductVariant } from "@/types/product";
 
 interface Props {
+  /** Pre-selects this product on the enquiry form */
+  readonly slug: string;
   readonly variants: readonly ProductVariant[];
   /** Product-specific background; falls back to the shared one */
   readonly background?: string;
@@ -40,6 +43,7 @@ function Row({
 // plain, visible HTML (a real <table> and lists), which search engines read
 // as product facts.
 export default function ProductVariants({
+  slug,
   variants,
   background = DEFAULT_BACKGROUND,
 }: Props) {
@@ -116,7 +120,7 @@ export default function ProductVariants({
                 )}
 
                 <Link
-                  href="/#contact"
+                  href={quoteHref(slug)}
                   className={styles.quoteBtn}
                 >
                   Get a quote

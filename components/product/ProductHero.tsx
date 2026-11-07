@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import { quoteHref } from "@/lib/contact";
 import styles from "./product.module.css";
 import { COMPANY } from "@/lib/config";
 import { whatsappUrl } from "@/lib/format";
 import type { KeyValue } from "@/types/product";
 
 interface Props {
+  /** Pre-selects this product on the enquiry form */
+  readonly slug: string;
   readonly name: string;
   readonly tagline: string;
   readonly description: string;
@@ -24,6 +27,7 @@ interface Props {
 // on the left, the product photo on the right. A server component, so all of
 // it is plain HTML that search engines read without running JavaScript.
 export default function ProductHero({
+  slug,
   name,
   tagline,
   description,
@@ -92,7 +96,7 @@ export default function ProductHero({
 
           <div className={styles.heroActions}>
             <Link
-              href="/#contact"
+              href={quoteHref(slug)}
               className={styles.btnPrimary}
             >
               Get a quote

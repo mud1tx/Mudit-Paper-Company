@@ -28,7 +28,20 @@ export const PRODUCT_OPTIONS: readonly string[] = [
   "Multiple Products",
 ];
 
-const oneOf = (options: readonly string[]) => (v: string) => options.includes(v);
+const oneOf = (options: readonly string[]) => (v: string) =>
+  options.includes(v);
+
+// Link to the enquiry form. With a product slug, the form opens with that
+// product already selected (see productFromSlug).
+export function quoteHref(slug?: string): string {
+  return slug ? `/?product=${encodeURIComponent(slug)}#contact` : "/#contact";
+}
+
+// The form's product option for a slug from the link, or "" if it is unknown
+export function productFromSlug(slug: string | null): string {
+  const label = PRODUCTS_LIST.find((p) => p.slug === slug)?.label;
+  return label && PRODUCT_OPTIONS.includes(label) ? label : "";
+}
 
 // Accepts "9876543210", "+91 98765 43210" or "098765-43210" and keeps the
 // 10-digit number, so people are not rejected for typing a common format

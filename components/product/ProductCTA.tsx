@@ -1,15 +1,18 @@
 import Link from "next/link";
+import { quoteHref } from "@/lib/contact";
 import styles from "./product.module.css";
 import { COMPANY } from "@/lib/config";
 import { formatPhone } from "@/lib/format";
 
 interface Props {
   readonly productName: string;
+  /** Pre-selects this product on the enquiry form */
+  readonly slug?: string;
 }
 
 // Closing quote banner. id="contact" is the target of the page's own
 // "#contact" links.
-export default function ProductCTA({ productName }: Props) {
+export default function ProductCTA({ productName, slug }: Props) {
   return (
     <section
       className={styles.cta}
@@ -32,7 +35,7 @@ export default function ProductCTA({ productName }: Props) {
 
         <div className={styles.ctaActions}>
           <Link
-            href="/#contact"
+            href={quoteHref(slug)}
             className={styles.btnPrimary}
           >
             Get a quote

@@ -119,6 +119,7 @@ export default async function ProductPage({ params }: Params) {
         className={styles.main}
       >
         <ProductHero
+          slug={slug}
           name={product.name}
           tagline={product.tagline}
           description={product.description}
@@ -130,13 +131,17 @@ export default async function ProductPage({ params }: Params) {
           highlights={product.variants[0]?.specs ?? []}
         />
         <ProductVariants
+          slug={slug}
           variants={product.variants}
           background={product.specBackground}
         />
         <ProductGallery images={product.gallery} />
         <ProductFaq items={product.faqs} />
         <ProductRelated currentSlug={slug} />
-        <ProductCTA productName={product.name} />
+        <ProductCTA
+          productName={product.name}
+          slug={slug}
+        />
       </main>
       <BackToTop />
       <Footer />
