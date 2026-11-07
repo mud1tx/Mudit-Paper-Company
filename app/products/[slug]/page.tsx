@@ -71,11 +71,14 @@ export default async function ProductPage({ params }: Params) {
     ],
   });
 
-  // No offers, so this does not claim a price rich result. It tells Google
-  // (and AI search) what the product is, its specs and who sells it.
+  // Described as the page's topic, not as a schema.org Product. Google only
+  // accepts Product markup with a price, reviews or a rating, and these
+  // products are sold on quotation, so a Product would be flagged as invalid
+  // in Search Console. The specs stay in the page's visible table.
+  const topicId = `${productUrl}#topic`;
   const productData = {
-    "@type": "Product",
-    "@id": `${productUrl}#product`,
+    "@type": "Thing",
+    "@id": topicId,
     name: product.name,
     ...(product.alternateNames && { alternateName: product.alternateNames }),
     description: product.description,
@@ -83,24 +86,16 @@ export default async function ProductPage({ params }: Params) {
     image: [product.image, ...product.gallery.map((g) => g.src)].map(
       (src) => `${BASE_URL}${src}`,
     ),
-    category: product.tag,
-    countryOfOrigin: "IN",
-    // The business entity from the root layout
-    brand: { "@id": `${BASE_URL}/#business` },
-    isRelatedTo: PRODUCTS_LIST.filter((p) => p.slug !== slug).map((p) => ({
-      "@id": `${BASE_URL}/products/${p.slug}#product`,
-    })),
-    additionalProperty: (product.variants[0]?.specs ?? []).map((kv) => ({
-      "@type": "PropertyValue",
-      name: kv.label,
-      value: kv.value,
-    })),
   };
 
   const structuredData = {
     ...page,
     "@graph": [
-      { ...page["@graph"][0], mainEntity: { "@id": `${productUrl}#product` } },
+      {
+        ...page["@graph"][0],
+        about: { "@id": topicId },
+        mainEntity: { "@id": topicId },
+      },
       ...page["@graph"].slice(1),
       productData,
       faqJsonLd(product.faqs, path),
