@@ -27,7 +27,7 @@ export const COMPANY = {
   phone: PHONES[0],
   whatsapp: PHONES[0],
   email: "muditpapercompany@gmail.com",
-  address: "Kanpur, Uttar Pradesh, India",
+  address: "31/65, Lathi Mohal Road, Kanpur, Uttar Pradesh, India",
   postalCode: "208001",
   foundedYear: 2016,
   city: "Kanpur",
