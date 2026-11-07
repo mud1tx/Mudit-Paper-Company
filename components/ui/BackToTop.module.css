@@ -11,6 +11,12 @@
 }
 
 /* ── Base button ── */
+/* Larger icons inside the same-size buttons */
+.btn svg {
+  width: 54%;
+  height: 54%;
+}
+
 .btn {
   width: 48px;
   height: 48px;
@@ -54,6 +60,25 @@
   }
 }
 
+/* ── Instagram (brand gradient) ── */
+.insta {
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+  color: #ffffff;
+}
+
+@media (hover: hover) {
+  .insta:hover {
+    opacity: 0.9;
+  }
+}
+
 /* ── Call (brand red) ── */
 .call {
   background: var(--color-accent);
@@ -62,7 +87,8 @@
 
 /* A red ring would vanish against the red and green buttons */
 .call:focus-visible,
-.whatsapp:focus-visible {
+.whatsapp:focus-visible,
+.insta:focus-visible {
   outline-color: var(--color-primary);
 }
 

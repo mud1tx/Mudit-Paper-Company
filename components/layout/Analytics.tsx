@@ -19,6 +19,10 @@ const CONTACT_LINKS = [
     event: "click_email",
     matches: (href: string) => href.startsWith("mailto:"),
   },
+  {
+    event: "click_instagram",
+    matches: (href: string) => href.includes("instagram.com"),
+  },
 ] as const;
 
 // Google Analytics 4. Page views, including moves between pages without a full

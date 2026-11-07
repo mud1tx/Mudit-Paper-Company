@@ -39,7 +39,7 @@ export const COMPANY = {
   },
   // Named, so a reorder can never put the wrong link behind an icon
   social: {
-    instagram: "https://www.instagram.com/muditpapercompany",
+    instagram: "https://www.instagram.com/muditpaper",
     facebook: "https://www.facebook.com/muditpapercompany",
     linkedin: "https://www.linkedin.com/company/muditpapercompany",
   },
