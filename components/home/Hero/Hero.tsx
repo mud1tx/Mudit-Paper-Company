@@ -39,8 +39,7 @@ export default function Hero() {
         <p className={styles.badge}>SPECIALTY PAPER SUPPLIER IN INDIA</p>
 
         <h1 className={styles.h1}>
-          Specialty Paper for
-          <br />
+          Specialty Paper for <br />
           <em className={styles.em}>Packaging &</em> Converting
         </h1>
 
