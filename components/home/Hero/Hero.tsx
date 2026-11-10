@@ -36,16 +36,18 @@ export default function Hero() {
   return (
     <HeroCarousel slides={HERO_SLIDES}>
       <div className={styles.content}>
-        <p className={styles.badge}>Paper Wholesaler in India</p>
+        <p className={styles.badge}>SPECIALTY PAPER SUPPLIER IN INDIA</p>
 
         <h1 className={styles.h1}>
-          Premium Paper,
+          Specialty Paper for
           <br />
-          <em className={styles.em}>Pure Quality</em> Guaranteed
+          <em className={styles.em}>Packaging &</em> Converting
         </h1>
 
         <p className={styles.desc}>
-          Your trusted partner for quality paper solutions across India.
+          Greaseproof (OGR), One Side OGR, glassine, MG poster and bleached
+          kraft paper for packaging manufacturers, converters and businesses
+          across India.
         </p>
 
         <div className={styles.actions}>

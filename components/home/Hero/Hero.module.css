@@ -5,10 +5,13 @@
 
 .hero {
   position: relative;
-  height: 80vh;
-  /* svh ignores the mobile address bar, so the hero does not resize
-     (and shift the page) when the bar slides in and out */
-  height: 80svh;
+  /* min-height, not height: on narrow screens the text can be taller than
+     80% of the screen, and the hero then grows instead of letting the text
+     spill behind the navbar. svh ignores the mobile address bar, so the
+     hero does not resize when the bar slides in and out. */
+  display: flex;
+  min-height: 80vh;
+  min-height: 80svh;
   margin-top: calc(var(--topbar-h) + var(--navbar-h));
   padding: 0; /* overrides global section padding */
   overflow: hidden;
@@ -57,10 +60,11 @@
 .content {
   position: relative;
   z-index: 2;
-  height: 100%;
+  width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 0 6vw;
+  /* Space above the text, and below it for the slide dots */
+  padding: 48px 6vw 64px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -226,8 +230,8 @@
 }
 @media (max-width: 440px) {
   .hero {
-    height: 83vh;
-    height: 83svh;
+    min-height: 83vh;
+    min-height: 83svh;
   }
 }
 
