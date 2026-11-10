@@ -16,28 +16,31 @@ export const PRODUCTS: ProductMap = {
     alternateNames: [
       "OGR Paper",
       "Oil and Grease Resistant Paper",
+      "Double Side OGR Paper",
+      "One Side OGR Paper",
       "Butter Paper",
     ],
     tagline: "Oil Resistant. Grease Resistant. Packaging Ready.",
     description:
-      "Greaseproof (OGR, oil and grease resistant) paper resists oil and grease, making it suitable for food wrapping, lining and packaging. Some buyers also call it butter paper. Mudit Paper Company supplies white greaseproof paper sheets, 30–50 GSM and kit value 3–7, to food packaging businesses, paper converters and distributors across India.",
+      "Greaseproof (OGR, oil and grease resistant) paper resists oil and grease, making it suitable for food wrapping, lining and packaging. Some buyers also call it butter paper. Mudit Paper Company supplies double side OGR paper (32–50 GSM, kit value 3–7) and one side OGR paper (30–50 GSM) in sheets to food packaging businesses, paper converters and distributors across India.",
     image: "/images/greaseproof-paper/hero.webp",
     imageAlt:
       "Greaseproof paper lining a baking tray, with a roll of paper beside it",
     card: {
       tag: "Specialty Paper",
       summary:
-        "White greaseproof (OGR) paper sheets, 30–50 GSM, kit value 3–7, for food wrapping and packaging.",
-      specs: ["30–50 GSM", "Kit 3–7", "White", "Sheets", "Custom Size"],
+        "Double side and one side OGR greaseproof paper sheets for food wrapping, lining and packaging.",
+      specs: ["32–50 GSM", "Kit 3–7", "White", "Sheets", "Custom Size"],
     },
     breadcrumb: "Greaseproof (OGR) Paper",
     tag: "Oil & Grease Resistant Paper",
     specBackground: "/images/spec-bg-greaseproof.webp",
     variants: [
       {
-        name: "Greaseproof (OGR) Paper",
+        name: "Double Side OGR Paper",
         specs: [
-          { label: "GSM Range", value: "30 – 50 GSM" },
+          { label: "OGR Side", value: "Both Sides" },
+          { label: "GSM Range", value: "32 – 50 GSM" },
           { label: "Kit Value", value: "3 – 7" },
           { label: "Colour", value: "White" },
           { label: "Supply Format", value: "Sheets" },
@@ -58,6 +61,31 @@ export const PRODUCTS: ProductMap = {
           "Surface suited to flexo and offset printing by converters",
           "Sheets cut to your required size",
           "Bulk supply for paper converters, distributors and packaging businesses",
+        ],
+      },
+      {
+        name: "One Side OGR Paper",
+        specs: [
+          { label: "OGR Side", value: "One Side" },
+          { label: "GSM Range", value: "30 – 50 GSM" },
+          { label: "Finish", value: "One Side Smooth" },
+          { label: "Colour", value: "White" },
+          { label: "Supply Format", value: "Sheets" },
+          { label: "Printability", value: "Flexo / Offset" },
+          { label: "Sheet Size", value: "As Per Requirement" },
+          { label: "MOQ", value: "Subject to Order Requirements" },
+        ],
+        applications: [
+          "Food Wrapping",
+          "Takeaway Food Packaging",
+          "Bakery Liners",
+          "Food Service Packaging",
+        ],
+        features: [
+          "Oil and grease barrier on one side of the sheet",
+          "Suited to food wrapping and packaging",
+          "Sheets cut to your required size",
+          "Bulk supply for food packaging businesses and paper converters",
         ],
       },
     ],
@@ -96,9 +124,15 @@ export const PRODUCTS: ProductMap = {
         link: BUTTER_PAPER_LINK,
       },
       {
+        question:
+          "What is the difference between double side and one side OGR paper?",
+        answer:
+          "Double side OGR paper resists oil and grease on both sides of the sheet. One side OGR paper has its oil and grease barrier on one side only. Tell us your use and we will suggest the right grade.",
+      },
+      {
         question: "What GSM and kit value do you supply?",
         answer:
-          "We supply white greaseproof paper in 30–50 GSM and kit value 3–7, in sheets cut to your required size. A higher kit value means higher grease resistance.",
+          "We supply double side OGR paper in 32–50 GSM and kit value 3–7, and one side OGR paper in 30–50 GSM, both in sheets cut to your required size. A higher kit value means higher grease resistance.",
       },
       {
         question: "Do you deliver across India?",
@@ -479,80 +513,7 @@ export const PRODUCTS: ProductMap = {
     ],
   },
 
-  // ── One Side OGR Paper ──────────────────────────────────────────────────────
-  // TODO: confirm what "one side" means for this product before launch. This
-  // draft assumes oil and grease resistance on one side of the sheet.
-  "one-side-ogr-paper": {
-    name: "One Side OGR Paper",
-    alternateNames: [
-      "Single Side OGR Paper",
-      "One Side Greaseproof Paper",
-      "One Side Oil and Grease Resistant Paper",
-    ],
-    tagline: "Oil and Grease Resistance on One Side.",
-    description:
-      "One side OGR paper is an oil and grease resistant paper with its barrier on one side of the sheet. Mudit Paper Company supplies one side OGR paper, TODO GSM, in bulk to food packaging businesses, paper converters and distributors across India.",
-    image: "/images/one-side-ogr-paper/hero.webp",
-    imageAlt: "TODO: describe what the photo shows",
-    card: {
-      tag: "Specialty Paper",
-      summary:
-        "One side oil and grease resistant (OGR) paper, TODO GSM, for food wrapping and packaging.",
-      specs: ["TODO GSM", "One Side OGR", "TODO Format", "Bulk Orders"],
-    },
-    breadcrumb: "One Side OGR Paper",
-    tag: "Oil & Grease Resistant Paper",
-    variants: [
-      {
-        name: "One Side OGR Paper",
-        specs: [
-          { label: "GSM Range", value: "TODO GSM" },
-          { label: "Kit Value", value: "TODO" },
-          { label: "OGR Side", value: "One Side" },
-          { label: "Colour", value: "TODO" },
-          { label: "Supply Format", value: "TODO: Reels / Sheets" },
-          { label: "MOQ", value: "TODO" },
-        ],
-        applications: [
-          "Food Wrapping",
-          "Takeaway Packaging",
-          "Bakery Liners",
-          "Food Service Packaging",
-        ],
-        features: [
-          "Oil and grease barrier on one side of the sheet",
-          "Suited to food wrapping and packaging",
-          "Bulk supply for food packaging businesses and paper converters",
-        ],
-      },
-    ],
-    gallery: [],
-    faqs: [
-      {
-        question: "What is one side OGR paper?",
-        answer:
-          "OGR stands for oil and grease resistant. One side OGR paper has this barrier on one side of the sheet, and is used for food wrapping and packaging.",
-      },
-      {
-        question: "What is the difference between one side OGR and greaseproof paper?",
-        answer:
-          "One side OGR paper has its oil and grease barrier on one side. Tell us your use and we will suggest the right paper.",
-        link: {
-          href: "/products/greaseproof-ogr-paper",
-          label: "See our greaseproof (OGR) paper",
-        },
-      },
-      {
-        question: "What GSM and kit value do you supply?",
-        answer: "We supply one side OGR paper in TODO GSM and kit value TODO.",
-      },
-      {
-        question: "What is the minimum order, and do you deliver across India?",
-        answer:
-          "Our minimum order is TODO. We are based in Kanpur, Uttar Pradesh, and supply bulk orders to businesses across India. Share your GSM, size, quantity and delivery location for a quote.",
-      },
-    ],
-  },
+  
   DRAFT-PRODUCTS-END */
 } as const;
 
@@ -569,6 +530,5 @@ export const PRODUCTS_LIST: readonly ProductListItem[] = [
   },
   // Draft products, not on the website. Uncomment together with their data.
   // { slug: "mg-poster-paper", label: "MG Poster Paper" },
-  // { slug: "bleached-kraft-paper", label: "Bleached Kraft Paper" },
-  // { slug: "one-side-ogr-paper", label: "One Side OGR Paper" },
+  // { slug: "bleached-kraft-paper", label: "Bleached Kraft Paper" }
 ] as const;

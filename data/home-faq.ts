@@ -2,9 +2,10 @@ import { PRODUCTS } from "@/data/product";
 import { COMPANY } from "@/lib/config";
 import type { FaqItem, Product } from "@/types/product";
 
-// Read from the product data, so these answers can never disagree with it
-const spec = (product: Product, label: string) =>
-  product.variants[0].specs.find((s) => s.label === label)?.value ?? "";
+// Read from the product data, so these answers can never disagree with it.
+// variant picks a card by position, e.g. 1 for the second card.
+const spec = (product: Product, label: string, variant = 0) =>
+  product.variants[variant]?.specs.find((s) => s.label === label)?.value ?? "";
 
 const GREASEPROOF = PRODUCTS["greaseproof-ogr-paper"];
 const GLASSINE = PRODUCTS["glassine-paper"];
@@ -31,7 +32,7 @@ export const HOME_FAQS: readonly FaqItem[] = [
   },
   {
     question: "What GSM ranges and paper specifications do you offer?",
-    answer: `We offer different GSM ranges depending on the paper grade. Greaseproof (OGR) paper is available in ${spec(GREASEPROOF, "GSM Range")}, glassine paper in ${spec(GLASSINE, "GSM Range")}, and ladoo katori paper liners in 65mm diameter. GSM and other specifications for One Side OGR, MG poster paper and bleached kraft paper can be confirmed according to grade and availability. Refer to the individual product pages for specifications.`,
+    answer: `We offer different GSM ranges depending on the paper grade. Double side OGR (greaseproof) paper is available in ${spec(GREASEPROOF, "GSM Range")}, one side OGR paper in ${spec(GREASEPROOF, "GSM Range", 1)}, glassine paper in ${spec(GLASSINE, "GSM Range")}, and ladoo katori paper liners in 65mm diameter. GSM and other specifications for MG poster paper and bleached kraft paper can be confirmed according to grade and availability. Refer to the individual product pages for specifications.`,
   },
   {
     question: "What is the difference between glassine and greaseproof paper?",
